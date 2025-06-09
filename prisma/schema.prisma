@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator client {
+//   provider = "prisma-client-js"
+//   output   = "../node_modules/@prisma-app/client"
+// }
+
+model Submission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(PENDING)
+  date      String
+  time      String
+  name      String
+  surname   String
+  email     String
+  phone     String
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@index([status])
+}
+
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  surname   String
+  email     String   @unique
+  phone     String
+  submissions Submission[]
+
+  @@index([email])
+}
