@@ -7,42 +7,63 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator client {
-//   provider = "prisma-client-js"
-//   output   = "../node_modules/@prisma-app/client"
-// }
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+model Treatment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  description String
+  price     Float
+  submissions SubmissionTreatment[]
+  images String[]
+  video String?
+  duration Int
 
+  @@index([name])
+}
 model Submission {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(PENDING)
-  date      String
-  time      String
+  date      DateTime
+  timeBlocks String[] // ["08:00","08:15","08:30","08:45"]
+  startTime String
+  endTime   String
+  duration  Int
   name      String
   surname   String
   email     String
   phone     String
   profileId String
   profile   Profile  @relation(fields: [profileId], references: [id])
+  treatments SubmissionTreatment[]
 
   @@index([status])
 }
 
+model SubmissionTreatment {
+  submissionId String
+  treatmentId  String
 
-enum Status {
-  PENDING
-  APPROVED
-  REJECTED
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  treatment    Treatment  @relation(fields: [treatmentId], references: [id])
+
+  @@id([submissionId, treatmentId])
 }
 
 model Profile {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  email     String   @unique
   name      String
   surname   String
-  email     String   @unique
   phone     String
   submissions Submission[]
 
