@@ -31,10 +31,9 @@ model Submission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(PENDING)
-  date      DateTime
+  startDate DateTime
+  endDate   DateTime
   timeBlocks String[] // ["08:00","08:15","08:30","08:45"]
-  startTime String
-  endTime   String
   duration  Int
   name      String
   surname   String

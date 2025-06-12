@@ -1,11 +1,12 @@
 "use server";
+import { DATE_AND_TIME_FORMAT } from "@/lib/time";
 
 import { db } from "@/lib/db";
-import { SubmissionFormData } from "./SubmissionForm";
 import dayjs from "dayjs";
 import { TIME_FORMAT } from "@/lib/time";
+import { SubmissionFullSchema } from "./SubmissionForm";
 
-export async function submissionAction(data: SubmissionFormData) {
+export async function submissionAction(data: SubmissionFullSchema) {
   const { name, surname, email, phone, date, startTime, duration, treatments } =
     data;
 
@@ -26,12 +27,19 @@ export async function submissionAction(data: SubmissionFormData) {
       surname,
       email,
       phone,
-      date: date,
-      duration,
-      startTime,
-      endTime: dayjs(startTime, TIME_FORMAT)
+      startDate: dayjs(date, DATE_AND_TIME_FORMAT)
+        .set("hour", dayjs(startTime, TIME_FORMAT).hour())
+        .set("minute", dayjs(startTime, TIME_FORMAT).minute())
+        .toDate(),
+      endDate: dayjs(date, DATE_AND_TIME_FORMAT)
         .add(duration, "minute")
-        .format(TIME_FORMAT),
+        .toDate(),
+      duration,
+      timeBlocks: Array.from({ length: duration / 15 }, (_, i) =>
+        dayjs(startTime, TIME_FORMAT)
+          .add(i * 15, "minute")
+          .format(TIME_FORMAT)
+      ),
       profile: {
         connect: { id: profile.id },
       },

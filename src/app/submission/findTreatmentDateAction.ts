@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { Status } from "@prisma/client";
 
-export type FindTreatmentDateActionReturnType = {
+export type AvailableDates = {
   preferableDates: {
     date: string;
     time: string;
@@ -17,16 +17,17 @@ export type FindTreatmentDateActionReturnType = {
 
 export async function findTreatmentDateAction(
   duration: number
-): Promise<FindTreatmentDateActionReturnType> {
+): Promise<AvailableDates> {
   const allAcceptedSubmissions = await db.submission.findMany({
     where: {
       status: Status.ACCEPTED,
-      date: {
+      startDate: {
         gte: dayjs().startOf("day").toDate(), // Only consider future dates
       },
     },
     select: {
-      date: true,
+      startDate: true,
+      endDate: true,
       timeBlocks: true,
     },
   });
@@ -43,7 +44,7 @@ export async function findTreatmentDateAction(
 
   // Fill in the occupied time blocks from accepted submissions
   allAcceptedSubmissions.forEach((submission) => {
-    const formattedDate = dayjs(submission.date).format(DATE_FORMAT);
+    const formattedDate = dayjs(submission.startDate).format(DATE_FORMAT);
     if (occupiedTimeBlocksMap.has(formattedDate)) {
       const timeBlocksSet = occupiedTimeBlocksMap.get(formattedDate)!;
       submission.timeBlocks.forEach((block) => {
