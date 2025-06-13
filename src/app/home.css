@@ -46,6 +46,10 @@
   clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
 }
 
+.clip-polygon-contact {
+  clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+}
+
 .skew-y-356 {
   transform: skewY(-7deg);
 }
@@ -63,6 +67,6 @@
 }
 
 .animate-moveInBottom {
-  animation: moveInBottom .5s ease-out .75s;
+  animation: moveInBottom 0.5s ease-out 0.75s;
   animation-fill-mode: backwards;
 }
