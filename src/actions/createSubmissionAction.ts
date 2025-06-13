@@ -1,14 +1,28 @@
 "use server";
-import { DATE_AND_TIME_FORMAT } from "@/lib/time";
 
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { TIME_FORMAT } from "@/lib/time";
-import { SubmissionFullSchema } from "./SubmissionForm";
+import { SubmissionFullSchema } from "../app/submission/SubmissionForm";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
-export async function submissionAction(data: SubmissionFullSchema) {
+dayjs.extend(customParseFormat);
+
+export async function createSubmissionAction(data: SubmissionFullSchema) {
   const { name, surname, email, phone, date, startTime, duration, treatments } =
     data;
+
+  const startDate = dayjs(date)
+    .set("hour", dayjs(startTime, TIME_FORMAT).hour())
+    .set("minute", dayjs(startTime, TIME_FORMAT).minute())
+    .toDate();
+
+  const endDate = dayjs(startDate).add(duration, "minute").toDate();
+  const timeBlocks = Array.from({ length: duration / 15 }, (_, i) =>
+    dayjs(startTime, TIME_FORMAT)
+      .add(i * 15, "minute")
+      .format(TIME_FORMAT)
+  );
 
   const profile = await db.profile.upsert({
     where: { email },
@@ -27,19 +41,10 @@ export async function submissionAction(data: SubmissionFullSchema) {
       surname,
       email,
       phone,
-      startDate: dayjs(date, DATE_AND_TIME_FORMAT)
-        .set("hour", dayjs(startTime, TIME_FORMAT).hour())
-        .set("minute", dayjs(startTime, TIME_FORMAT).minute())
-        .toDate(),
-      endDate: dayjs(date, DATE_AND_TIME_FORMAT)
-        .add(duration, "minute")
-        .toDate(),
+      startDate,
+      endDate,
+      timeBlocks,
       duration,
-      timeBlocks: Array.from({ length: duration / 15 }, (_, i) =>
-        dayjs(startTime, TIME_FORMAT)
-          .add(i * 15, "minute")
-          .format(TIME_FORMAT)
-      ),
       profile: {
         connect: { id: profile.id },
       },
@@ -56,8 +61,6 @@ export async function submissionAction(data: SubmissionFullSchema) {
       profile: true,
     },
   });
-
-  console.log("Created submission:", submission);
 
   return submission.id;
 }
