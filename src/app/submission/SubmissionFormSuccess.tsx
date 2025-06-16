@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Calendar, Mail, Phone } from "lucide-react";
+import { CheckCircle2, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
