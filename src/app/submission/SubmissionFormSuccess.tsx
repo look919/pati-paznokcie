@@ -77,7 +77,7 @@ export const SubmissionFormSuccess = () => {
           Dziękujemy za zaufanie i do zobaczenia wkrótce!
         </p>
 
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
           <Button
             asChild
             variant="outline"

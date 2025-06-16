@@ -43,14 +43,12 @@ export const Gallery = () => {
   );
 
   return (
-    <section className="w-full bg-gray-100">
-      <div className="py-12">
-        <h2 className="text-center text-4xl font-light text-gray-700 mb-10 uppercase tracking-wide">
-          <span className="inline-block border-b-2 border-sky-400 pb-2">
-            Galeria
-          </span>
-        </h2>
-      </div>
+    <section className="w-full bg-gray-100 pt-12 md:pt-24">
+      <h2 className="text-center text-4xl font-light text-gray-700 mb-10 uppercase tracking-wide">
+        <span className="inline-block border-b-2 border-sky-400 pb-2">
+          Galeria
+        </span>
+      </h2>
 
       {/* Mobile layout (4x4 grid) - Only visible on small screens */}
       <div

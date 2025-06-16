@@ -26,7 +26,7 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
         {treatment.name}
       </h5>
 
-      <div className="flex flex-col justify-between p-6 ">
+      <div className="flex flex-col justify-between p-6">
         <div className="flex items-start">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,9 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="text-gray-700 text-md">{treatment.description}</span>
+          <span className="text-gray-700 text-sm sm:text-md">
+            {treatment.description}
+          </span>
         </div>
 
         <div className="mt-auto"></div>

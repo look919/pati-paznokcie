@@ -9,9 +9,9 @@ export const Services = async () => {
   });
 
   return (
-    <section className="bg-gradient-to-br from-sky-400 to-blue-500 p-8 md:p-12">
+    <section className="bg-gradient-to-br from-sky-400 to-blue-500 py-12 md:py-24 px-6 sm:px-8 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-center text-4xl font-light text-white mb-16 uppercase tracking-wide">
+        <h2 className="text-center text-4xl font-light text-white mb-10 md:mb-20 uppercase tracking-wide">
           <span className="inline-block border-b-2 border-white pb-2">
             Co oferuję
           </span>

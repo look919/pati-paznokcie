@@ -40,13 +40,13 @@ export const About = () => {
   };
 
   return (
-    <section className="py-24 px-6 bg-gray-100" ref={sectionRef}>
+    <section className="py-12 md:py-24 px-6 bg-gray-100" ref={sectionRef}>
       <div className="max-w-6xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
           transition={{ duration: 0.8 }}
-          className="text-center text-4xl font-light text-gray-700 mb-20 uppercase tracking-wide"
+          className="text-center text-4xl font-light text-gray-700 mb-10 md:mb-20 uppercase tracking-wide"
         >
           <span className="inline-block border-b-2 border-sky-400 pb-2">
             O mnie
@@ -125,7 +125,7 @@ export const About = () => {
                 animate={isInView ? "visible" : "hidden"}
                 variants={imageVariants}
                 className={cn(
-                  "absolute w-60 h-40 top-5 right-0 z-10",
+                  "hidden  md:block absolute w-60 h-40 top-12 right-0 z-10",
                   aboutImgStyles
                 )}
               >

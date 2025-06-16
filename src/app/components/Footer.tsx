@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const Footer = () => {
   return (
-    <footer className="pt-4 pb-1 h-[120px] px-6 relative bg-gray-800 text-gray-300 flex flex-col items-center justify-center ">
+    <footer className="pt-4 pb-1 h-[140px] md:h-[120px] px-6 relative bg-gray-800 text-gray-300 flex flex-col items-center justify-center ">
       <Image
         src="/images/logo-transparent.png"
         alt="Patrycja Kuczkowska Logo"
