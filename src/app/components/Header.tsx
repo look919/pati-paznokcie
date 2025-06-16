@@ -21,7 +21,7 @@ export const Header = () => {
           className="hidden md:block absolute top-8 left-1/2 translate-x-[-50%] h-[100px] w-auto object-contain"
         />
       </motion.div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white flex flex-col items-center">
+      <div className="absolute top-2/5 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white flex flex-col items-center">
         <h1 className="uppercase">
           <motion.span
             initial={{ opacity: 0, x: -100 }}
@@ -52,18 +52,35 @@ export const Header = () => {
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="text-lg font-light mt-8"
+          className="text-lg font-light mt-8 "
         >
           ul. Wiosenna 12, 77-100 Bytów
         </motion.span>
-        <motion.span
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="flex flex-col sm:flex-row md:gap-4 text-lg font-light"
+        >
+          <span>{`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`}</span>
+          <span>{`email: ${process.env.NEXT_PUBLIC_EMAIL}`}</span>
+        </motion.div>
+        {/* <motion.span
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.7 }}
           className="text-lg font-light"
         >
-          {`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER} email: ${process.env.NEXT_PUBLIC_EMAIL}`}
+          {`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`}
         </motion.span>
+        <motion.span
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="text-lg font-light"
+        >
+          {`email: ${process.env.NEXT_PUBLIC_EMAIL}`}
+        </motion.span> */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

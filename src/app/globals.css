@@ -120,3 +120,6 @@
     @apply bg-background text-foreground;
   }
 }
+.clip-polygon-hero {
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+}
