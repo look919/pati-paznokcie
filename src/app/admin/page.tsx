@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { AdminSchedule } from "./AdminSchedule";
 import type { Event } from "./AdminSchedule";
 
-export const getAllEvents = async (): Promise<Event[]> => {
+const getAllEvents = async (): Promise<Event[]> => {
   const acceptedSubmissions = await db.submission.findMany({
     where: {
       status: "ACCEPTED",
