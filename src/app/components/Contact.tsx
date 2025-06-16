@@ -88,7 +88,9 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-medium text-lg">Phone</h4>
-                    <p className="mt-1 text-green-100">(+48) 123-456-789</p>
+                    <p className="mt-1 text-green-100">
+                      {process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}
+                    </p>
                   </div>
                 </div>
               </div>

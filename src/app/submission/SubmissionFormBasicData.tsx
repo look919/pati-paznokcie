@@ -83,7 +83,7 @@ export const SubmissionFormBasicData = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div
-          className={cn("flex flex-col gap-4", {
+          className={cn("flex flex-col gap-6", {
             "opacity-50 pointer-events-none":
               submissionFormState !== "FILLING_BASIC_DATA",
           })}
@@ -95,7 +95,10 @@ export const SubmissionFormBasicData = ({
               <FormItem>
                 <FormLabel>Imię</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    {...field}
+                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,7 +111,10 @@ export const SubmissionFormBasicData = ({
               <FormItem>
                 <FormLabel>Nazwisko</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    {...field}
+                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -121,7 +127,11 @@ export const SubmissionFormBasicData = ({
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} type="email" />
+                  <Input
+                    {...field}
+                    type="email"
+                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,7 +144,11 @@ export const SubmissionFormBasicData = ({
               <FormItem>
                 <FormLabel>Nr telefonu</FormLabel>
                 <FormControl>
-                  <Input {...field} type="tel" />
+                  <Input
+                    {...field}
+                    type="tel"
+                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -196,7 +210,9 @@ export const SubmissionFormBasicData = ({
         submissionFormState === "PENDING_FILLING_BASIC_DATA" ? (
           <Button
             type="submit"
-            className="mt-6 w-full"
+            className="mt-6 w-full inline-flex justify-center py-3 px-8 border border-transparent shadow-sm rounded-full text-white 
+                       bg-gradient-to-r from-sky-400 to-blue-500
+                       hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
             disabled={submissionFormState === "PENDING_FILLING_BASIC_DATA"}
           >
             {submissionsButtonText[submissionFormState]}
@@ -208,7 +224,7 @@ export const SubmissionFormBasicData = ({
           <Button
             type="button"
             variant="link"
-            className="mt-6 w-full"
+            className="mt-6 w-full text-sky-600"
             onClick={() => setSubmissionFormState("FILLING_BASIC_DATA")}
           >
             {submissionsButtonText[submissionFormState]}

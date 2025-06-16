@@ -34,7 +34,7 @@ export const sendEmail = async (params: SendEmailParams) => {
 
     const info = await transporter.sendMail({
       from,
-      to: params.to || process.env.MAIL_RECEIVER, // Use provided 'to' or fallback to environment variable
+      to: params.to || process.env.NEXT_PUBLIC_EMAIL,
       subject,
       text,
       html,

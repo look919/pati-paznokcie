@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -35,12 +35,14 @@ import { SubmissionFormBasicDataSchema } from "./SubmissionFormBasicData";
 import { toast } from "sonner";
 import { createSubmissionAction } from "@/actions/createSubmissionAction";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { SubmissionFormState } from "./SubmissionForm";
 
 dayjs.extend(customParseFormat);
 
 type SubmissionStepperChooseDateProps = {
   availableDates: AvailableDates;
-  basicData: SubmissionFormBasicDataSchema;
+  basicForm: UseFormReturn<SubmissionFormBasicDataSchema>;
+  setSubmissionFormState: (state: SubmissionFormState) => void;
 };
 
 const submissionFormChooseDateSchema = z.object({
@@ -53,7 +55,8 @@ export type SubmissionFormChooseDateSchema = z.infer<
 
 export const SubmissionFormChooseDate = ({
   availableDates,
-  basicData,
+  basicForm,
+  setSubmissionFormState,
 }: SubmissionStepperChooseDateProps) => {
   const form = useForm<SubmissionFormChooseDateSchema>({
     resolver: zodResolver(submissionFormChooseDateSchema),
@@ -68,17 +71,17 @@ export const SubmissionFormChooseDate = ({
   const handleSubmitForm = async (data: SubmissionFormChooseDateSchema) => {
     try {
       const createdSubmissionId = await createSubmissionAction({
-        ...basicData,
+        ...basicForm.getValues(),
         startTime: data.startTime,
         date: data.date,
       });
 
-      if (createdSubmissionId) {
-        toast.success("Termin został pomyślnie zarezerwowany!");
-        // Optionally, redirect or reset the form
-      } else {
+      if (!createdSubmissionId) {
         toast.error("Nie udało się zarezerwować terminu, spróbuj ponownie.");
       }
+      form.reset();
+      basicForm.reset();
+      setSubmissionFormState("SUCCESS");
     } catch {
       toast.error(
         "Wystąpił błąd podczas zapisywania daty, spróbuj ponownie później."
@@ -94,28 +97,30 @@ export const SubmissionFormChooseDate = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmitForm)}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 h-full"
       >
-        <span className="text-lg">
+        <p className="text-lg mb-2 text-white/90">
           Znaleźliśmy dla ciebie odpowiednie terminy!
-        </span>
+        </p>
         <FormField
           control={form.control}
           name="date"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Wybierz datę zabiegu:</FormLabel>
+              <FormLabel className="text-white">
+                Wybierz datę zabiegu:
+              </FormLabel>
               <FormControl>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   {availableDates.preferableDates.map((preferableDate) => (
                     <div
                       key={preferableDate.date}
                       className={cn(
-                        "border rounded-lg p-4 cursor-pointer hover:border-primary transition-colors",
+                        "border rounded-lg p-3 cursor-pointer hover:bg-white/20 transition-all duration-300",
                         field.value &&
                           dayjs(preferableDate.date).isSame(field.value, "day")
-                          ? "border-primary bg-primary/5"
-                          : "border-gray-200"
+                          ? "bg-white/30 border-white"
+                          : "border-white/40"
                       )}
                       onClick={() => {
                         field.onChange(dayjs(preferableDate.date).toDate());
@@ -123,14 +128,14 @@ export const SubmissionFormChooseDate = ({
                       }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-full">
-                          <CalendarIcon className="h-5 w-5 text-primary" />
+                        <div className="bg-white/20 p-2 rounded-full">
+                          <CalendarIcon className="h-4 w-4 text-white" />
                         </div>
                         <div>
                           <div className="font-medium">
                             {preferableDate.date}
                           </div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-white/80">
                             Godzina: {preferableDate.time}
                           </div>
                         </div>
@@ -139,13 +144,14 @@ export const SubmissionFormChooseDate = ({
                   ))}
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-white/80" />
             </FormItem>
           )}
         />
         <Button
           type="button"
-          variant={"link"}
+          variant="outline"
+          className="bg-white/20 border-white/40 hover:bg-white/30 text-white mt-2"
           onClick={() => setShouldDisplayCalendar(!shouldDisplayCalendar)}
         >
           {shouldDisplayCalendar ? "Ukryj kalendarz" : "Wybierz inną datę"}
@@ -157,15 +163,15 @@ export const SubmissionFormChooseDate = ({
               name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Wybierz datę</FormLabel>
+                  <FormLabel className="text-white">Wybierz datę</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            "w-full pl-3 text-left font-normal bg-white/20 border-white/40 hover:bg-white/30 text-white",
+                            !field.value && "text-white/70"
                           )}
                         >
                           {field.value ? (
@@ -173,7 +179,7 @@ export const SubmissionFormChooseDate = ({
                           ) : (
                             <span>Wybierz datę</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-70" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
@@ -195,14 +201,6 @@ export const SubmissionFormChooseDate = ({
                             return true;
                           }
 
-                          if (
-                            !availableDates.allDates.find(
-                              (d) => d.date === dayjs(date).format(DATE_FORMAT)
-                            )
-                          ) {
-                            return true;
-                          }
-
                           // If the date is in the availableDates, allow selection
                           return false;
                         }}
@@ -211,7 +209,7 @@ export const SubmissionFormChooseDate = ({
                     </PopoverContent>
                   </Popover>
 
-                  <FormMessage />
+                  <FormMessage className="text-white/80" />
                 </FormItem>
               )}
             />
@@ -220,7 +218,7 @@ export const SubmissionFormChooseDate = ({
               name="startTime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Wybierz godzinę</FormLabel>
+                  <FormLabel className="text-white">Wybierz godzinę</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
@@ -229,8 +227,8 @@ export const SubmissionFormChooseDate = ({
                       selectedDateTimeBlocks.length === 0
                     }
                   >
-                    <FormControl className="w-full">
-                      <SelectTrigger>
+                    <FormControl>
+                      <SelectTrigger className="bg-white/20 border-white/40 text-white w-full">
                         <SelectValue placeholder="Wybierz godzinę" />
                       </SelectTrigger>
                     </FormControl>
@@ -242,13 +240,18 @@ export const SubmissionFormChooseDate = ({
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-white/80" />
                 </FormItem>
               )}
             />
           </>
         )}
-        <Button type="submit" disabled={form.formState.isSubmitting}>
+        <div className="flex-grow mt-4"></div>
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          className="bg-white text-blue-600 hover:bg-white/90 transition-all duration-300"
+        >
           Rezerwuj termin
         </Button>
       </form>

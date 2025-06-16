@@ -47,7 +47,7 @@ export const Gallery = () => {
       <div className="py-12">
         <h2 className="text-center text-4xl font-light text-gray-700 mb-10 uppercase tracking-wide">
           <span className="inline-block border-b-2 border-sky-400 pb-2">
-            Our Gallery
+            Galeria
           </span>
         </h2>
       </div>
