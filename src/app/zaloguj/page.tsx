@@ -1,12 +1,6 @@
 import { PageWrapper } from "@/components/PageWrapper";
 import { Button } from "@/components/ui/button";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -24,9 +18,6 @@ export default function LoginPage() {
               <SignInButton>
                 <Button>Logowanie</Button>
               </SignInButton>
-              <SignUpButton>
-                <Button>Rejestracja</Button>
-              </SignUpButton>
             </SignedOut>
           </div>
 
