@@ -6,11 +6,11 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import "./home.css";
 
-export default function Home() {
+export default function Home({}) {
   return (
     <div className="font-sans min-h-screen">
       <Header />
-      <main className="flex flex-col gap-y-12">
+      <main className="flex flex-col">
         <About />
         <Services />
         <Gallery />

@@ -1,3 +1,5 @@
+import { ContactForm } from "./ContactForm";
+
 export const Contact = () => {
   return (
     <section className="py-12 px-6 bg-gradient-to-r from-sky-400 to-blue-500  relative">
@@ -15,81 +17,7 @@ export const Contact = () => {
               <h3 className="text-2xl font-semibold text-gray-800 mb-6">
                 Wyślij nam wiadomość
               </h3>
-              <form className="space-y-6">
-                {/* Name Input */}
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50"
-                    placeholder="John Doe"
-                  />
-                </div>
-
-                {/* Email Input */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50"
-                    placeholder="john@example.com"
-                  />
-                </div>
-
-                {/* Subject Input */}
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50"
-                    placeholder="I'd like to book a tour"
-                  />
-                </div>
-
-                {/* Message Input */}
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50"
-                    placeholder="Please provide details about your request..."
-                  ></textarea>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="inline-flex justify-center py-3 px-8 border border-transparent shadow-sm rounded-full text-white 
-                           bg-gradient-to-r from-emerald-400 to-green-500
-                           hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
             </div>
 
             {/* Info Side */}

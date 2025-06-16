@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { SubmissionForm } from "./SubmissionForm";
+import { PageWrapper } from "@/components/PageWrapper";
 
 export default async function Submission() {
   const treatments = await db.treatment.findMany({
@@ -13,8 +14,8 @@ export default async function Submission() {
   });
 
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
+    <PageWrapper>
       <SubmissionForm treatments={treatments} />
-    </main>
+    </PageWrapper>
   );
 }

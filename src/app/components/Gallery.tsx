@@ -23,13 +23,13 @@ export const Gallery = () => {
 
   // Image overlay component to avoid repetition
   const ImageOverlay = () => (
-    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+    <div className="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
       <div className="p-3 bg-white/80 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-6 h-6 text-emerald-500"
+          className="w-6 h-6 text-sky-500"
         >
           <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
           <path
@@ -44,9 +44,9 @@ export const Gallery = () => {
 
   return (
     <section className="w-full bg-gray-100">
-      <div className="py-16">
-        <h2 className="text-center text-4xl font-light text-gray-700 mb-20 uppercase tracking-wide">
-          <span className="inline-block border-b-2 border-emerald-400 pb-2">
+      <div className="py-12">
+        <h2 className="text-center text-4xl font-light text-gray-700 mb-10 uppercase tracking-wide">
+          <span className="inline-block border-b-2 border-sky-400 pb-2">
             Our Gallery
           </span>
         </h2>

@@ -10,14 +10,14 @@ export const Header = () => {
         alt="Patrycja Kuczkowska Logo"
         width={200}
         height={100}
-        className="absolute top-8 left-1/2 translate-x-[-50%]  h-[100px] w-auto object-contain"
+        className="hidden md:block absolute top-8 left-1/2 translate-x-[-50%]  h-[100px] w-auto object-contain"
       />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-white flex flex-col items-center">
         <h1 className="uppercase">
           <span className="block text-4xl md:text-7xl font-light tracking-widest mb-6 animate-moveInLeft">
             Patrycja Kuczkowska
           </span>
-          <span className="block text-xl font-bold md:tracking-[1.75rem] animate-moveInRight">
+          <span className="block text-lg md:text-xl font-bold md:tracking-[1.75rem] animate-moveInRight">
             Stylizacja paznokci
           </span>
         </h1>
