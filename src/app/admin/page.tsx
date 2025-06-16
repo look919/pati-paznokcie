@@ -1,26 +1,39 @@
-import { PageWrapper } from "@/components/PageWrapper";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { AdminSchedule } from "./AdminSchedule";
+import type { Event } from "./AdminSchedule";
+
+export const getAllEvents = async (): Promise<Event[]> => {
+  const acceptedSubmissions = await db.submission.findMany({
+    where: {
+      status: "ACCEPTED",
+    },
+    include: {
+      profile: true,
+      treatments: {
+        include: {
+          treatment: true,
+        },
+      },
+    },
+  });
+
+  const events: Event[] = acceptedSubmissions.map((submission) => ({
+    title:
+      submission.treatments.length === 1
+        ? `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments[0].treatment.name}`
+        : `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments.length} usługi`,
+    start: submission.startDate,
+    end: submission.endDate,
+    description: submission.treatments.map((t) => t.treatment.name).join(", "),
+    profile: submission.profile,
+    treatmentsAmount: submission.treatments.length,
+  }));
+
+  return events;
+};
 
 export default async function AdminHome() {
-  const user = await currentUser();
-  const isAuthenticatedUserAnAdmin = user?.privateMetadata.isAdmin === true;
+  const events = await getAllEvents();
 
-  if (!isAuthenticatedUserAnAdmin) {
-    redirect("/zaloguj");
-  }
-
-  return (
-    <PageWrapper>
-      <section className="py-12 px-4 md:px-6 bg-gradient-to-r from-sky-400 to-blue-500 relative">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-center text-4xl font-light text-white mb-16 uppercase tracking-wide">
-            <span className="inline-block border-b-2 border-white pb-2">
-              Admin home
-            </span>
-          </h2>
-        </div>
-      </section>
-    </PageWrapper>
-  );
+  return <AdminSchedule events={events} />;
 }

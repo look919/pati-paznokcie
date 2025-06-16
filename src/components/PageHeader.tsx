@@ -49,10 +49,30 @@ export const PageHeader = () => {
           className="h-[80px] w-auto object-contain mx-auto"
         />
       </Link>
-      <nav className="flex space-x-4">
-        <Link href="#about" className="text-gray-300 hover:text-white">
-          O mnie
-        </Link>
+      <nav>
+        <ul className="flex justify-evenly space-x-4">
+          <li>
+            <Link href="/admin" className="text-gray-300 hover:text-white">
+              Terminarz
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/zgloszenia"
+              className="text-gray-300 hover:text-white"
+            >
+              Zgłoszenia
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/klienci"
+              className="text-gray-300 hover:text-white"
+            >
+              Klienci
+            </Link>
+          </li>
+        </ul>
       </nav>
     </header>
   );
