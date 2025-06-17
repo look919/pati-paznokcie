@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
 import z from "zod";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -39,6 +39,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Profile } from "@prisma/client";
+import { createEventAction } from "@/actions/createEventAction";
+import { useEffect } from "react";
 
 type EventFormProps = {
   treatments: {
@@ -47,6 +50,7 @@ type EventFormProps = {
     price: number;
     duration: number;
   }[];
+  profiles: Profile[];
 };
 
 export const eventFormSchema = z.object({
@@ -78,7 +82,7 @@ const useGetDefaultDate = () => {
   const startDateParam = searchParams.get("startDate");
 
   // Use dayjs for parsing and formatting
-  let defaultDate = new Date();
+  let defaultDate = undefined;
   let defaultStartTime = "";
 
   if (startDateParam) {
@@ -104,7 +108,7 @@ const timeOptions = getAvailableTimesBasedOnTreatmentDuration(0).concat(
   additionalCalendarTimes
 );
 
-export const EventForm = ({ treatments }: EventFormProps) => {
+export const EventForm = ({ treatments, profiles }: EventFormProps) => {
   const defaultDate = useGetDefaultDate();
 
   const form = useForm<EventFormSchema>({
@@ -122,212 +126,236 @@ export const EventForm = ({ treatments }: EventFormProps) => {
   });
   const selectedTreatments = form.watch("treatments");
 
-  const onSubmit = async (data: EventFormSchema) => {
+  useEffect(() => {
+    const duration = selectedTreatments.reduce(
+      (acc, curr) => acc + curr.duration,
+      0
+    );
+
+    form.setValue("duration", duration);
+  }, [selectedTreatments, form]);
+
+  const handleCreateEvent = async (data: EventFormSchema) => {
     try {
+      const eventId = await createEventAction(data);
+
+      toast.success("Wydarzenie zostało dodane do kalendarza!");
+      form.reset();
+      return eventId;
     } catch {
       toast.error("Wystąpił błąd podczas wysyłania formularza");
     }
   };
 
+  const handleAutocompleteProfile = (profileId: string) => {
+    const selectedProfile = profiles.find((p) => p.id === profileId);
+    if (selectedProfile) {
+      form.setValue("name", selectedProfile.name);
+      form.setValue("surname", selectedProfile.surname);
+      form.setValue("email", selectedProfile.email);
+      form.setValue("phone", selectedProfile.phone);
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className={cn("flex flex-col gap-6")}>
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Imię</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="surname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nazwisko</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="email"
-                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nr telefonu</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="tel"
-                    className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="treatments"
-            render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">Usługi</FormLabel>
-                  <FormDescription>
-                    Wybierz usługi na które ktoś chce się zapisać
-                  </FormDescription>
-                </div>
-                {treatments.map((item) => (
-                  <FormField
-                    key={item.id}
-                    control={form.control}
-                    name="treatments"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={item.id}
-                          className="flex flex-row items-center gap-2"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={selectedTreatments.some(
-                                (t) => t.id === item.id
-                              )}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value.id !== item.id
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">
-                            {item.name} - {item.price} zł (~{item.duration}{" "}
-                            minut)
-                          </FormLabel>
-                        </FormItem>
-                      );
-                    }}
-                  />
-                ))}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <Select onValueChange={handleAutocompleteProfile}>
+        <SelectTrigger className="w-full mb-8">
+          <SelectValue placeholder="Znajdź klientkę" />
+        </SelectTrigger>
+        <SelectContent>
+          {profiles.map((profile) => (
+            <SelectItem key={profile.id} value={profile.id}>
+              {profile.name} {profile.surname} - {profile.email}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-white">Wybierz datę</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full border-gray-200 focus:border-sky-400 focus:ring-sky-400",
-                          !field.value && "text-white/70"
-                        )}
+      <form
+        onSubmit={form.handleSubmit(handleCreateEvent)}
+        className="w-full flex flex-col gap-6"
+      >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Imię</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="surname"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nazwisko</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="email"
+                  className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nr telefonu</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="tel"
+                  className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="treatments"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Usługi</FormLabel>
+                <FormDescription>
+                  Wybierz usługi na które ktoś chce się zapisać
+                </FormDescription>
+              </div>
+              {treatments.map((item) => (
+                <FormField
+                  key={item.id}
+                  control={form.control}
+                  name="treatments"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={item.id}
+                        className="flex flex-row items-center gap-2"
                       >
-                        {field.value ? (
-                          dayjs(field.value).format(DATE_FORMAT)
-                        ) : (
-                          <span>Wybierz datę</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-70" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => {
-                        // Disable dates that are not in the availableDates
-                        // or are outside the range of 1 week to 3 months
-                        if (
-                          date < dayjs().add(1, "week").toDate() ||
-                          date > dayjs().add(3, "month").toDate()
-                        ) {
-                          return true;
-                        }
+                        <FormControl>
+                          <Checkbox
+                            checked={selectedTreatments.some(
+                              (t) => t.id === item.id
+                            )}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, item])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value) => value.id !== item.id
+                                    )
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="text-sm font-normal">
+                          {item.name} - {item.price} zł (~{item.duration} minut)
+                        </FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-                        // If the date is in the availableDates, allow selection
-                        return false;
-                      }}
-                      captionLayout="dropdown"
-                    />
-                  </PopoverContent>
-                </Popover>
-
-                <FormMessage className="text-white/80" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="startTime"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-white">Wybierz godzinę</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+        <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel className="text-black">Wybierz datę</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
                   <FormControl>
-                    <SelectTrigger className="w-full border-gray-200 focus:border-sky-400 focus:ring-sky-400">
-                      <SelectValue placeholder="Wybierz godzinę" />
-                    </SelectTrigger>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full border-gray-200 focus:border-sky-400 focus:ring-sky-400",
+                        !field.value && "text-black/70"
+                      )}
+                    >
+                      {field.value ? (
+                        dayjs(field.value).format(DATE_FORMAT)
+                      ) : (
+                        <span>Wybierz datę</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-70" />
+                    </Button>
                   </FormControl>
-                  <SelectContent>
-                    {timeOptions.map((time) => (
-                      <SelectItem key={time} value={time}>
-                        {time}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-white/80" />
-              </FormItem>
-            )}
-          />
-        </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    captionLayout="dropdown"
+                  />
+                </PopoverContent>
+              </Popover>
+
+              <FormMessage className="text-black/80" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="startTime"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-black">Wybierz godzinę</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full border-gray-200 focus:border-sky-400 focus:ring-sky-400">
+                    <SelectValue placeholder="Wybierz godzinę" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {timeOptions.map((time) => (
+                    <SelectItem key={time} value={time}>
+                      {time}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage className="text-white/80" />
+            </FormItem>
+          )}
+        />
 
         <Button
           type="submit"

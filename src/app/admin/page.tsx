@@ -35,5 +35,14 @@ const getAllEvents = async (): Promise<Event[]> => {
 export default async function AdminHome() {
   const events = await getAllEvents();
 
-  return <AdminSchedule events={events} />;
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen md:p-4">
+      <h2 className="text-center text-4xl font-light text-black mb-16 uppercase tracking-wide">
+        <span className="inline-block border-b-2 border-black pb-2">
+          Terminarz
+        </span>
+      </h2>
+      <AdminSchedule events={events} />
+    </div>
+  );
 }

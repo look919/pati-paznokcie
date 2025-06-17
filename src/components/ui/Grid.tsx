@@ -49,8 +49,8 @@ export function Grid<TData, TValue>({
 
   if (table.getRowModel().rows.length === 0) {
     return (
-      <div className="text-center mt-12 border rounded-md p-3 font-bold">
-        Currently there is no data to display
+      <div className="text-center mt-12 border rounded-md p-3 md:min-w-2xl font-bold">
+        Obecnie brak danych do wyświetlenia.
       </div>
     );
   }

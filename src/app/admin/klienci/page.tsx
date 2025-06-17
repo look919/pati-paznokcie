@@ -23,5 +23,14 @@ const getAllProfiles = async () => {
 export default async function ProfilesPage() {
   const profiles = await getAllProfiles();
 
-  return <ProfilesGrid data={profiles} />;
+  return (
+    <div className="flex flex-col items-center min-h-screen md:p-4 mx-auto">
+      <h2 className="text-center text-4xl font-light text-black mb-16 uppercase tracking-wide">
+        <span className="inline-block border-b-2 border-black pb-2">
+          Klienci
+        </span>
+      </h2>
+      <ProfilesGrid data={profiles} />
+    </div>
+  );
 }

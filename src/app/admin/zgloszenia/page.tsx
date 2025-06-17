@@ -50,7 +50,12 @@ export default async function SubmissionsPage(props: SubmissionsPageProps) {
   const submissions = await getAllSubmissions(searchParams.status);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="flex flex-col items-center min-h-screen md:p-4 mx-auto">
+      <h2 className="text-center text-4xl font-light text-black mb-16 uppercase tracking-wide">
+        <span className="inline-block border-b-2 border-black pb-2">
+          Zgłoszenia
+        </span>
+      </h2>
       <SubmissionsGrid data={submissions} status={searchParams.status} />
     </div>
   );

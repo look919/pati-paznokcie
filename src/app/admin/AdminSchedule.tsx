@@ -7,7 +7,6 @@ import { Profile } from "@prisma/client";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import dayjs from "dayjs";
-import { redirect } from "next/navigation";
 import { CreateEventDialog } from "./CreateEventConfirmationDialog";
 
 export type Event = {
@@ -66,15 +65,26 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
 
   return (
     <div className="space-y-4 flex flex-col mb-0">
-      <Tabs
-        value={calendarView}
-        onValueChange={handleViewChange}
-        className="w-[400px]"
-      >
-        <TabsList className="grid grid-cols-3">
-          <TabsTrigger value="timeGridDay">Dzień</TabsTrigger>
-          <TabsTrigger value="timeGridWeek">Tydzień</TabsTrigger>
-          <TabsTrigger value="dayGridMonth">Miesiąc</TabsTrigger>
+      <Tabs value={calendarView} onValueChange={handleViewChange}>
+        <TabsList className="grid grid-cols-3 bg-gray-800 text-white rounded-lg">
+          <TabsTrigger
+            className="text-white aria-selected:text-black"
+            value="timeGridDay"
+          >
+            Dzień
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-white aria-selected:text-black"
+            value="timeGridWeek"
+          >
+            Tydzień
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-white aria-selected:text-black"
+            value="dayGridMonth"
+          >
+            Miesiąc
+          </TabsTrigger>
         </TabsList>
       </Tabs>
       <FullCalendar
@@ -83,8 +93,8 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
         initialView={calendarView}
         headerToolbar={{
           left: "prev,next today",
-          center: "title",
-          right: "", // We handle view switching with our custom tabs
+          center: "",
+          right: "title",
         }}
         weekends={true}
         events={props.events}
@@ -111,11 +121,6 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
         contentHeight="auto"
         selectable={true}
         dateClick={handleDateClick}
-        eventClick={(info) => {
-          info.jsEvent.preventDefault(); // Prevent default action (like navigation)
-
-          redirect(`/admin/zgloszenia/${info.event.id}`);
-        }}
       />
 
       <CreateEventDialog
