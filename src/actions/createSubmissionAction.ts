@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { TIME_FORMAT } from "@/lib/time";
-import { SubmissionFullSchema } from "../app/submission/SubmissionForm";
+import { SubmissionFullSchema } from "../app/zgloszenie/SubmissionForm";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { sendEmail } from "./sendEmailAction";
 import {
