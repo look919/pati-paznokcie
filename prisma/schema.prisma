@@ -11,6 +11,8 @@ enum Status {
   PENDING
   ACCEPTED
   REJECTED
+  AWAITING_USER_CONFIRMATION
+  RESCHEDULED
 }
 model Treatment {
   id        String   @id @default(cuid())

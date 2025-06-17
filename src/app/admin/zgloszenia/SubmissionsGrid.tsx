@@ -6,6 +6,11 @@ import { Status } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { redirect, RedirectType } from "next/navigation";
+import { CheckIcon, UserRoundPenIcon, XIcon } from "lucide-react";
+import React, { useEffect } from "react";
+import { AcceptSubmissionDialog } from "./AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "./RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "./RescheduleSubmissionDialog";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -17,7 +22,7 @@ type SubmissionsGridRecord = {
   status: Status;
   startDate: string;
   endDate: string;
-  treatmentsCount: number;
+  treatments: string;
 };
 
 const columns: ColumnDef<SubmissionsGridRecord>[] = [
@@ -30,9 +35,83 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
   createColumn("email", "Email"),
   createColumn("phone", "Telefon"),
   createColumn("createdAt", "Data utworzenia"),
-  createColumn("treatmentsCount", "Liczba usług", {
+  createColumn("treatments", "Usługi", {
     maxSize: 20,
   }),
+  {
+    id: "actions",
+    header: "Akcje",
+    maxSize: 100,
+
+    cell: ({ row }) => {
+      const profile = row.original;
+      if (row.original.status !== "PENDING") {
+        return null;
+      }
+
+      const handleOpenAcceptSubmissionDialog = (
+        e: React.MouseEvent<HTMLButtonElement>
+      ) => {
+        e.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("openAcceptDialog", {
+            detail: {
+              id: profile.id,
+              name: profile.name,
+              surname: profile.surname,
+              dialog: "acceptSubmission",
+            },
+          })
+        );
+      };
+
+      const handleOpenRejectSubmissionDialog = (
+        e: React.MouseEvent<HTMLButtonElement>
+      ) => {
+        e.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("openRejectDialog", {
+            detail: {
+              id: profile.id,
+              name: profile.name,
+              surname: profile.surname,
+              dialog: "rejectSubmission",
+            },
+          })
+        );
+      };
+
+      const handleRescheduleSubmission = (
+        e: React.MouseEvent<HTMLButtonElement>
+      ) => {
+        e.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("openRescheduleDialog", {
+            detail: {
+              id: profile.id,
+              name: profile.name,
+              surname: profile.surname,
+              dialog: "rescheduleSubmission",
+            },
+          })
+        );
+      };
+
+      return (
+        <div className="flex justify-center gap-2">
+          <button onClick={handleOpenAcceptSubmissionDialog}>
+            <CheckIcon className="text-emerald-600 hover:text-emerald-800" />
+          </button>
+          <button onClick={handleOpenRejectSubmissionDialog}>
+            <XIcon className="text-red-600 hover:text-red-800" />
+          </button>
+          <button onClick={handleRescheduleSubmission}>
+            <UserRoundPenIcon className="text-amber-600 hover:text-amber-800" />
+          </button>
+        </div>
+      );
+    },
+  },
 ];
 
 type SubmissionsGridProps = {
@@ -40,7 +119,66 @@ type SubmissionsGridProps = {
   data: SubmissionsGridRecord[];
 };
 
+type DialogStatus =
+  | "acceptSubmission"
+  | "rejectSubmission"
+  | "rescheduleSubmission";
+
+const DialogByStatus: Record<
+  DialogStatus,
+  (props: {
+    submissionId: string;
+    name: string;
+    surname: string;
+    onClose: () => void;
+  }) => React.JSX.Element
+> = {
+  acceptSubmission: AcceptSubmissionDialog,
+  rejectSubmission: RejectSubmissionDialog,
+  rescheduleSubmission: RescheduleSubmissionDialog,
+};
+
 export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
+  const [selectedSubmission, setSelectedSubmission] = React.useState<{
+    id: string;
+    name: string;
+    surname: string;
+    dialog: "acceptSubmission" | "rejectSubmission" | "rescheduleSubmission";
+  } | null>(null);
+
+  const closedDialog = () => {
+    setSelectedSubmission(null);
+  };
+
+  useEffect(() => {
+    const handleOpenSubmissionDialog = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      setSelectedSubmission(customEvent.detail);
+    };
+
+    document.addEventListener("openAcceptDialog", handleOpenSubmissionDialog);
+    document.addEventListener("openRejectDialog", handleOpenSubmissionDialog);
+    document.addEventListener(
+      "openRescheduleDialog",
+      handleOpenSubmissionDialog
+    );
+
+    return () => {
+      document.removeEventListener(
+        "openAcceptDialog",
+        handleOpenSubmissionDialog
+      );
+      document.removeEventListener(
+        "openRejectDialog",
+        handleOpenSubmissionDialog
+      );
+      document.removeEventListener(
+        "openRescheduleDialog",
+        handleOpenSubmissionDialog
+      );
+    };
+  }, []);
+
   return (
     <div className="overflow-x-auto">
       <div className="flex items-center space-x-2 mt-4 mb-2 cursor-pointer">
@@ -61,6 +199,13 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
         </Label>
       </div>
       <Grid data={data} columns={columns} />
+      {selectedSubmission &&
+        React.createElement(DialogByStatus[selectedSubmission.dialog], {
+          submissionId: selectedSubmission.id,
+          name: selectedSubmission.name,
+          surname: selectedSubmission.surname,
+          onClose: closedDialog,
+        })}
     </div>
   );
 };

@@ -14,7 +14,15 @@ const getAllSubmissions = async (status?: string) => {
     orderBy: { createdAt: "desc" },
     include: {
       profile: true,
-      treatments: true,
+      treatments: {
+        select: {
+          treatment: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -25,7 +33,7 @@ const getAllSubmissions = async (status?: string) => {
     surname: submission.profile.surname,
     email: submission.profile.email,
     phone: submission.profile.phone,
-    treatmentsCount: submission.treatments.length,
+    treatments: submission.treatments.map((t) => t.treatment.name).join(", "),
     status: submission.status,
     startDate: dayjs(submission.startDate).format(DATE_AND_TIME_FORMAT),
     endDate: dayjs(submission.endDate).format(DATE_AND_TIME_FORMAT),

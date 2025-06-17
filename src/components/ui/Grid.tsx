@@ -106,7 +106,7 @@ export function Grid<TData, TValue>({
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  className="border-x"
+                  className="border-x text-center"
                   style={{ width: cell.column.getSize() }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

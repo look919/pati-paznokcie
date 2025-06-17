@@ -8,7 +8,14 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
-export async function createSubmissionAction(data: SubmissionFullSchema) {
+type Options = {
+  isReschedule?: boolean;
+};
+
+export async function createSubmissionAction(
+  data: SubmissionFullSchema,
+  options: Options = {}
+) {
   const { name, surname, email, phone, date, startTime, duration, treatments } =
     data;
 
@@ -45,6 +52,7 @@ export async function createSubmissionAction(data: SubmissionFullSchema) {
       endDate,
       timeBlocks,
       duration,
+      status: options?.isReschedule ? "AWAITING_USER_CONFIRMATION" : "PENDING",
       profile: {
         connect: { id: profile.id },
       },
@@ -61,6 +69,8 @@ export async function createSubmissionAction(data: SubmissionFullSchema) {
       profile: true,
     },
   });
+
+  // TODO: Add sending email to user about submission creation
 
   return submission.id;
 }

@@ -2,6 +2,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { createColumn, createIndexColumn } from "@/lib/columns-utils";
 import { Grid } from "@/components/ui/Grid";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+
+import { EditIcon, EyeIcon, TrashIcon } from "lucide-react";
+import { DeleteProfileDialog } from "./DeleteProfileDialog";
 
 type ProfilesGridRecord = {
   id: string;
@@ -23,6 +28,42 @@ const columns: ColumnDef<ProfilesGridRecord>[] = [
   createColumn("submissionsCount", "Liczba wizyt/zgłoszeń", {
     maxSize: 20,
   }),
+  {
+    id: "actions",
+    header: "Akcje",
+    cell: ({ row }) => {
+      const profile = row.original;
+
+      return (
+        <div className="flex justify-center gap-2">
+          <Link href={`/admin/klienci/${profile.id}`}>
+            <EyeIcon className="text-blue-600 hover:text-blue-800" />
+          </Link>
+          <Link href={`/admin/klienci/${profile.id}/edit`}>
+            <EditIcon className="text-amber-600 hover:text-amber-800" />
+          </Link>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              // Using a custom event to handle delete request at the component level
+              document.dispatchEvent(
+                new CustomEvent("openDeleteDialog", {
+                  detail: {
+                    id: profile.id,
+                    name: profile.name,
+                    surname: profile.surname,
+                  },
+                })
+              );
+            }}
+          >
+            <TrashIcon className="text-red-600 hover:text-red-800" />
+          </button>
+        </div>
+      );
+    },
+    maxSize: 100,
+  },
 ];
 
 type ProfilesGridProps = {
@@ -30,9 +71,40 @@ type ProfilesGridProps = {
 };
 
 export const ProfilesGrid = ({ data }: ProfilesGridProps) => {
+  const [selectedProfile, setSelectedProfile] = useState<{
+    id: string;
+    name: string;
+    surname: string;
+  } | null>(null);
+
+  // Add event listener for delete dialog
+  useEffect(() => {
+    const handleOpenDeleteDialog = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      setSelectedProfile(customEvent.detail);
+    };
+
+    document.addEventListener("openDeleteDialog", handleOpenDeleteDialog);
+
+    return () => {
+      document.removeEventListener("openDeleteDialog", handleOpenDeleteDialog);
+    };
+  }, []);
+
   return (
     <div className="overflow-x-auto">
       <Grid data={data} columns={columns} />
+
+      {selectedProfile && (
+        <DeleteProfileDialog
+          onClose={() => {
+            setSelectedProfile(null);
+          }}
+          profileId={selectedProfile.id}
+          name={selectedProfile.name}
+          surname={selectedProfile.surname}
+        />
+      )}
     </div>
   );
 };
