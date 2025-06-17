@@ -24,7 +24,7 @@ export function CreateEventDialog({
 }: CreateEventDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-[320px]">
         <DialogHeader className="mb-2">
           <DialogTitle>{`Czy chcesz utworzyć nowe wydarzenie ${dayjs(
             startDate
@@ -37,7 +37,7 @@ export function CreateEventDialog({
           <Link
             href={`/admin/zgloszenia/stworz?startDate=${startDate?.toISOString()}`}
           >
-            <Button>Utwórz wydarzenie</Button>
+            <Button className="w-full">Utwórz wydarzenie</Button>
           </Link>
         </DialogFooter>
       </DialogContent>

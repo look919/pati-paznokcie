@@ -15,7 +15,7 @@ export default async function AdminLayout({
   }
   return (
     <PageWrapper className="md:p-0">
-      <section className="py-12 px-4 md:px-6 bg-gradient-to-r bg-white relative w-full min-h-screen">
+      <section className="py-12 px-2 md:px-6 bg-white relative w-full min-h-screen">
         {children}
       </section>
     </PageWrapper>

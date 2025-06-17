@@ -7,7 +7,10 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const getAllSubmissions = async (status?: string) => {
   const submissions = await db.submission.findMany({
-    where: status === "PENDING" ? { status: "PENDING" } : {},
+    where:
+      status === "PENDING"
+        ? { status: "PENDING", startDate: { gte: new Date() } }
+        : { startDate: { gte: new Date() } },
     orderBy: { createdAt: "desc" },
     include: {
       profile: true,

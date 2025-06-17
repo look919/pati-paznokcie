@@ -136,15 +136,46 @@ function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
     "HH:mm"
   )} - ${dayjs(eventInfo.event.end).format("HH:mm")}`;
 
-  return (
-    <>
-      <b className="mr-2">{displayTime}</b>
-      <i> {eventInfo.event.title}</i>
-      <i className="text-xs mt-2">
-        {shouldDisplayDescription ? (
-          <p>{eventInfo.event.extendedProps.description}</p>
-        ) : null}
-      </i>
-    </>
-  );
+  switch (view) {
+    case "timeGridDay":
+      return (
+        <>
+          <b className="mr-2 text-sm md:text-md">{displayTime}</b>
+          <i> {eventInfo.event.title}</i>
+          <i className="text-xs mt-2">
+            {shouldDisplayDescription ? (
+              <p>{eventInfo.event.extendedProps.description}</p>
+            ) : null}
+          </i>
+        </>
+      );
+    case "timeGridWeek":
+      return (
+        <>
+          <b className="hidden lg:block mr-1 md:mr-2 text-[8px] sm:text-xs md:text-sm">
+            {displayTime}
+          </b>
+          <i className="text-xs md:text-md text-wrap">
+            {eventInfo.event.title}
+          </i>
+          <span className="hidden lg:block text-xs mt-2">
+            {shouldDisplayDescription ? (
+              <p>{eventInfo.event.extendedProps.description}</p>
+            ) : null}
+          </span>
+        </>
+      );
+    case "dayGridMonth":
+      return (
+        <div className="flex items-center justify-center">
+          <b className="mr-1 md:mr-2 text-[8px] sm:text-xs md:text-sm">
+            {displayTime}
+          </b>
+          <i className="hidden lg:block text-md">{eventInfo.event.title}</i>
+        </div>
+      );
+
+    default:
+      return null;
+  }
 }
