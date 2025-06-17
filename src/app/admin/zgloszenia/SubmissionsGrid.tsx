@@ -11,6 +11,7 @@ import React, { useEffect } from "react";
 import { AcceptSubmissionDialog } from "./AcceptSubmissionDialog";
 import { RejectSubmissionDialog } from "./RejectSubmissionDialog";
 import { RescheduleSubmissionDialog } from "./RescheduleSubmissionDialog";
+import { CancelEventDialog } from "./CancelEventDialog";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -45,6 +46,31 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
 
     cell: ({ row }) => {
       const profile = row.original;
+      if (row.original.status === "ACCEPTED") {
+        const handleOpenCancelEventDialog = (
+          e: React.MouseEvent<HTMLButtonElement>
+        ) => {
+          e.preventDefault();
+          document.dispatchEvent(
+            new CustomEvent("openCancelDialog", {
+              detail: {
+                id: profile.id,
+                name: profile.name,
+                surname: profile.surname,
+                dialog: "cancelEvent",
+              },
+            })
+          );
+        };
+        return (
+          <div className="flex justify-center gap-2">
+            <button onClick={handleOpenCancelEventDialog}>
+              <XIcon className="text-red-600 hover:text-red-800" />
+            </button>
+          </div>
+        );
+      }
+
       if (row.original.status !== "PENDING") {
         return null;
       }
@@ -122,7 +148,8 @@ type SubmissionsGridProps = {
 type DialogStatus =
   | "acceptSubmission"
   | "rejectSubmission"
-  | "rescheduleSubmission";
+  | "rescheduleSubmission"
+  | "cancelEvent";
 
 const DialogByStatus: Record<
   DialogStatus,
@@ -136,6 +163,7 @@ const DialogByStatus: Record<
   acceptSubmission: AcceptSubmissionDialog,
   rejectSubmission: RejectSubmissionDialog,
   rescheduleSubmission: RescheduleSubmissionDialog,
+  cancelEvent: CancelEventDialog,
 };
 
 export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
@@ -143,7 +171,7 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
     id: string;
     name: string;
     surname: string;
-    dialog: "acceptSubmission" | "rejectSubmission" | "rescheduleSubmission";
+    dialog: DialogStatus;
   } | null>(null);
 
   const closedDialog = () => {
@@ -162,6 +190,7 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
       "openRescheduleDialog",
       handleOpenSubmissionDialog
     );
+    document.addEventListener("openCancelDialog", handleOpenSubmissionDialog);
 
     return () => {
       document.removeEventListener(
@@ -174,6 +203,10 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
       );
       document.removeEventListener(
         "openRescheduleDialog",
+        handleOpenSubmissionDialog
+      );
+      document.removeEventListener(
+        "openCancelDialog",
         handleOpenSubmissionDialog
       );
     };
