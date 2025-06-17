@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { SubmissionForm } from "./SubmissionForm";
 import { PageWrapper } from "@/components/PageWrapper";
+import { SubmissionForm } from "./SubmissionForm";
 
 export default async function Submission() {
   const treatments = await db.treatment.findMany({
