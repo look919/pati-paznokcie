@@ -27,7 +27,7 @@ export const CancelEventDialog = (props: CancelEventDialogProps) => {
       const canceledEventId = await cancelEventAction(submissionId, comment);
 
       toast.success(`Wydarzenie ${name} ${surname} zostało anulowane.`);
-      location.reload(); // Reload the page to reflect changes
+      location.reload();
 
       return canceledEventId;
     } catch (error) {
@@ -53,14 +53,14 @@ export const CancelEventDialog = (props: CancelEventDialogProps) => {
         />
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Anuluj wydarzenie
+            Anuluj
           </Button>
           <Button
             variant="destructive"
             className="bg-red-600 hover:bg-red-700 text-white"
             onClick={handleCancelEvent}
           >
-            Anuluj
+            Odwołaj wydarzenie
           </Button>
         </DialogFooter>
       </DialogContent>
