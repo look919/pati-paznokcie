@@ -67,3 +67,30 @@ export const getAvailableTimesBasedOnTreatmentDuration = (duration: number) => {
     return timeInMinutes + duration <= endOfDayMinutes;
   });
 };
+
+export const additionalCalendarTimes = [
+  "06:00",
+  "06:15",
+  "06:30",
+  "06:45",
+  "07:00",
+  "07:15",
+  "07:30",
+  "07:45",
+  "08:00",
+  "08:15",
+  "08:30",
+  "08:45",
+  "16:45",
+  "17:00",
+  "17:15",
+  "17:30",
+  "17:45",
+  "18:00",
+  "18:15",
+  "18:30",
+  "18:45",
+  "19:00",
+  "19:15",
+  "19:30",
+];
