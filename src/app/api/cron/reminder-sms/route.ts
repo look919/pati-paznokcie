@@ -4,19 +4,18 @@ import { sendEventReminderSms } from "@/actions/sendReminderSmsAction";
 export const dynamic = "force-dynamic"; // No caching
 
 export async function POST(req: NextRequest) {
-  // Check if request has authorization header matching the secret
-  const authHeader = req.headers.get("authorization");
-  const expectedSecret = process.env.CRON_SECRET;
+  // Vercel Cron jobs set a special header to authenticate the request
+  const isVercelCron = req.headers.get("x-vercel-cron") === "1";
 
-  if (!expectedSecret) {
+  // If this is not a Vercel Cron job request, verify it's coming from an authorized source
+  // This allows manual testing of the endpoint if needed
+  if (!isVercelCron && process.env.NODE_ENV === "production") {
     return NextResponse.json(
-      { error: "Server misconfiguration: CRON_SECRET not set" },
-      { status: 500 }
+      {
+        error: "This endpoint can only be called by Vercel Cron in production",
+      },
+      { status: 401 }
     );
-  }
-
-  if (authHeader !== `Bearer ${expectedSecret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {

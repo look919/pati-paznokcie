@@ -4,8 +4,14 @@ import { db } from "@/lib/db";
 import { sendSms } from "./sendSmsAction";
 
 export async function sendEventReminderSms() {
+  // Only run in production to prevent accidental SMS sending
   if (process.env.NODE_ENV !== "production") {
-    return;
+    return {
+      success: true,
+      message: "Skipped in development",
+      successful: 0,
+      failed: 0,
+    };
   }
 
   try {
@@ -43,9 +49,7 @@ export async function sendEventReminderSms() {
           year: "numeric",
         });
 
-        // Get the treatment names
-
-        // Compose the message
+        // Compose the simple message with just date and time
         const message = `Przypominamy o Twojej wizycie w salonie jutro, ${eventDate} o godz. ${eventTime}. W razie pytań, prosimy o kontakt. Zespół Pati.`;
 
         // Send the SMS
