@@ -1,7 +1,7 @@
 "use client";
 import { redirect, RedirectType } from "next/navigation";
 import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { createColumn, createIndexColumn } from "@/lib/columns-utils";
@@ -10,10 +10,10 @@ import { Status } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-// import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
-// import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
-// import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
-// import { CancelEventDialog } from "./components/CancelEventDialog";
+import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
+import { CancelEventDialog } from "./components/CancelEventDialog";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -173,70 +173,61 @@ type SubmissionsGridProps = {
   data: SubmissionsGridRecord[];
 };
 
-// type DialogStatus =
-//   | "acceptSubmission"
-//   | "rejectSubmission"
-//   | "rescheduleSubmission"
-//   | "cancelEvent";
-
-// const DialogByStatus: Record<
-//   DialogStatus,
-//   (props: {
-//     submissionId: string;
-//     name: string;
-//     surname: string;
-//     onClose: () => void;
-//   }) => React.JSX.Element
-// > = {
-//   acceptSubmission: AcceptSubmissionDialog,
-//   rejectSubmission: RejectSubmissionDialog,
-//   rescheduleSubmission: RescheduleSubmissionDialog,
-//   cancelEvent: CancelEventDialog,
-// };
+type DialogStatus =
+  | "acceptSubmission"
+  | "rejectSubmission"
+  | "rescheduleSubmission"
+  | "cancelEvent"
+  | null;
 
 export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
-  // const [selectedSubmission, setSelectedSubmission] = React.useState<{
-  //   id: string;
-  //   name: string;
-  //   surname: string;
-  //   dialog: DialogStatus;
-  // } | null>(null);
+  const [dialogState, setDialogState] = useState({
+    type: null as DialogStatus,
+    submissionId: "",
+    name: "",
+    surname: "",
+  });
 
-  // const closedDialog = () => {
-  //   setSelectedSubmission(null);
-  // };
+  const closeDialog = () => {
+    setDialogState({
+      type: null,
+      submissionId: "",
+      name: "",
+      surname: "",
+    });
+  };
 
   useEffect(() => {
-    const handleOpenSubmissionDialog = (/*event: Event*/) => {
-      // const customEvent = event as CustomEvent;
-      // setSelectedSubmission(customEvent.detail);
+    const handleOpenDialog = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { id, name, surname, dialog } = customEvent.detail;
+
+      setDialogState({
+        type: dialog,
+        submissionId: id,
+        name,
+        surname,
+      });
     };
 
-    document.addEventListener("openAcceptDialog", handleOpenSubmissionDialog);
-    document.addEventListener("openRejectDialog", handleOpenSubmissionDialog);
-    document.addEventListener(
+    // Define all dialog event types
+    const dialogEventTypes = [
+      "openAcceptDialog",
+      "openRejectDialog",
       "openRescheduleDialog",
-      handleOpenSubmissionDialog
-    );
-    document.addEventListener("openCancelDialog", handleOpenSubmissionDialog);
+      "openCancelDialog",
+    ];
 
+    // Add all event listeners
+    dialogEventTypes.forEach((eventType) => {
+      document.addEventListener(eventType, handleOpenDialog);
+    });
+
+    // Remove all event listeners on cleanup
     return () => {
-      document.removeEventListener(
-        "openAcceptDialog",
-        handleOpenSubmissionDialog
-      );
-      document.removeEventListener(
-        "openRejectDialog",
-        handleOpenSubmissionDialog
-      );
-      document.removeEventListener(
-        "openRescheduleDialog",
-        handleOpenSubmissionDialog
-      );
-      document.removeEventListener(
-        "openCancelDialog",
-        handleOpenSubmissionDialog
-      );
+      dialogEventTypes.forEach((eventType) => {
+        document.removeEventListener(eventType, handleOpenDialog);
+      });
     };
   }, []);
 
@@ -269,13 +260,40 @@ export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
         </Label>
       </div>
       <Grid data={data} columns={columns} />
-      {/* {selectedSubmission &&
-        React.createElement(DialogByStatus[selectedSubmission.dialog], {
-          submissionId: selectedSubmission.id,
-          name: selectedSubmission.name,
-          surname: selectedSubmission.surname,
-          onClose: closedDialog,
-        })} */}
+
+      {/* Using conditional rendering instead of React.createElement */}
+      {dialogState.type === "acceptSubmission" && (
+        <AcceptSubmissionDialog
+          submissionId={dialogState.submissionId}
+          name={dialogState.name}
+          surname={dialogState.surname}
+          onClose={closeDialog}
+        />
+      )}
+      {dialogState.type === "rejectSubmission" && (
+        <RejectSubmissionDialog
+          submissionId={dialogState.submissionId}
+          name={dialogState.name}
+          surname={dialogState.surname}
+          onClose={closeDialog}
+        />
+      )}
+      {dialogState.type === "rescheduleSubmission" && (
+        <RescheduleSubmissionDialog
+          submissionId={dialogState.submissionId}
+          name={dialogState.name}
+          surname={dialogState.surname}
+          onClose={closeDialog}
+        />
+      )}
+      {dialogState.type === "cancelEvent" && (
+        <CancelEventDialog
+          submissionId={dialogState.submissionId}
+          name={dialogState.name}
+          surname={dialogState.surname}
+          onClose={closeDialog}
+        />
+      )}
     </div>
   );
 }

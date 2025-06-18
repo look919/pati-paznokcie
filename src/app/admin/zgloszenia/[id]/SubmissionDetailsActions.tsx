@@ -3,7 +3,7 @@ import { AcceptSubmissionDialog } from "../components/AcceptSubmissionDialog";
 import { RejectSubmissionDialog } from "../components/RejectSubmissionDialog";
 import { RescheduleSubmissionDialog } from "../components/RescheduleSubmissionDialog";
 import { CancelEventDialog } from "../components/CancelEventDialog";
-import { createElement, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Status } from "@prisma/client";
 
@@ -21,21 +21,6 @@ type DialogStatus =
   | "rejectSubmission"
   | "rescheduleSubmission"
   | "cancelEvent";
-
-const DialogByStatus: Record<
-  DialogStatus,
-  (props: {
-    submissionId: string;
-    name: string;
-    surname: string;
-    onClose: () => void;
-  }) => React.JSX.Element
-> = {
-  acceptSubmission: AcceptSubmissionDialog,
-  rejectSubmission: RejectSubmissionDialog,
-  rescheduleSubmission: RescheduleSubmissionDialog,
-  cancelEvent: CancelEventDialog,
-};
 
 export const SubmissionDetailsActions = ({
   submission,
@@ -88,13 +73,38 @@ export const SubmissionDetailsActions = ({
           </Button>
         </div>
       )}
-      {actionDialog &&
-        createElement(DialogByStatus[actionDialog], {
-          submissionId: submission.id,
-          name: submission.name,
-          surname: submission.surname,
-          onClose: closedDialog,
-        })}
+      {actionDialog === "acceptSubmission" && (
+        <AcceptSubmissionDialog
+          submissionId={submission.id}
+          name={submission.name}
+          surname={submission.surname}
+          onClose={closedDialog}
+        />
+      )}
+      {actionDialog === "rejectSubmission" && (
+        <RejectSubmissionDialog
+          submissionId={submission.id}
+          name={submission.name}
+          surname={submission.surname}
+          onClose={closedDialog}
+        />
+      )}
+      {actionDialog === "rescheduleSubmission" && (
+        <RescheduleSubmissionDialog
+          submissionId={submission.id}
+          name={submission.name}
+          surname={submission.surname}
+          onClose={closedDialog}
+        />
+      )}
+      {actionDialog === "cancelEvent" && (
+        <CancelEventDialog
+          submissionId={submission.id}
+          name={submission.name}
+          surname={submission.surname}
+          onClose={closedDialog}
+        />
+      )}
     </>
   );
 };
