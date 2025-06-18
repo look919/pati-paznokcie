@@ -11,7 +11,7 @@ export const PageWrapper = ({ children, className }: PageWrapperProps) => {
       <PageHeader />
       <main
         className={cn(
-          "flex flex-col items-center justify-center bg-gray-100 min-h-[calc(100vh-100px)] w-screen",
+          "flex flex-col items-center justify-center bg-gray-100 min-h-[calc(100vh-100px)]",
           className
         )}
       >
