@@ -41,7 +41,8 @@ import {
 } from "@/components/ui/select";
 import { Profile } from "@prisma/client";
 import { createEventAction } from "@/actions/createEventAction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Combobox } from "@/components/ui/combobox";
 
 type EventFormProps = {
   treatments: {
@@ -110,6 +111,7 @@ const timeOptions = getAvailableTimesBasedOnTreatmentDuration(0).concat(
 
 export const EventForm = ({ treatments, profiles }: EventFormProps) => {
   const defaultDate = useGetDefaultDate();
+  const [search, setSearch] = useState("");
 
   const form = useForm<EventFormSchema>({
     resolver: zodResolver(eventFormSchema),
@@ -159,18 +161,19 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
 
   return (
     <Form {...form}>
-      <Select onValueChange={handleAutocompleteProfile}>
-        <SelectTrigger className="w-full mb-8">
-          <SelectValue placeholder="Znajdź klientkę" />
-        </SelectTrigger>
-        <SelectContent>
-          {profiles.map((profile) => (
-            <SelectItem key={profile.id} value={profile.id}>
-              {profile.name} {profile.surname} - {profile.email}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <Combobox
+        placeholder="Znajdź klientkę (autouzupełnianie danych)"
+        data={profiles.map((profile) => ({
+          id: profile.id,
+          label: `${profile.name} ${profile.surname} - ${profile.email}`,
+        }))}
+        value={search}
+        onValueChange={(value) => {
+          setSearch(value);
+          handleAutocompleteProfile(value);
+        }}
+        className="mb-8"
+      />
 
       <form
         onSubmit={form.handleSubmit(handleCreateEvent)}
