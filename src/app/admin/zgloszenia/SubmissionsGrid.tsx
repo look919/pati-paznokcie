@@ -1,5 +1,7 @@
 "use client";
-
+import { redirect, RedirectType } from "next/navigation";
+import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { createColumn, createIndexColumn } from "@/lib/columns-utils";
@@ -7,13 +9,11 @@ import { Grid } from "@/components/ui/Grid";
 import { Status } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { redirect, RedirectType } from "next/navigation";
-import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
-import React, { useEffect } from "react";
-import { AcceptSubmissionDialog } from "@/app/admin/zgloszenia/components/AcceptSubmissionDialog";
-import { RejectSubmissionDialog } from "@/app/admin/zgloszenia/components/RejectSubmissionDialog";
-import { RescheduleSubmissionDialog } from "@/app/admin/zgloszenia/components/RescheduleSubmissionDialog";
-import { CancelEventDialog } from "@/app/admin/zgloszenia/components/CancelEventDialog";
+
+// import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
+// import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
+// import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
+// import { CancelEventDialog } from "./components/CancelEventDialog";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -173,43 +173,43 @@ type SubmissionsGridProps = {
   data: SubmissionsGridRecord[];
 };
 
-type DialogStatus =
-  | "acceptSubmission"
-  | "rejectSubmission"
-  | "rescheduleSubmission"
-  | "cancelEvent";
+// type DialogStatus =
+//   | "acceptSubmission"
+//   | "rejectSubmission"
+//   | "rescheduleSubmission"
+//   | "cancelEvent";
 
-const DialogByStatus: Record<
-  DialogStatus,
-  (props: {
-    submissionId: string;
-    name: string;
-    surname: string;
-    onClose: () => void;
-  }) => React.JSX.Element
-> = {
-  acceptSubmission: AcceptSubmissionDialog,
-  rejectSubmission: RejectSubmissionDialog,
-  rescheduleSubmission: RescheduleSubmissionDialog,
-  cancelEvent: CancelEventDialog,
-};
+// const DialogByStatus: Record<
+//   DialogStatus,
+//   (props: {
+//     submissionId: string;
+//     name: string;
+//     surname: string;
+//     onClose: () => void;
+//   }) => React.JSX.Element
+// > = {
+//   acceptSubmission: AcceptSubmissionDialog,
+//   rejectSubmission: RejectSubmissionDialog,
+//   rescheduleSubmission: RescheduleSubmissionDialog,
+//   cancelEvent: CancelEventDialog,
+// };
 
 export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
-  const [selectedSubmission, setSelectedSubmission] = React.useState<{
-    id: string;
-    name: string;
-    surname: string;
-    dialog: DialogStatus;
-  } | null>(null);
+  // const [selectedSubmission, setSelectedSubmission] = React.useState<{
+  //   id: string;
+  //   name: string;
+  //   surname: string;
+  //   dialog: DialogStatus;
+  // } | null>(null);
 
-  const closedDialog = () => {
-    setSelectedSubmission(null);
-  };
+  // const closedDialog = () => {
+  //   setSelectedSubmission(null);
+  // };
 
   useEffect(() => {
-    const handleOpenSubmissionDialog = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      setSelectedSubmission(customEvent.detail);
+    const handleOpenSubmissionDialog = (/*event: Event*/) => {
+      // const customEvent = event as CustomEvent;
+      // setSelectedSubmission(customEvent.detail);
     };
 
     document.addEventListener("openAcceptDialog", handleOpenSubmissionDialog);
@@ -269,13 +269,13 @@ export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
         </Label>
       </div>
       <Grid data={data} columns={columns} />
-      {selectedSubmission &&
+      {/* {selectedSubmission &&
         React.createElement(DialogByStatus[selectedSubmission.dialog], {
           submissionId: selectedSubmission.id,
           name: selectedSubmission.name,
           surname: selectedSubmission.surname,
           onClose: closedDialog,
-        })}
+        })} */}
     </div>
   );
 }
