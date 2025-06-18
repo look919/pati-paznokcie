@@ -118,12 +118,18 @@ export const SubmissionFormChooseDate = ({
                       className={cn(
                         "border rounded-lg p-3 cursor-pointer hover:bg-white/20 transition-all duration-300",
                         field.value &&
-                          dayjs(preferableDate.date).isSame(field.value, "day")
+                          dayjs(preferableDate.date, DATE_FORMAT).isSame(
+                            field.value,
+                            "day"
+                          )
                           ? "bg-white/30 border-white"
                           : "border-white/40"
                       )}
                       onClick={() => {
-                        field.onChange(dayjs(preferableDate.date).toDate());
+                        form.setValue(
+                          "date",
+                          dayjs(preferableDate.date, DATE_FORMAT).toDate()
+                        );
                         form.setValue("startTime", preferableDate.time);
                       }}
                     >

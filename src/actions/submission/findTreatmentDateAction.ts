@@ -2,6 +2,7 @@
 import {
   getAvailableDates,
   DATE_FORMAT,
+  TIME_FORMAT,
   getAvailableTimesBasedOnTreatmentDuration,
 } from "@/lib/time";
 import { db } from "@/lib/db";
@@ -61,50 +62,61 @@ export async function findTreatmentDateAction(
     }
   });
 
-  // loop trough dateAvailableTimesMap and check if there are any time blocks left
-  // For each time block, check if there are enough consecutive time blocks after it to fit the treatment duration
+  // Let's simplify the approach by processing each date independently
   const filteredDateTimeMap = new Map<string, string[]>();
 
-  dateAvailableTimesMap.forEach((timeBlocks, date) => {
-    // Convert time blocks to minutes for easier comparison
-    const timeBlocksInMinutes = timeBlocks.map((time) => {
-      const [hours, minutes] = time.split(":").map(Number);
-      return hours * 60 + minutes;
+  // Process each date separately
+  for (const date of availableDates) {
+    // Get all accepted bookings for this date
+    const bookingsForDate = allAcceptedSubmissions.filter(
+      (submission) => dayjs(submission.startDate).format(DATE_FORMAT) === date
+    );
+
+    // Collect all occupied time slots for this date
+    const occupiedSlots = new Set<string>();
+    bookingsForDate.forEach((booking) => {
+      booking.timeBlocks.forEach((timeSlot) => {
+        occupiedSlots.add(timeSlot);
+      });
     });
 
-    // Sort time blocks chronologically
-    timeBlocksInMinutes.sort((a, b) => a - b);
+    // Start with all slots that can accommodate the treatment duration
+    const potentialStartTimes =
+      getAvailableTimesBasedOnTreatmentDuration(duration);
 
-    // Find valid starting times that can accommodate the full duration
-    const validStartTimes = timeBlocks.filter((time) => {
-      const [hours, minutes] = time.split(":").map(Number);
-      const startTimeInMinutes = hours * 60 + minutes;
+    // Filter out any start times where any required time slot is already occupied
+    const validStartTimes = potentialStartTimes.filter((startTime) => {
+      // Calculate all the time slots needed for this treatment
+      const requiredSlots = [];
 
-      // Calculate how many 15-minute blocks are needed for this treatment
+      // Create a reference date to work with the time
+      const refDate = dayjs().format("YYYY-MM-DD");
+
+      // Create a dayjs object for the start time
+      let timeSlotDayjs = dayjs(`${refDate} ${startTime}`);
+
+      // Calculate number of 15-min blocks needed
       const requiredBlocks = Math.ceil(duration / 15);
 
-      // Check if we can find enough consecutive blocks
-      let consecutiveBlocks = 1; // Start with 1 for the current block
-      let currentBlockTime = startTimeInMinutes;
+      // Generate all required time slots
+      for (let i = 0; i < requiredBlocks; i++) {
+        // Format the current time slot using TIME_FORMAT from time.ts
+        const timeSlot = timeSlotDayjs.format(TIME_FORMAT);
+        requiredSlots.push(timeSlot);
 
-      for (let i = 1; i < requiredBlocks; i++) {
-        const nextBlockTime = currentBlockTime + 15;
-
-        if (timeBlocksInMinutes.includes(nextBlockTime)) {
-          consecutiveBlocks++;
-          currentBlockTime = nextBlockTime;
-        } else {
-          break; // Found a gap, can't fit treatment here
-        }
+        // Add 15 minutes for the next slot
+        timeSlotDayjs = timeSlotDayjs.add(15, "minute");
       }
 
-      return consecutiveBlocks >= requiredBlocks;
+      // Check if any of the required slots are occupied
+      return !requiredSlots.some((slot) => occupiedSlots.has(slot));
     });
 
+    // Only add this date if it has valid times available
     if (validStartTimes.length > 0) {
       filteredDateTimeMap.set(date, validStartTimes);
     }
-  });
+  }
 
   // Create allDates array from the filtered map
   const allDates = Array.from(filteredDateTimeMap.entries()).map(
@@ -114,54 +126,47 @@ export async function findTreatmentDateAction(
     })
   );
 
-  // Score each available time slot based on proximity to other bookings
-  const scoredTimeSlots: Array<{ date: string; time: string; score: number }> =
-    [];
+  // Prepare data structure for selecting preferableDates
+  const dateToEarliestTimes = new Map<string, string[]>();
 
   filteredDateTimeMap.forEach((availableTimes, date) => {
-    availableTimes.forEach((time) => {
-      // For simplicity, use time of day as score - earlier times get better scores
-      const [hours, minutes] = time.split(":").map(Number);
-      const timeInMinutes = hours * 60 + minutes;
+    // Create a reference date to work with times
+    const refDate = dayjs().format("YYYY-MM-DD");
 
-      // Score based on time of day: earlier slots get better scores
-      // And add some randomness to distribute appointments evenly
-      const timeOfDayScore = timeInMinutes - 9 * 60; // Distance from 9:00 AM
-      const randomFactor = Math.random() * 30; // Add some randomness (up to 30 min)
-
-      scoredTimeSlots.push({
-        date,
-        time,
-        score: timeOfDayScore + randomFactor,
-      });
+    // Sort times for each date by earliest first using dayjs
+    const sortedTimes = [...availableTimes].sort((a, b) => {
+      // Create complete date-time strings and parse with dayjs
+      const timeA = dayjs(`${refDate} ${a}`, `YYYY-MM-DD ${TIME_FORMAT}`);
+      const timeB = dayjs(`${refDate} ${b}`, `YYYY-MM-DD ${TIME_FORMAT}`);
+      return timeA.diff(timeB);
     });
+
+    // Store the sorted times for each date
+    dateToEarliestTimes.set(date, sortedTimes);
   });
 
-  // Sort by score (ascending) and date (ascending)
-  scoredTimeSlots.sort((a, b) => {
-    // First compare score
-    if (a.score !== b.score) {
-      return a.score - b.score;
+  // Sort dates chronologically
+  const sortedDates = Array.from(dateToEarliestTimes.keys()).sort(
+    (dateA, dateB) => {
+      return dayjs(dateA, DATE_FORMAT).diff(dayjs(dateB, DATE_FORMAT));
     }
-    // If scores are equal, compare dates
-    const dateA = dayjs(a.date, DATE_FORMAT);
-    const dateB = dayjs(b.date, DATE_FORMAT);
-    return dateA.diff(dateB);
-  });
+  );
 
-  // Extract top 5 preferable dates from different days
-  const seenDates = new Set<string>();
+  // Extract preferable dates (one per day, earliest possible time, up to 6 dates)
   const preferableDates = [];
 
-  for (const slot of scoredTimeSlots) {
-    if (!seenDates.has(slot.date)) {
-      preferableDates.push({
-        date: slot.date,
-        time: slot.time,
-      });
-      seenDates.add(slot.date);
+  for (const date of sortedDates) {
+    const timesForDate = dateToEarliestTimes.get(date) || [];
 
-      if (preferableDates.length >= 5) {
+    if (timesForDate.length > 0) {
+      // Take the earliest time slot from each day
+      preferableDates.push({
+        date,
+        time: timesForDate[0],
+      });
+
+      // Stop once we have 6 dates (each from a different day)
+      if (preferableDates.length >= 6) {
         break;
       }
     }
