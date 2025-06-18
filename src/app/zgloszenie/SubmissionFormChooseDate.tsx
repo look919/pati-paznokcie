@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { SubmissionFormBasicDataSchema } from "./SubmissionFormBasicData";
 import { toast } from "sonner";
-import { createSubmissionAction } from "@/actions/createSubmissionAction";
+import { createSubmissionAction } from "@/actions/submission/createSubmissionAction";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { SubmissionFormState } from "./SubmissionForm";
 

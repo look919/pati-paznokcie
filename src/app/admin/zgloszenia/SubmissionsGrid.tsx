@@ -6,12 +6,12 @@ import { Status } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { redirect, RedirectType } from "next/navigation";
-import { CheckIcon, UserRoundPenIcon, XIcon } from "lucide-react";
+import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
 import React, { useEffect } from "react";
-import { AcceptSubmissionDialog } from "./AcceptSubmissionDialog";
-import { RejectSubmissionDialog } from "./RejectSubmissionDialog";
-import { RescheduleSubmissionDialog } from "./RescheduleSubmissionDialog";
-import { CancelEventDialog } from "./CancelEventDialog";
+import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
+import { CancelEventDialog } from "./components/CancelEventDialog";
 import Link from "next/link";
 
 type SubmissionsGridRecord = {
@@ -29,6 +29,20 @@ type SubmissionsGridRecord = {
 
 const columns: ColumnDef<SubmissionsGridRecord>[] = [
   createIndexColumn(),
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/admin/zgloszenia/${row.original.id}`}
+          className="text-blue-600 hover:underline"
+        >
+          #{row.original.id.substring(0, 8)}
+        </Link>
+      );
+    },
+  },
   createColumn("status", "Status"),
   createColumn("startDate", "Data rozpoczęcia"),
   createColumn("endDate", "Data zakończenia"),
@@ -47,6 +61,14 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
 
     cell: ({ row }) => {
       const profile = row.original;
+
+      // View details link for all submissions
+      const viewDetailsLink = (
+        <Link href={`/admin/zgloszenia/${profile.id}`}>
+          <EyeIcon className="text-blue-600 hover:text-blue-800" />
+        </Link>
+      );
+
       if (row.original.status === "ACCEPTED") {
         const handleOpenCancelEventDialog = (
           e: React.MouseEvent<HTMLButtonElement>
@@ -65,6 +87,7 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
         };
         return (
           <div className="flex justify-center gap-2">
+            {viewDetailsLink}
             <button onClick={handleOpenCancelEventDialog}>
               <XIcon className="text-red-600 hover:text-red-800" />
             </button>
@@ -73,7 +96,9 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
       }
 
       if (row.original.status !== "PENDING") {
-        return null;
+        return (
+          <div className="flex justify-center gap-2">{viewDetailsLink}</div>
+        );
       }
 
       const handleOpenAcceptSubmissionDialog = (
@@ -126,6 +151,7 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
 
       return (
         <div className="flex justify-center gap-2">
+          {viewDetailsLink}
           <button onClick={handleOpenAcceptSubmissionDialog}>
             <CheckIcon className="text-emerald-600 hover:text-emerald-800" />
           </button>
@@ -221,24 +247,24 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-full text-white 
                      bg-gradient-to-r from-sky-400 to-blue-500"
         >
-          + Dodaj klienta
+          + Dodaj zgłoszenie
         </Link>
       </div>
       <div className="flex items-center space-x-2 mt-4 mb-2 cursor-pointer">
         <Switch
           id="columns-switch"
-          checked={status === "ALL"}
+          checked={status === "PENDING"}
           onCheckedChange={(checked) => {
             redirect(
-              `/admin/zgloszenia?status=${checked ? "ALL" : "PENDING"}`,
+              `/admin/zgloszenia?status=${checked ? "PENDING" : "ALL"}`,
               RedirectType.replace
             );
           }}
         />
         <Label htmlFor="columns-switch" className="text-sm">
-          {status === "ALL"
-            ? "Pokaż tylko oczekujące zgłoszenia"
-            : "Pokaż wszystkie zgłoszenia"}
+          {status === "PENDING"
+            ? "Pokaż wszystkie zgłoszenia"
+            : "Pokaż tylko oczekujące zgłoszenia"}
         </Label>
       </div>
       <Grid data={data} columns={columns} />

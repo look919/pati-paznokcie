@@ -45,7 +45,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <h3 className="text-xl font-semibold mb-4">Dane osobowe</h3>
             <div className="space-y-2">
               <div>
-                <span className="font-medium">Imię i nazwisko:</span> {profile.name} {profile.surname}
+                <span className="font-medium">Imię i nazwisko:</span>{" "}
+                {profile.name} {profile.surname}
               </div>
               <div>
                 <span className="font-medium">Email:</span> {profile.email}
@@ -73,7 +74,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">Historia wizyt ({profile.submissions.length})</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              Historia wizyt ({profile.submissions.length})
+            </h3>
             <div className="overflow-y-auto max-h-80">
               {profile.submissions.length === 0 ? (
                 <p className="text-gray-500">Brak wizyt</p>
@@ -86,7 +89,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     >
                       <div className="flex justify-between">
                         <div className="font-medium">
-                          {new Date(submission.startDate).toLocaleDateString("pl-PL")}{" "}
+                          {new Date(submission.startDate).toLocaleDateString(
+                            "pl-PL"
+                          )}{" "}
                           {submission.timeBlocks[0]}
                         </div>
                         <div className="text-sm py-0.5 px-2 bg-gray-100 rounded-full">

@@ -3,7 +3,10 @@
 import { ProfileFormSchema } from "@/app/admin/klienci/stworz/CreateProfileForm";
 import { db } from "@/lib/db";
 
-export async function editProfileAction(profileId: string, data: ProfileFormSchema) {
+export async function editProfileAction(
+  profileId: string,
+  data: ProfileFormSchema
+) {
   try {
     // Check if the profile exists
     const profile = await db.profile.findUnique({

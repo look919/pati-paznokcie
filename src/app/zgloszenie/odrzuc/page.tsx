@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/components/PageWrapper";
-import { rejectRescheduleResponseAction } from "@/actions/rescheduleResponseAction";
+import { rejectRescheduleResponseAction } from "@/actions/submission/rescheduleResponseAction";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";

@@ -58,7 +58,7 @@ export const PageHeader = () => {
           </li>
           <li>
             <Link
-              href="/admin/zgloszenia?status=PENDING"
+              href="/admin/zgloszenia"
               className="text-gray-300 hover:text-white"
             >
               Zgłoszenia

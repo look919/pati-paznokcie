@@ -8,7 +8,9 @@ interface EditProfilePageProps {
   };
 }
 
-export default async function EditProfilePage({ params }: EditProfilePageProps) {
+export default async function EditProfilePage({
+  params,
+}: EditProfilePageProps) {
   // Fetch the profile by ID
   const profile = await db.profile.findUnique({
     where: { id: params.id },

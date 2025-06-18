@@ -65,22 +65,6 @@ export const Header = () => {
           <span>{`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`}</span>
           <span>{`email: ${process.env.NEXT_PUBLIC_EMAIL}`}</span>
         </motion.div>
-        {/* <motion.span
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          className="text-lg font-light"
-        >
-          {`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`}
-        </motion.span>
-        <motion.span
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="text-lg font-light"
-        >
-          {`email: ${process.env.NEXT_PUBLIC_EMAIL}`}
-        </motion.span> */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,7 +75,7 @@ export const Header = () => {
           }}
         >
           <Link
-            href={"/submission"}
+            href={"/zgloszenie"}
             className="inline-block mt-12 py-4 px-10 rounded-full bg-white text-blue-500 text-lg uppercase tracking-wide 
                       transition-all duration-200 shadow-lg 
                       hover:-translate-y-1 hover:shadow-xl hover:bg-opacity-90
