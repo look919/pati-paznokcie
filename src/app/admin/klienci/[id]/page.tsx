@@ -4,15 +4,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
+  const resolvedParams = await params;
   // Fetch the profile by ID with submissions
   const profile = await db.profile.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       submissions: {
         orderBy: { startDate: "desc" },
