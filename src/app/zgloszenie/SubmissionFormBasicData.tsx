@@ -153,8 +153,8 @@ export const SubmissionFormBasicData = ({
                 <FormControl>
                   <InputMask
                     component={Input}
-                    mask="+48 999 999 999"
-                    replacement={{ 9: /\d/ }}
+                    mask="+48 xxx xxx xxx"
+                    replacement={{ x: /\d/ }}
                     placeholder="+48 ___ ___ ___"
                     value={field.value}
                     onChange={field.onChange}
