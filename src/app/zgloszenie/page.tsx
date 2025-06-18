@@ -22,7 +22,6 @@ export default async function Submission() {
               Umów wizytę
             </span>
           </h2>
-
           <SubmissionForm treatments={treatments} />
         </div>
       </section>

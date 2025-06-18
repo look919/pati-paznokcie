@@ -15,6 +15,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import type { SubmissionFormState } from "./SubmissionForm";
 import { cn } from "@/lib/utils";
+import { InputMask } from "@react-input/mask";
 
 type Treatment = {
   id: string;
@@ -35,7 +36,13 @@ export const submissionFormBasicDataSchema = z.object({
   name: z.string().min(1, "Imię jest wymagane"),
   surname: z.string().min(1, "Nazwisko jest wymagane"),
   email: z.string().email("Nieprawidłowy adres e-mail"),
-  phone: z.string().min(1, "Numer telefonu jest wymagany"),
+  phone: z
+    .string()
+    .min(1, "Numer telefonu jest wymagany")
+    .regex(
+      /^\+48 \d{3} \d{3} \d{3}$/,
+      "Nieprawidłowy format numeru telefonu (wymagany: +48 XXX XXX XXX)"
+    ),
   treatments: z
     .array(
       z.object({
@@ -144,12 +151,20 @@ export const SubmissionFormBasicData = ({
               <FormItem>
                 <FormLabel>Nr telefonu</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
+                  <InputMask
+                    component={Input}
+                    mask="+48 999 999 999"
+                    replacement={{ 9: /\d/ }}
+                    placeholder="+48 ___ ___ ___"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
                     type="tel"
                     className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
                   />
                 </FormControl>
+                <FormDescription>Format: +48 XXX XXX XXX</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

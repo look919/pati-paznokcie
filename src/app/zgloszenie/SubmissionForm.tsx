@@ -47,7 +47,7 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
       name: "",
       surname: "",
       email: "",
-      phone: "",
+      phone: "+48 ",
       treatments: [],
       duration: 0,
     },
@@ -73,7 +73,6 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
   return (
     <div className="bg-white/90 rounded-lg shadow-xl overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 border-6 border-slate-300">
-        {/* Form Side */}
         <div className="p-8 md:p-12 bg-white min-h-[600px] lg:min-h-[650px]">
           <h3 className="text-2xl font-semibold text-gray-800 mb-6">
             Umów wizytę
@@ -87,7 +86,6 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
           />
         </div>
 
-        {/* Date Selection Side */}
         <div className="bg-gradient-to-br from-sky-500 to-blue-600 p-8 md:p-12 text-white min-h-[600px] lg:min-h-[650px] flex flex-col">
           <h3 className="text-2xl font-semibold mb-8">
             {submissionFormState === "CHOOSE_DATE"
