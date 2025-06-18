@@ -1,9 +1,7 @@
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { DATE_AND_TIME_FORMAT } from "@/lib/time";
-import { SubmissionsGrid } from "./SubmissionsGrid";
-
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+import { SubmissionsGridTest } from "./SubmissionsGridTest";
 
 const getAllSubmissions = async (status?: string) => {
   const submissions = await db.submission.findMany({
@@ -41,13 +39,13 @@ const getAllSubmissions = async (status?: string) => {
 };
 
 type SubmissionsPageProps = {
-  searchParams: SearchParams;
+  searchParams: Promise<{ status?: string }>;
 };
 
 export default async function SubmissionsPage(props: SubmissionsPageProps) {
-  const searchParams: { status?: string } = await props.searchParams;
+  const resolvedSearchParams = await props.searchParams;
 
-  const submissions = await getAllSubmissions(searchParams.status);
+  const submissions = await getAllSubmissions(resolvedSearchParams.status);
 
   return (
     <div className="flex flex-col items-center min-h-screen md:p-4 mx-auto">
@@ -56,7 +54,10 @@ export default async function SubmissionsPage(props: SubmissionsPageProps) {
           Zgłoszenia
         </span>
       </h2>
-      <SubmissionsGrid data={submissions} status={searchParams.status} />
+      <SubmissionsGridTest
+        data={submissions}
+        status={resolvedSearchParams.status}
+      />
     </div>
   );
 }

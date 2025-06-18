@@ -1,4 +1,5 @@
 "use client";
+
 import { redirect, RedirectType } from "next/navigation";
 import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -180,7 +181,7 @@ type DialogStatus =
   | "cancelEvent"
   | null;
 
-export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
+export function SubmissionsGridTest({ data, status }: SubmissionsGridProps) {
   const [dialogState, setDialogState] = useState({
     type: null as DialogStatus,
     submissionId: "",
