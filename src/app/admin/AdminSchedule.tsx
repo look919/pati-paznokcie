@@ -8,24 +8,32 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import dayjs from "dayjs";
 import { CreateEventDialog } from "./CreateEventConfirmationDialog";
+import { useRouter } from "next/navigation";
 
 export type Event = {
+  id: string;
   title: string;
   start: Date;
   end: Date;
-  description: string;
-  profile: Profile;
-  treatmentsAmount: number;
+  extendedProps: {
+    description: string;
+    profile: Profile;
+    treatmentsAmount: number;
+  };
 };
 
 interface EventContentArg {
   event: {
     timeText: string;
     title: string;
-    extendedProps: Pick<
-      Event,
-      "description" | "treatmentsAmount" | "start" | "end"
-    >;
+    extendedProps: {
+      id: string;
+      description: string;
+      profile: Profile;
+      treatmentsAmount: number;
+      start: Date;
+      end: Date;
+    };
     start: Date;
     end: Date;
   };
@@ -39,6 +47,7 @@ interface AdminScheduleProps {
 type CalendarView = "dayGridMonth" | "timeGridDay" | "timeGridWeek";
 
 export const AdminSchedule = (props: AdminScheduleProps) => {
+  const router = useRouter();
   const [calendarView, setCalendarView] =
     useState<CalendarView>("timeGridWeek");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -121,6 +130,12 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
         contentHeight="auto"
         selectable={true}
         dateClick={handleDateClick}
+        eventClick={(info) => {
+          // Prevent default click behavior
+          info.jsEvent.preventDefault();
+
+          router.push(`/admin/zgloszenia/${info.event.id}`);
+        }}
       />
 
       <CreateEventDialog
@@ -133,9 +148,11 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
 };
 
 function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
+  const treatmentsAmount = eventInfo.event.extendedProps?.treatmentsAmount || 0;
+  const description = eventInfo.event.extendedProps?.description || "";
+
   const shouldDisplayDescription =
-    (view === "timeGridDay" || view === "timeGridWeek") &&
-    eventInfo.event.extendedProps.treatmentsAmount > 1;
+    (view === "timeGridDay" || view === "timeGridWeek") && treatmentsAmount > 1;
 
   const displayTime = `${dayjs(eventInfo.event.start).format(
     "HH:mm"
@@ -148,9 +165,7 @@ function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
           <b className="mr-2 text-sm md:text-md">{displayTime}</b>
           <i> {eventInfo.event.title}</i>
           <i className="text-xs mt-2">
-            {shouldDisplayDescription ? (
-              <p>{eventInfo.event.extendedProps.description}</p>
-            ) : null}
+            {shouldDisplayDescription ? <p>{description}</p> : null}
           </i>
         </>
       );
@@ -164,9 +179,7 @@ function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
             {eventInfo.event.title}
           </i>
           <span className="hidden lg:block text-xs mt-2">
-            {shouldDisplayDescription ? (
-              <p>{eventInfo.event.extendedProps.description}</p>
-            ) : null}
+            {shouldDisplayDescription ? <p>{description}</p> : null}
           </span>
         </>
       );

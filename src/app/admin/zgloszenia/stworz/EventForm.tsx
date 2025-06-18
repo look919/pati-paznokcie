@@ -162,10 +162,16 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
   return (
     <Form {...form}>
       <Combobox
-        placeholder="Znajdź klientkę (autouzupełnianie danych)"
+        placeholder="Znajdź klientkę (wpisz imię, nazwisko lub email)"
         data={profiles.map((profile) => ({
           id: profile.id,
-          label: `${profile.name} ${profile.surname} - ${profile.email}`,
+          // Include all searchable information in the label
+          label: `${profile.name} ${profile.surname} - ${profile.email}${
+            profile.phone ? ` - ${profile.phone}` : ""
+          }`,
+          // Add a searchData field with normalized data for better searching
+          searchData:
+            `${profile.name} ${profile.surname} ${profile.email} ${profile.phone}`.toLowerCase(),
         }))}
         value={search}
         onValueChange={(value) => {

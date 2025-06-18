@@ -22,7 +22,9 @@ import {
 type Props<T> = {
   value: string;
   onValueChange: (value: string) => void;
-  data: T extends { id: string; label: string }[] ? T : never;
+  data: T extends { id: string; label: string; searchData?: string }[]
+    ? T
+    : never;
   placeholder: string;
   className?: string;
 };
@@ -30,6 +32,19 @@ type Props<T> = {
 export function Combobox<T>(props: Props<T>) {
   const { placeholder, data, value, onValueChange, className } = props;
   const [open, setOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  // Filter items based on search query across the label or searchData content
+  const filteredItems = React.useMemo(() => {
+    if (!searchQuery) return data;
+
+    const lowerQuery = searchQuery.toLowerCase();
+    return data.filter((item) => {
+      // Use searchData field if available, otherwise fall back to label
+      const searchableText = item.searchData || item.label.toLowerCase();
+      return searchableText.includes(lowerQuery);
+    });
+  }, [data, searchQuery]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,18 +59,26 @@ export function Combobox<T>(props: Props<T>) {
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent className="w-[400px] p-0">
         <Command>
-          <CommandInput placeholder={placeholder} className="h-9" />
+          <CommandInput
+            placeholder={placeholder}
+            className="h-9"
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+          />
           <CommandList>
-            <CommandEmpty>Brak danych</CommandEmpty>
+            <CommandEmpty>
+              Brak wyników dla &ldquo;{searchQuery}&rdquo;
+            </CommandEmpty>
             <CommandGroup>
-              {data.map((item) => (
+              {filteredItems.map((item) => (
                 <CommandItem
                   key={item.id}
-                  value={item.id}
-                  onSelect={(currentValue) => {
-                    onValueChange(currentValue === value ? "" : currentValue);
+                  value={item.label} // Use label for filtering instead of id
+                  onSelect={() => {
+                    onValueChange(item.id);
+                    setSearchQuery("");
                     setOpen(false);
                   }}
                 >

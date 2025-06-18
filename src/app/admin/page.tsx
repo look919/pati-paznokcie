@@ -18,15 +18,20 @@ const getAllEvents = async (): Promise<Event[]> => {
   });
 
   const events: Event[] = acceptedSubmissions.map((submission) => ({
+    id: submission.id,
     title:
       submission.treatments.length === 1
         ? `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments[0].treatment.name}`
         : `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments.length} usługi`,
     start: submission.startDate,
     end: submission.endDate,
-    description: submission.treatments.map((t) => t.treatment.name).join(", "),
-    profile: submission.profile,
-    treatmentsAmount: submission.treatments.length,
+    extendedProps: {
+      description: submission.treatments
+        .map((t) => t.treatment.name)
+        .join(", "),
+      profile: submission.profile,
+      treatmentsAmount: submission.treatments.length,
+    },
   }));
 
   return events;

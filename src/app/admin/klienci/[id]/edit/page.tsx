@@ -3,17 +3,18 @@ import { notFound } from "next/navigation";
 import { EditProfileForm } from "./EditProfileForm";
 
 interface EditProfilePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EditProfilePage({
   params,
 }: EditProfilePageProps) {
+  const resolvedParams = await params;
   // Fetch the profile by ID
   const profile = await db.profile.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
   });
 
   if (!profile) {

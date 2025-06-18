@@ -8,9 +8,9 @@ import { DATE_FORMAT, TIME_FORMAT } from "@/lib/time";
 import { SubmissionDetailsActions } from "./SubmissionDetailsActions";
 
 interface SubmissionPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // Helper function to format price
@@ -58,9 +58,10 @@ const getStatusText = (status: string) => {
 };
 
 export default async function SubmissionPage({ params }: SubmissionPageProps) {
+  const resolvedParams = await params;
   // Fetch the submission by ID
   const submission = await db.submission.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       profile: true,
       treatments: {

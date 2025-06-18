@@ -46,7 +46,7 @@ export const PageHeader = () => {
           alt="Patrycja Kuczkowska Logo"
           width={160}
           height={80}
-          className="h-[80px] w-auto object-contain mx-auto"
+          className="w-auto object-contain mx-auto"
         />
       </Link>
       <nav>
