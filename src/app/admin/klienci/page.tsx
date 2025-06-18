@@ -1,4 +1,4 @@
-import { ProfilesGrid } from "./ProfilesGrid";
+import { ProfilesList } from "./ProfilesList";
 import { db } from "@/lib/db";
 
 const getAllProfiles = async () => {
@@ -30,7 +30,7 @@ export default async function ProfilesPage() {
           Klienci
         </span>
       </h2>
-      <ProfilesGrid data={profiles} />
+      <ProfilesList data={profiles} />
     </div>
   );
 }

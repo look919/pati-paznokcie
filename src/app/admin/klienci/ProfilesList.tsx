@@ -70,7 +70,7 @@ type ProfilesGridProps = {
   data: ProfilesGridRecord[];
 };
 
-export const ProfilesGrid = ({ data }: ProfilesGridProps) => {
+export const ProfilesList = ({ data }: ProfilesGridProps) => {
   const [selectedProfile, setSelectedProfile] = useState<{
     id: string;
     name: string;

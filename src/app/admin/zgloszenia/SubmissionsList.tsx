@@ -181,7 +181,7 @@ type DialogStatus =
   | "cancelEvent"
   | null;
 
-export function SubmissionsGridTest({ data, status }: SubmissionsGridProps) {
+export function SubmissionsList({ data, status }: SubmissionsGridProps) {
   const [dialogState, setDialogState] = useState({
     type: null as DialogStatus,
     submissionId: "",

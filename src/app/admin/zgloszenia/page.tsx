@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { DATE_AND_TIME_FORMAT } from "@/lib/time";
-import { SubmissionsGridTest } from "./SubmissionsGridTest";
+import { SubmissionsList } from "./SubmissionsList";
 
 const getAllSubmissions = async (status?: string) => {
   const submissions = await db.submission.findMany({
@@ -54,7 +54,7 @@ export default async function SubmissionsPage(props: SubmissionsPageProps) {
           Zgłoszenia
         </span>
       </h2>
-      <SubmissionsGridTest
+      <SubmissionsList
         data={submissions}
         status={resolvedSearchParams.status}
       />
