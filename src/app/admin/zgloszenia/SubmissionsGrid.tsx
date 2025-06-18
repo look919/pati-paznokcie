@@ -1,4 +1,6 @@
 "use client";
+
+import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { createColumn, createIndexColumn } from "@/lib/columns-utils";
 import { Grid } from "@/components/ui/Grid";
@@ -12,7 +14,6 @@ import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
 import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
 import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
 import { CancelEventDialog } from "./components/CancelEventDialog";
-import Link from "next/link";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -193,7 +194,7 @@ const DialogByStatus: Record<
   cancelEvent: CancelEventDialog,
 };
 
-function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
+export function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
   const [selectedSubmission, setSelectedSubmission] = React.useState<{
     id: string;
     name: string;
@@ -278,5 +279,3 @@ function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
     </div>
   );
 }
-
-export default SubmissionsGrid;
