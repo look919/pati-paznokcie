@@ -93,6 +93,15 @@ export const ProfilesGrid = ({ data }: ProfilesGridProps) => {
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex justify-end mb-4">
+        <Link
+          href="/admin/klienci/stworz"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-full text-white 
+                     bg-gradient-to-r from-sky-400 to-blue-500"
+        >
+          + Dodaj klienta
+        </Link>
+      </div>
       <Grid data={data} columns={columns} />
 
       {selectedProfile && (

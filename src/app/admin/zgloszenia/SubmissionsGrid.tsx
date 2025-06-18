@@ -12,6 +12,7 @@ import { AcceptSubmissionDialog } from "./AcceptSubmissionDialog";
 import { RejectSubmissionDialog } from "./RejectSubmissionDialog";
 import { RescheduleSubmissionDialog } from "./RescheduleSubmissionDialog";
 import { CancelEventDialog } from "./CancelEventDialog";
+import Link from "next/link";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -214,6 +215,15 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex justify-end mb-4">
+        <Link
+          href="/admin/zgloszenia/stworz"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-full text-white 
+                     bg-gradient-to-r from-sky-400 to-blue-500"
+        >
+          + Dodaj klienta
+        </Link>
+      </div>
       <div className="flex items-center space-x-2 mt-4 mb-2 cursor-pointer">
         <Switch
           id="columns-switch"

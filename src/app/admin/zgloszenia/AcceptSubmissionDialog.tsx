@@ -1,4 +1,4 @@
-import { acceptSubmissionAction } from "@/actions/acceptSubmissionAction";
+import { acceptSubmissionAction } from "@/actions/submission/acceptSubmissionAction";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
