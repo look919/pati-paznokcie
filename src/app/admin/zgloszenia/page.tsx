@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import dayjs from "dayjs";
 import { DATE_AND_TIME_FORMAT } from "@/lib/time";
-import { SubmissionsGrid } from "./SubmissionsGrid";
+import SubmissionsGrid from "./SubmissionsGrid";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 

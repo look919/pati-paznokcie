@@ -193,7 +193,7 @@ const DialogByStatus: Record<
   cancelEvent: CancelEventDialog,
 };
 
-export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
+function SubmissionsGrid({ data, status }: SubmissionsGridProps) {
   const [selectedSubmission, setSelectedSubmission] = React.useState<{
     id: string;
     name: string;
@@ -277,4 +277,6 @@ export const SubmissionsGrid = ({ data, status }: SubmissionsGridProps) => {
         })}
     </div>
   );
-};
+}
+
+export default SubmissionsGrid;
