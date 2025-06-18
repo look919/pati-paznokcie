@@ -10,10 +10,10 @@ import { Label } from "@/components/ui/label";
 import { redirect, RedirectType } from "next/navigation";
 import { CheckIcon, EyeIcon, UserRoundPenIcon, XIcon } from "lucide-react";
 import React, { useEffect } from "react";
-import { AcceptSubmissionDialog } from "./components/AcceptSubmissionDialog";
-import { RejectSubmissionDialog } from "./components/RejectSubmissionDialog";
-import { RescheduleSubmissionDialog } from "./components/RescheduleSubmissionDialog";
-import { CancelEventDialog } from "./components/CancelEventDialog";
+import { AcceptSubmissionDialog } from "@/app/admin/zgloszenia/components/AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "@/app/admin/zgloszenia/components/RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "@/app/admin/zgloszenia/components/RescheduleSubmissionDialog";
+import { CancelEventDialog } from "@/app/admin/zgloszenia/components/CancelEventDialog";
 
 type SubmissionsGridRecord = {
   id: string;

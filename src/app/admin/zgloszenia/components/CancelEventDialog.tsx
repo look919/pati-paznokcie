@@ -1,5 +1,3 @@
-"use client";
-
 import { cancelEventAction } from "@/actions/event/cancelEventAction";
 import { Button } from "@/components/ui/button";
 import {

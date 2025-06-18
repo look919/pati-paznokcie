@@ -1,5 +1,3 @@
-"use client";
-
 import { acceptSubmissionAction } from "@/actions/submission/acceptSubmissionAction";
 import { Button } from "@/components/ui/button";
 import {
