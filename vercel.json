@@ -3,8 +3,7 @@
   "crons": [
     {
       "path": "/api/cron/reminder-sms",
-      "schedule": "0 19 * * *",
-      "method": "POST"
+      "schedule": "0 19 * * *"
     }
   ]
 }
