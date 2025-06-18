@@ -1,8 +1,8 @@
 "use client";
-import { AcceptSubmissionDialog } from "../components/AcceptSubmissionDialog";
-import { RejectSubmissionDialog } from "../components/RejectSubmissionDialog";
-import { RescheduleSubmissionDialog } from "../components/RescheduleSubmissionDialog";
-import { CancelEventDialog } from "../components/CancelEventDialog";
+import { AcceptSubmissionDialog } from "@/components/submission/AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "@/components/submission/RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "@/components/submission/RescheduleSubmissionDialog";
+import { CancelEventDialog } from "@/components/submission/CancelEventDialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Status } from "@prisma/client";
