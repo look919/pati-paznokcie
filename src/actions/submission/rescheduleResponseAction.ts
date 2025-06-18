@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { sendEmail } from "./sendEmailAction";
+import { sendEmail } from "../sendEmailAction";
 import { formatDate } from "@/components/EmailTemplate";
 
 export async function acceptRescheduleResponseAction(submissionId: string) {

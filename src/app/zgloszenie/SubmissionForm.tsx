@@ -15,7 +15,7 @@ import { useState } from "react";
 import {
   AvailableDates,
   findTreatmentDateAction,
-} from "../../actions/findTreatmentDateAction";
+} from "../../actions/submission/findTreatmentDateAction";
 import { toast } from "sonner";
 import { SubmissionFormSuccess } from "./SubmissionFormSuccess";
 

@@ -40,7 +40,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Profile } from "@prisma/client";
-import { createEventAction } from "@/actions/createEventAction";
+import { createEventAction } from "@/actions/event/createEventAction";
 import { useEffect, useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
 

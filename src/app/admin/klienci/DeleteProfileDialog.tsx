@@ -1,4 +1,4 @@
-import { deleteProfileAction } from "@/actions/deleteProfileAction";
+import { deleteProfileAction } from "@/actions/profile/deleteProfileAction";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

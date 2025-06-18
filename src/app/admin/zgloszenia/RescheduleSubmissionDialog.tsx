@@ -1,5 +1,5 @@
 "use client";
-import { rescheduleSubmissionAction } from "@/actions/rescheduleSubmissionAction";
+import { rescheduleSubmissionAction } from "@/actions/submission/rescheduleSubmissionAction";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {

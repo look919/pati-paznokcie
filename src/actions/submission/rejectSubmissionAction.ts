@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { sendEmail } from "./sendEmailAction";
+import { sendEmail } from "../sendEmailAction";
 import {
   EmailTemplate,
   formatDate,
@@ -26,37 +26,46 @@ type SubmissionWithTreatments = {
   }[];
 };
 
-const generateAcceptanceEmailTemplate = (
-  submission: SubmissionWithTreatments
+const generateRejectionEmailTemplate = (
+  submission: SubmissionWithTreatments,
+  comment: string
 ) => {
   const formattedDate = formatDate(submission.startDate);
   const formattedTime = formatTime(submission.timeBlocks[0]);
 
   const emailContent = `
     <p>Dzień dobry ${submission.name},</p>
-    <p>Z przyjemnością informujemy, że Twoja rezerwacja wizyty w naszym salonie została zaakceptowana.</p>
-    <p>Wyślemy Ci SMSem przypomnienie dzień przed planowaną wizytą.</p>
-
+    <p>Dziękujemy za przesłanie prośby o rezerwację wizyty w naszym salonie.</p>
+    
+    <p>Niestety, musimy poinformować, że Twoja rezerwacja na dzień <strong>${formattedDate}</strong> o godzinie <strong>${formattedTime}</strong> nie może zostać zaakceptowana.</p>
+    
+    ${
+      comment
+        ? `
     <div style="margin: 20px 0; padding: 16px; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f8fafc;">
-      <h2 style="margin-top: 0; color: #4a5568;">Szczegóły wizyty:</h2>
-      <p><strong>Data:</strong> ${formattedDate}</p>
-      <p><strong>Godzina:</strong> ${formattedTime}</p>
-      <p><strong>Czas trwania:</strong> ${submission.duration} minut</p>
+      <h3 style="margin-top: 0; color: #4a5568;">Powód odrzucenia:</h3>
+      <p>${comment}</p>
     </div>
-
-    <p>Jeśli zaistnieje potrzeba zmiany terminu wizyty, prosimy o kontakt z minimum 24-godzinnym wyprzedzeniem.</p>
-    <p>Dziękujemy za wybór naszego salonu i czekamy na spotkanie z Tobą!</p>
+    `
+        : ""
+    }
+    
+    <p>Jeśli masz jakiekolwiek pytania, skontaktuj się z nami telefonicznie lub mailowo.</p>
+    
     <p>Pozdrawiamy,<br>Zespół Salonu Kosmetycznego Pati</p>
   `;
 
   return EmailTemplate({
-    preheader: `Twoja rezerwacja na ${formattedDate} o ${formattedTime} została potwierdzona.`,
-    title: "Potwierdzenie rezerwacji",
+    preheader: `Informacja o odrzuceniu rezerwacji na ${formattedDate}`,
+    title: "Odmowa rezerwacji",
     content: emailContent,
   });
 };
 
-export async function acceptSubmissionAction(submissionId: string) {
+export async function rejectSubmissionAction(
+  submissionId: string,
+  comment: string
+) {
   const submission = await db.submission.findUnique({
     where: { id: submissionId },
     include: {
@@ -76,27 +85,27 @@ export async function acceptSubmissionAction(submissionId: string) {
     throw new Error("Submission is not in a PENDING state");
   }
 
-  // Update the submission status to ACCEPTED
+  // Update the submission status to REJECTED
   await db.submission.update({
     where: { id: submissionId },
-    data: { status: "ACCEPTED" },
+    data: { status: "REJECTED" },
   });
 
-  // Send confirmation email to client
+  // Send rejection email to client
   try {
-    const emailTemplate = generateAcceptanceEmailTemplate(submission);
+    const emailTemplate = generateRejectionEmailTemplate(submission, comment);
     await sendEmail({
       from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
       to: submission.email,
-      subject: "Potwierdzenie rezerwacji - Salon Kosmetyczny Pati",
+      subject: "Informacja o rezerwacji - Salon Kosmetyczny Pati",
       text: `Twoja rezerwacja na ${formatDate(submission.startDate)} o ${
         submission.timeBlocks[0]
-      } została potwierdzona.`,
+      } została odrzucona.${comment ? ` Powód: ${comment}` : ""}`,
       html: emailTemplate,
     });
   } catch (error) {
-    console.error("Failed to send acceptance email:", error);
-    // We don't throw here to avoid rolling back the submission acceptance if email fails
+    console.error("Failed to send rejection email:", error);
+    // We don't throw here to avoid rolling back the submission rejection if email fails
   }
 
   return submission.id;

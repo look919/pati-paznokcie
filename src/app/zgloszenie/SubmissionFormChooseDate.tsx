@@ -1,5 +1,5 @@
 "use client";
-import { AvailableDates } from "@/actions/findTreatmentDateAction";
+import { AvailableDates } from "@/actions/submission/findTreatmentDateAction";
 import { z } from "zod";
 
 import {

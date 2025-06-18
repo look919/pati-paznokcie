@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { createSubmissionAction } from "./createSubmissionAction";
-import { sendEmail } from "./sendEmailAction";
+import { sendEmail } from "../sendEmailAction";
 import { EmailTemplate, formatDate } from "@/components/EmailTemplate";
 
 type RescheduleSubmissionActionParams = {
