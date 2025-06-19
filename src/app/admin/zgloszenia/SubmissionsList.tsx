@@ -261,8 +261,6 @@ export function SubmissionsList({ data, status }: SubmissionsGridProps) {
         </Label>
       </div>
       <Grid data={data} columns={columns} />
-
-      {/* Using conditional rendering instead of React.createElement */}
       {dialogState.type === "acceptSubmission" && (
         <AcceptSubmissionDialog
           submissionId={dialogState.submissionId}

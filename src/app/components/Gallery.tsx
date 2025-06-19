@@ -49,7 +49,6 @@ export const Gallery = () => {
           Galeria
         </span>
       </h2>
-
       {/* Mobile layout (4x4 grid) - Only visible on small screens */}
       <div
         className="grid grid-cols-2 grid-rows-4 gap-0 sm:hidden"

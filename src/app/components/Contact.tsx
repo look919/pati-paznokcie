@@ -12,20 +12,16 @@ export const Contact = () => {
 
         <div className="bg-white/90 rounded-lg shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 border-6 border-slate-300">
-            {/* Form Side */}
             <div className="p-8 md:p-12 bg-white">
               <h3 className="text-2xl font-semibold text-gray-800 mb-6">
                 Wyślij nam wiadomość
               </h3>
               <ContactForm />
             </div>
-
-            {/* Info Side */}
             <div className="bg-gradient-to-br from-sky-500 to-blue-600 p-8 md:p-12 text-white flex flex-col">
               <h3 className="text-2xl font-semibold mb-8">Kontakt</h3>
 
               <div className="space-y-6 flex-grow">
-                {/* Address */}
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <svg
@@ -50,8 +46,6 @@ export const Contact = () => {
                     </p>
                   </div>
                 </div>
-
-                {/* Email */}
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <svg
@@ -69,8 +63,6 @@ export const Contact = () => {
                     <p className="mt-1 text-green-100">patrycja@example.com</p>
                   </div>
                 </div>
-
-                {/* Phone */}
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <svg
@@ -94,8 +86,6 @@ export const Contact = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Social Media */}
               <div className="mt-8 pt-8 border-t border-green-400">
                 <h4 className="font-medium text-lg mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
