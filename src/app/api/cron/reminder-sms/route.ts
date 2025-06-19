@@ -5,17 +5,17 @@ export const dynamic = "force-dynamic"; // No caching
 
 // Handler for GET requests - Vercel cron jobs use GET by default
 export async function GET(req: NextRequest) {
+  const authHeader = req.headers.get("authorization");
   console.log(
     "Tomato",
-    req.headers.get("x-vercel-cron"),
-    req.headers.get("authorization")
+    authHeader,
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`,
+    process.env.NODE_ENV === "production"
   );
 
-  const authHeader = req.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response("Unauthorized", {
       status: 401,
-      statusText: `${process.env.CRON_SECRET}, authHeader: ${authHeader}`,
     });
   }
 
