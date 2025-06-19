@@ -46,6 +46,8 @@ model Submission {
   treatments SubmissionTreatment[]
 
   @@index([status])
+  @@index([startDate, status])
+  @@index([profileId])
 }
 
 model SubmissionTreatment {
@@ -69,4 +71,6 @@ model Profile {
   submissions Submission[]
 
   @@index([email])
+  @@index([phone])
+  @@index([name, surname])
 }
