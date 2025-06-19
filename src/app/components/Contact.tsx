@@ -93,6 +93,7 @@ export const Contact = () => {
                   <a
                     href="#"
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
+                    aria-label="Facebook"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -113,6 +114,7 @@ export const Contact = () => {
                   <a
                     href="#"
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
+                    aria-label="Instagram"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -133,6 +135,7 @@ export const Contact = () => {
                   <a
                     href="#"
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
+                    aria-label="Instagram"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +165,7 @@ export const Contact = () => {
                   <a
                     href="#"
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
+                    aria-label="Youtube"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 export const Header = () => {
   return (
     <header className="relative h-[95vh] bg-gradient-to-r from-sky-400 to-blue-500 clip-polygon-hero">
-      <div className="absolute inset-0 bg-[url('/hero.jpg')] bg-cover bg-center mix-blend-screen"></div>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -22,9 +22,9 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
         />
       </div>
 
-      <h5 className="bg-blue-500 text-white font-semibold text-center py-4 px-2 text-xl">
+      <span className="bg-blue-700 text-white font-semibold text-center py-4 px-2 text-xl">
         {treatment.name}
-      </h5>
+      </span>
 
       <div className="flex flex-col justify-between p-6">
         <div className="flex items-start">
@@ -40,7 +40,7 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="text-gray-700 text-sm sm:text-md">
+          <span className="text-gray-900 text-sm sm:text-md">
             {treatment.description}
           </span>
         </div>
@@ -49,14 +49,14 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
 
         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
           <div>
-            <p className="text-gray-500">Cena</p>
+            <p className="text-gray-700">Cena</p>
             <p className="text-xl font-bold text-blue-600">
               {treatment.price} zł
             </p>
           </div>
 
           <div>
-            <p className="text-gray-500">Czas</p>
+            <p className="text-gray-700">Czas</p>
             <p className="text-xl font-bold text-blue-600">
               ~{treatment.duration} minut
             </p>
