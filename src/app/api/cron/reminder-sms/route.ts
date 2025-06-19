@@ -5,12 +5,15 @@ export const dynamic = "force-dynamic"; // No caching
 
 // Handler for GET requests - Vercel cron jobs use GET by default
 export async function GET(req: NextRequest) {
-  // Vercel Cron jobs set a special header to authenticate the request
-  const isVercelCron = req.headers.get("x-vercel-cron") === "1";
+  const authHeader = req.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
 
-  // If this is not a Vercel Cron job request, verify it's coming from an authorized source
-  // This allows manual testing of the endpoint if needed
-  if (!isVercelCron && process.env.NODE_ENV === "production") {
+  // Allow the request if it's a Vercel cron job, has the secret, or we're not in production
+  if (process.env.NODE_ENV === "production") {
     return NextResponse.json(
       {
         error: "This endpoint can only be called by Vercel Cron in production",
