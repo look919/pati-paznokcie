@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createProfileAction } from "@/actions/profile/createProfileAction";
 import z from "zod";
+import { InputMask } from "@react-input/mask";
 
 // Profile form schema for validation
 export const profileFormSchema = z.object({
@@ -114,12 +116,20 @@ export const CreateProfileForm = () => {
             <FormItem>
               <FormLabel>Nr telefonu</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
+                <InputMask
+                  component={Input}
+                  mask="+48 xxx xxx xxx"
+                  replacement={{ x: /\d/ }}
+                  placeholder="+48 ___ ___ ___"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
                   type="tel"
                   className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
                 />
               </FormControl>
+              <FormDescription>Format: +48 XXX XXX XXX</FormDescription>
               <FormMessage />
             </FormItem>
           )}

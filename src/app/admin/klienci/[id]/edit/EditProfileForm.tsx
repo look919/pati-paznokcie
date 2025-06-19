@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +21,7 @@ import {
 import { editProfileAction } from "@/actions/profile/editProfileAction";
 import { useRouter } from "next/navigation";
 import { Profile } from "@prisma/client";
+import { InputMask } from "@react-input/mask";
 
 type EditProfileFormProps = {
   profile: Profile;
@@ -113,13 +115,22 @@ export const EditProfileForm = ({ profile }: EditProfileFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nr telefonu</FormLabel>
+
               <FormControl>
-                <Input
-                  {...field}
+                <InputMask
+                  component={Input}
+                  mask="+48 xxx xxx xxx"
+                  replacement={{ x: /\d/ }}
+                  placeholder="+48 ___ ___ ___"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
                   type="tel"
                   className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
                 />
               </FormControl>
+              <FormDescription>Format: +48 XXX XXX XXX</FormDescription>
               <FormMessage />
             </FormItem>
           )}

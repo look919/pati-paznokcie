@@ -84,7 +84,6 @@ export const additionalCalendarTimes = [
   "08:15",
   "08:30",
   "08:45",
-  "16:45",
   "17:00",
   "17:15",
   "17:30",

@@ -43,6 +43,7 @@ import { Profile } from "@prisma/client";
 import { createEventAction } from "@/actions/event/createEventAction";
 import { useEffect, useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
+import { InputMask } from "@react-input/mask";
 
 type EventFormProps = {
   treatments: {
@@ -241,12 +242,20 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
             <FormItem>
               <FormLabel>Nr telefonu</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
+                <InputMask
+                  component={Input}
+                  mask="+48 xxx xxx xxx"
+                  replacement={{ x: /\d/ }}
+                  placeholder="+48 ___ ___ ___"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
                   type="tel"
                   className="border-gray-200 focus:border-sky-400 focus:ring-sky-400"
                 />
               </FormControl>
+              <FormDescription>Format: +48 XXX XXX XXX</FormDescription>
               <FormMessage />
             </FormItem>
           )}
