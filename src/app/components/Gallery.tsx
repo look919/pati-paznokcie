@@ -62,6 +62,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
             priority
           />
           <ImageOverlay />
@@ -75,6 +76,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -87,6 +89,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -99,6 +102,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -111,6 +115,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -123,6 +128,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -135,6 +141,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -147,6 +154,7 @@ export const Gallery = () => {
             fill
             sizes="50vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -179,6 +187,7 @@ export const Gallery = () => {
             sizes="25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
             priority
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -191,6 +200,7 @@ export const Gallery = () => {
             fill
             sizes="25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -203,6 +213,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -215,6 +226,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -227,6 +239,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -239,6 +252,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -251,6 +265,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -263,6 +278,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -275,6 +291,7 @@ export const Gallery = () => {
             fill
             sizes="25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -287,6 +304,7 @@ export const Gallery = () => {
             fill
             sizes="25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -299,6 +317,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -323,6 +342,7 @@ export const Gallery = () => {
             fill
             sizes="25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -335,6 +355,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -347,6 +368,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>
@@ -358,6 +380,7 @@ export const Gallery = () => {
             fill
             sizes="12.5vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110"
+            quality={75}
           />
           <ImageOverlay />
         </div>

@@ -18,7 +18,8 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
           alt={treatment.name}
           fill
           className="object-cover transition-transform duration-700 hover:scale-110"
-          sizes="(max-width: 768px) 100vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          quality={75}
         />
       </div>
 

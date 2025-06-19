@@ -117,6 +117,8 @@ export const About = () => {
                   alt="Photo 1"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 240px, 240px"
+                  quality={80}
                 />
               </motion.div>
               <motion.div
@@ -134,6 +136,8 @@ export const About = () => {
                   alt="Photo 2"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 240px, 240px"
+                  quality={80}
                 />
               </motion.div>
               <motion.div
@@ -151,6 +155,8 @@ export const About = () => {
                   alt="Photo 3"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 240px, 240px"
+                  quality={80}
                 />
               </motion.div>
             </div>
