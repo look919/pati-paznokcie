@@ -3,17 +3,7 @@
 import { db } from "@/lib/db";
 import { sendSms } from "./sendSmsAction";
 
-export async function sendEventReminderSms() {
-  // Only run in production to prevent accidental SMS sending
-  if (process.env.NODE_ENV !== "production") {
-    return {
-      success: true,
-      message: "Skipped in development",
-      successful: 0,
-      failed: 0,
-    };
-  }
-
+export async function sendEventReminderSmsAction() {
   try {
     // Get the start of tomorrow and end of tomorrow
     const now = new Date();
@@ -50,7 +40,7 @@ export async function sendEventReminderSms() {
         });
 
         // Compose the simple message with just date and time
-        const message = `Przypominamy o Twojej wizycie w salonie jutro, ${eventDate} o godz. ${eventTime}. W razie pytań, prosimy o kontakt. Zespół Pati.`;
+        const message = `Przypominamy o Twojej wizycie w salonie jutro, ${eventDate} o godz. ${eventTime}.`;
 
         // Send the SMS
         return await sendSms({

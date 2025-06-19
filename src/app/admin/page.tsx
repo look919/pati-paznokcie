@@ -47,6 +47,7 @@ export default async function AdminHome() {
           Terminarz
         </span>
       </h2>
+
       <AdminSchedule events={events} />
     </div>
   );

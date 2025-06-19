@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendEventReminderSms } from "@/actions/sendReminderSmsAction";
+import { sendEventReminderSmsAction } from "@/actions/sendReminderSmsAction";
 
 export const dynamic = "force-dynamic"; // No caching
 
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // Call the function to send reminder SMS messages
-    const result = await sendEventReminderSms();
+    const result = await sendEventReminderSmsAction();
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error processing reminder SMS job:", error);
