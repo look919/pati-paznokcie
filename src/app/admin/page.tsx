@@ -1,6 +1,16 @@
 import { db } from "@/lib/db";
 import { AdminSchedule } from "./AdminSchedule";
 import type { Event } from "./AdminSchedule";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Panel administracyjny - Stylizacja Paznokci Patrycja Kuczkowska",
+  description: "Panel administracyjny salonu stylizacji paznokci",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const getAllEvents = async (): Promise<Event[]> => {
   const acceptedSubmissions = await db.submission.findMany({

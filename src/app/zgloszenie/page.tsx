@@ -1,6 +1,25 @@
 import { db } from "@/lib/db";
 import { PageWrapper } from "@/components/PageWrapper";
 import { SubmissionForm } from "./SubmissionForm";
+import { Metadata } from "next";
+
+// TODO: Replace with your actual domain name
+export const metadata: Metadata = {
+  title: "Umów wizytę - Stylizacja Paznokci Patrycja Kuczkowska",
+  description:
+    "Zarezerwuj termin na stylizację paznokci. Manicure hybrydowy, żelowy, klasyczny. Szybka i prosta rezerwacja online!",
+  keywords:
+    "rezerwacja online, umówienie wizyty, termin manicure, zapisz się na paznokcie, Gdynia",
+  alternates: {
+    canonical: "/zgloszenie",
+  },
+  openGraph: {
+    title: "Umów wizytę - Stylizacja Paznokci Patrycja Kuczkowska",
+    description:
+      "Zarezerwuj termin na stylizację paznokci. Manicure hybrydowy, żelowy, klasyczny. Szybka i prosta rezerwacja online!",
+    url: "https://your-domain-name.com/zgloszenie",
+  },
+};
 
 export default async function Submission() {
   const treatments = await db.treatment.findMany({

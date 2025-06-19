@@ -2,6 +2,19 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { Button } from "@/components/ui/button";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Logowanie - Stylizacja Paznokci Patrycja Kuczkowska",
+  description: "Strona logowania do panelu administracyjnego",
+  alternates: {
+    canonical: "/zaloguj",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function LoginPage() {
   return (

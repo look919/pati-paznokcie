@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /zaloguj/
+
+# Sitemap location
+Sitemap: https://your-domain-name.com/sitemap.xml
