@@ -3,7 +3,8 @@ import { sendEventReminderSmsAction } from "@/actions/sendReminderSmsAction";
 
 export const dynamic = "force-dynamic"; // No caching
 
-export async function POST(req: NextRequest) {
+// Handler for GET requests - Vercel cron jobs use GET by default
+export async function GET(req: NextRequest) {
   // Vercel Cron jobs set a special header to authenticate the request
   const isVercelCron = req.headers.get("x-vercel-cron") === "1";
 
@@ -35,4 +36,9 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// Keep the POST handler for manual testing or if you want to trigger via POST in the future
+export async function POST(req: NextRequest) {
+  return GET(req);
 }
