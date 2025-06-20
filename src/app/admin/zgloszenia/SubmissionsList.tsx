@@ -15,6 +15,7 @@ import { AcceptSubmissionDialog } from "@/components/submission/AcceptSubmission
 import { RejectSubmissionDialog } from "@/components/submission/RejectSubmissionDialog";
 import { RescheduleSubmissionDialog } from "@/components/submission/RescheduleSubmissionDialog";
 import { CancelEventDialog } from "@/components/submission/CancelEventDialog";
+import { Badge } from "@/components/ui/badge";
 
 type SubmissionsGridRecord = {
   id: string;
@@ -27,6 +28,42 @@ type SubmissionsGridRecord = {
   startDate: string;
   endDate: string;
   treatments: string;
+};
+
+// Helper function to get status badge color
+const getStatusBadgeColor = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
+    case "ACCEPTED":
+      return "bg-green-100 text-green-800 hover:bg-green-100";
+    case "REJECTED":
+      return "bg-red-100 text-red-800 hover:bg-red-100";
+    case "AWAITING_USER_CONFIRMATION":
+      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+    case "RESCHEDULED":
+      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
+    default:
+      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+  }
+};
+
+// Helper function to get human-readable status
+const getStatusText = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "Oczekujące";
+    case "ACCEPTED":
+      return "Zaakceptowane";
+    case "REJECTED":
+      return "Odrzucone";
+    case "AWAITING_USER_CONFIRMATION":
+      return "Oczekuje na decyzję klienta";
+    case "RESCHEDULED":
+      return "Przełożone";
+    default:
+      return status;
+  }
 };
 
 const columns: ColumnDef<SubmissionsGridRecord>[] = [
@@ -45,7 +82,19 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
       );
     },
   },
-  createColumn("status", "Status"),
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+
+      return (
+        <Badge className={getStatusBadgeColor(status)}>
+          {getStatusText(status)}
+        </Badge>
+      );
+    },
+  },
   createColumn("startDate", "Data rozpoczęcia"),
   createColumn("endDate", "Data zakończenia"),
   createColumn("name", "Imię"),

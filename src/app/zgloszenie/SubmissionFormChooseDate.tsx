@@ -256,7 +256,7 @@ export const SubmissionFormChooseDate = ({
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="bg-white text-blue-600 hover:bg-white/90 transition-all duration-300"
+          className="bg-white text-blue-700 hover:bg-white/90 transition-all duration-300"
         >
           Rezerwuj termin
         </Button>

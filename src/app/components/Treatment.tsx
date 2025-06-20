@@ -54,14 +54,14 @@ export const Treatment = ({ treatment }: TreatmentProps) => {
         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
           <div>
             <p className="text-gray-700">Cena</p>
-            <p className="text-xl font-bold text-blue-600">
+            <p className="text-xl font-bold text-blue-700">
               {treatment.price} zł
             </p>
           </div>
 
           <div>
             <p className="text-gray-700">Czas</p>
-            <p className="text-xl font-bold text-blue-600">
+            <p className="text-xl font-bold text-blue-700">
               ~{treatment.duration} minut
             </p>
           </div>

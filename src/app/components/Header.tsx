@@ -76,7 +76,7 @@ export const Header = () => {
         >
           <Link
             href={"/zgloszenie"}
-            className="inline-block mt-12 py-4 px-10 rounded-full bg-gray-200 text-blue-500 text-lg uppercase tracking-wide 
+            className="inline-block mt-12 py-4 px-10 rounded-full bg-white text-blue-700 text-lg uppercase tracking-wide 
                       transition-all duration-200 shadow-lg 
                       hover:-translate-y-1 hover:shadow-xl hover:bg-opacity-90
                       active:translate-y-px active:shadow-md"

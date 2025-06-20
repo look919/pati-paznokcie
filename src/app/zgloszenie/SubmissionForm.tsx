@@ -64,7 +64,7 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
       setTimeout(() => {
         setAvailableDates(availableDates);
         setSubmissionFormState("CHOOSE_DATE");
-      }, 1200);
+      }, 200);
     } catch {
       toast.error("Wystąpił błąd podczas wysyłania formularza");
     }

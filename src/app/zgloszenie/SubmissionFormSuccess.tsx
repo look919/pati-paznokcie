@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { COMPANY_INFO } from "@/consts";
 
 export const SubmissionFormSuccess = () => {
   return (
@@ -60,7 +61,7 @@ export const SubmissionFormSuccess = () => {
               Jeśli masz jakiekolwiek pytania lub chcesz zmienić termin, prosimy
               o kontakt telefoniczny pod numerem:{" "}
               <span className="font-medium text-white">
-                {process.env.NEXT_PUBLIC_TELEPHONE_NUMBER || "+48 123 456 789"}
+                {COMPANY_INFO.PHONE}
               </span>
             </p>
           </motion.li>

@@ -49,7 +49,7 @@ const getStatusText = (status: string) => {
     case "REJECTED":
       return "Odrzucone";
     case "AWAITING_USER_CONFIRMATION":
-      return "Oczekuje na potwierdzenie";
+      return "Oczekuje na decyzję klienta";
     case "RESCHEDULED":
       return "Przełożone";
     default:
