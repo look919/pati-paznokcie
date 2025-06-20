@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { COMPANY_INFO } from "@/consts";
 
 export const Header = () => {
   return (
@@ -53,7 +54,7 @@ export const Header = () => {
           transition={{ duration: 1, delay: 0.6 }}
           className="text-lg font-light mt-8 "
         >
-          ul. Wiosenna 12, 77-100 Bytów
+          {`${COMPANY_INFO.ADDRESS_STREET}, ${COMPANY_INFO.ADDRESS_POSTAL_CODE} ${COMPANY_INFO.ADDRESS_CITY}`}
         </motion.span>
         <motion.div
           initial={{ opacity: 0, x: 100 }}
@@ -61,8 +62,8 @@ export const Header = () => {
           transition={{ duration: 1, delay: 0.8 }}
           className="flex flex-col sm:flex-row md:gap-4 text-lg font-light"
         >
-          <span>{`tel. ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`}</span>
-          <span>{`email: ${process.env.NEXT_PUBLIC_EMAIL}`}</span>
+          <span>{`tel. ${COMPANY_INFO.PHONE}`}</span>
+          <span>{`email: ${COMPANY_INFO.EMAIL}`}</span>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -75,7 +76,7 @@ export const Header = () => {
         >
           <Link
             href={"/zgloszenie"}
-            className="inline-block mt-12 py-4 px-10 rounded-full bg-white text-blue-500 text-lg uppercase tracking-wide 
+            className="inline-block mt-12 py-4 px-10 rounded-full bg-gray-200 text-blue-500 text-lg uppercase tracking-wide 
                       transition-all duration-200 shadow-lg 
                       hover:-translate-y-1 hover:shadow-xl hover:bg-opacity-90
                       active:translate-y-px active:shadow-md"

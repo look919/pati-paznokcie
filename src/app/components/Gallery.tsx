@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 export const Gallery = () => {
-  // Array of images for the gallery
   const images = [
     { src: "/images/gallery/gal-1.jpg", alt: "Gallery image 1" },
     { src: "/images/gallery/gal-2.jpg", alt: "Gallery image 2" },
@@ -21,7 +20,6 @@ export const Gallery = () => {
     { src: "/images/gallery/gal-16.jpg", alt: "Gallery image 16" },
   ];
 
-  // Image overlay component to avoid repetition
   const ImageOverlay = () => (
     <div className="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
       <div className="p-3 bg-white/80 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300">

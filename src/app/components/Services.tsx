@@ -1,12 +1,15 @@
 import { Treatment } from "./Treatment";
-import { db } from "@/lib/db";
+// import { db } from "@/lib/db";
+import { treatments } from "@/lib/treatments";
 
-export const Services = async () => {
-  const treatments = await db.treatment.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+// TODO: Decide whether to fetch treatments from the database or use static data
+
+export const Services = () => {
+  // const treatments = await db.treatment.findMany({
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  // });
 
   return (
     <section className="bg-gradient-to-br from-sky-400 to-blue-500 py-12 md:py-24 px-6 sm:px-8 md:px-12">

@@ -3,7 +3,10 @@ import { Treatment as ITreatment } from "@prisma/client";
 import Image from "next/image";
 
 interface TreatmentProps {
-  treatment: ITreatment;
+  treatment: Pick<
+    ITreatment,
+    "id" | "name" | "description" | "price" | "duration" | "images"
+  >;
 }
 
 export const Treatment = ({ treatment }: TreatmentProps) => {

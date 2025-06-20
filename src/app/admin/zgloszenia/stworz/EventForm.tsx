@@ -120,7 +120,7 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
       name: "",
       surname: "",
       email: "",
-      phone: "",
+      phone: "+48 ",
       treatments: [],
       duration: 0,
       date: defaultDate.date,
@@ -268,7 +268,7 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
               <div className="mb-4">
                 <FormLabel className="text-base">Usługi</FormLabel>
                 <FormDescription>
-                  Wybierz usługi na które ktoś chce się zapisać
+                  Wybierz usługi, na które ktoś chce się zapisać
                 </FormDescription>
               </div>
               {treatments.map((item) => (

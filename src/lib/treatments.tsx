@@ -1,12 +1,10 @@
 import { Treatment } from "@prisma/client";
 
-type TreatmentTest = Omit<
-  Treatment,
-  "createdAt" | "updatedAt" | "video" | "id"
->;
+type TreatmentTest = Omit<Treatment, "createdAt" | "updatedAt" | "video">;
 
 export const treatments: TreatmentTest[] = [
   {
+    id: "1",
     name: "Manicure hybrydowy",
     price: 100,
     duration: 120,
@@ -15,6 +13,7 @@ export const treatments: TreatmentTest[] = [
     images: ["/images/gallery/gal-1.jpg"],
   },
   {
+    id: "2",
     name: "Uzupełnienie żelu",
     price: 80,
     duration: 120,
@@ -23,6 +22,7 @@ export const treatments: TreatmentTest[] = [
     images: ["/images/gallery/gal-2.jpg"],
   },
   {
+    id: "3",
     name: "Przedłużanie paznokci",
     description:
       "Przedłużanie paznokci to zabieg, który pozwala na uzyskanie dłuższych i bardziej efektownych paznokci. Dzięki zastosowaniu specjalnych technik i materiałów, paznokcie stają się mocniejsze i bardziej odporne na uszkodzenia.",
@@ -31,6 +31,7 @@ export const treatments: TreatmentTest[] = [
     images: ["/images/gallery/gal-3.jpg"],
   },
   {
+    id: "4",
     name: "Pedicure",
     price: 120,
     duration: 90,
@@ -39,6 +40,7 @@ export const treatments: TreatmentTest[] = [
     images: ["/images/gallery/gal-4.jpg"],
   },
   {
+    id: "5",
     name: "Farbowanie i regulacja brwi",
     price: 70,
     duration: 30,

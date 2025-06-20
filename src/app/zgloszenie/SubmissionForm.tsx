@@ -1,6 +1,8 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   SubmissionFormBasicData,
@@ -11,12 +13,10 @@ import {
   SubmissionFormChooseDate,
   SubmissionFormChooseDateSchema,
 } from "./SubmissionFormChooseDate";
-import { useState } from "react";
 import {
   AvailableDates,
   findTreatmentDateAction,
-} from "../../actions/submission/findTreatmentDateAction";
-import { toast } from "sonner";
+} from "@/actions/submission/findTreatmentDateAction";
 import { SubmissionFormSuccess } from "./SubmissionFormSuccess";
 
 type SubmissionFormProps = {
@@ -125,7 +125,7 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-medium text-lg">Krok 1</h4>
+                  <span className="font-medium text-lg">Krok 1</span>
                   <p className="mt-1 text-green-100">
                     Wypełnij swoje dane i wybierz usługi, które Cię interesują.
                   </p>
@@ -149,9 +149,9 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-medium text-lg">Krok 2</h4>
+                  <span className="font-medium text-lg">Krok 2</span>
                   <p className="mt-1 text-green-100">
-                    Wybierz dogodny dla siebie termin z dostępnych opcji.
+                    Wybierz dogodny dla siebie termin.
                   </p>
                 </div>
               </div>
@@ -172,10 +172,10 @@ export const SubmissionForm = ({ treatments }: SubmissionFormProps) => {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-medium text-lg">Krok 3</h4>
+                  <span className="font-medium text-lg">Krok 3</span>
                   <p className="mt-1 text-green-100">
-                    Potwierdź rezerwację i gotowe! Spotkajmy się w wybranym
-                    terminie.
+                    Twoja rezerwacja zostanie potwierdzona, a my skontaktujemy
+                    się z Tobą w celu ustalenia szczegółów.
                   </p>
                 </div>
               </div>

@@ -35,7 +35,7 @@ export const CreateProfileForm = () => {
       name: "",
       surname: "",
       email: "",
-      phone: "",
+      phone: "+48 ",
     },
   });
 

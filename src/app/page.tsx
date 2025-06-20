@@ -4,8 +4,8 @@ import { About } from "./components/About";
 import { Services } from "./components/Services";
 import { Gallery } from "./components/Gallery";
 import { Contact } from "./components/Contact";
-import "./home.css";
 import { AdminPopup } from "./components/AdminPopup";
+import "./home.css";
 
 export default function Home() {
   return (

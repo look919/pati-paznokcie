@@ -1,3 +1,4 @@
+import { APP_INFO, COMPANY_INFO } from "@/consts";
 import Script from "next/script";
 
 // TODO: fill the data
@@ -6,18 +7,17 @@ export default function StructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "NailSalon",
-    name: "Stylizacja Paznokci Patrycja Kuczkowska",
-    description:
-      "Profesjonalna stylizacja paznokci. Manicure hybrydowy, żelowy, klasyczny.",
-    url: "https://your-domain-name.com",
-    telephone: "+48XXXXXXXXX", // Replace with actual phone number
+    name: APP_INFO.SITE_NAME,
+    description: APP_INFO.SITE_DESCRIPTION,
+    url: APP_INFO.BASE_URL,
+    telephone: COMPANY_INFO.PHONE,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Your Street Address", // Replace with actual address
-      addressLocality: "Your City", // Replace with actual city
-      addressRegion: "Your Region", // Replace with actual region
-      postalCode: "Your Postal Code", // Replace with actual postal code
-      addressCountry: "PL",
+      streetAddress: COMPANY_INFO.ADDRESS_STREET,
+      addressLocality: COMPANY_INFO.ADDRESS_CITY,
+      addressRegion: COMPANY_INFO.ADDRESS_REGION,
+      postalCode: COMPANY_INFO.ADDRESS_POSTAL_CODE,
+      addressCountry: COMPANY_INFO.ADDRESS_COUNTRY,
     },
     geo: {
       "@type": "GeoCoordinates",
@@ -29,21 +29,21 @@ export default function StructuredData() {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
         opens: "09:00",
-        closes: "18:00",
+        closes: "17:00",
       },
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: "Saturday",
-        opens: "10:00",
-        closes: "16:00",
+        opens: "09:00",
+        closes: "18:00",
       },
     ],
-    image: "https://your-domain-name.com/images/logo.png",
-    priceRange: "$$", // Replace with appropriate price range
-    servesCuisine: "Nail salon services",
+    image: `${APP_INFO.BASE_URL}/images/logo.png`,
+    priceRange: "$$", // Replace with appropriate price range //TODO:
+    servesCuisine: "Usługi Kosmetyczne, stylizacja paznokci",
     sameAs: [
-      "https://www.facebook.com/YourFacebookPage", // Replace with actual social media links
-      "https://www.instagram.com/YourInstagramPage",
+      // TODO: fill with actual social media links
+      COMPANY_INFO.FACEBOOK,
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
@@ -65,7 +65,7 @@ export default function StructuredData() {
             description: "Profesjonalny manicure żelowy",
           },
         },
-        // Add more services as needed
+        // TODO: Add more services as needed
       ],
     },
   };

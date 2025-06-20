@@ -2,8 +2,8 @@ import { db } from "@/lib/db";
 import { PageWrapper } from "@/components/PageWrapper";
 import { SubmissionForm } from "./SubmissionForm";
 import { Metadata } from "next";
+import { APP_INFO } from "@/consts";
 
-// TODO: Replace with your actual domain name
 export const metadata: Metadata = {
   title: "Umów wizytę - Stylizacja Paznokci Patrycja Kuczkowska",
   description:
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Umów wizytę - Stylizacja Paznokci Patrycja Kuczkowska",
     description:
       "Zarezerwuj termin na stylizację paznokci. Manicure hybrydowy, żelowy, klasyczny. Szybka i prosta rezerwacja online!",
-    url: "https://your-domain-name.com/zgloszenie",
+    url: `${APP_INFO.BASE_URL}/zgloszenie`,
   },
 };
 

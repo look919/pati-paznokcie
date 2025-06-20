@@ -1,3 +1,4 @@
+import { COMPANY_INFO } from "@/consts";
 import { ContactForm } from "./ContactForm";
 
 export const Contact = () => {
@@ -38,11 +39,12 @@ export const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-medium text-lg">Address</h4>
+                    <h4 className="font-medium text-lg">Adres</h4>
                     <p className="mt-1 text-green-100">
-                      77-100 Bytów
+                      {COMPANY_INFO.ADDRESS_POSTAL_CODE}{" "}
+                      {COMPANY_INFO.ADDRESS_CITY}
                       <br />
-                      ul. Wiosenna 12
+                      {COMPANY_INFO.ADDRESS_STREET}
                     </p>
                   </div>
                 </div>
@@ -60,7 +62,7 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-medium text-lg">Email</h4>
-                    <p className="mt-1 text-green-100">patrycja@example.com</p>
+                    <p className="mt-1 text-green-100">{COMPANY_INFO.EMAIL}</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -80,20 +82,20 @@ export const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-medium text-lg">Phone</h4>
-                    <p className="mt-1 text-green-100">
-                      {process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}
-                    </p>
+                    <p className="mt-1 text-green-100">{COMPANY_INFO.PHONE}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-8 pt-8 border-t border-green-400">
-                <h4 className="font-medium text-lg mb-4">Follow Us</h4>
+                <h4 className="font-medium text-lg mb-4">Śledź nas na:</h4>
                 <div className="flex space-x-4">
                   {/* Facebook */}
                   <a
-                    href="#"
+                    href={COMPANY_INFO.FACEBOOK}
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
                     aria-label="Facebook"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -110,32 +112,13 @@ export const Contact = () => {
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                     </svg>
                   </a>
-                  {/* Twitter */}
-                  <a
-                    href="#"
-                    className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                    </svg>
-                  </a>
                   {/* Instagram */}
                   <a
-                    href="#"
+                    href={COMPANY_INFO.INSTAGRAM}
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
                     aria-label="Instagram"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -163,9 +146,11 @@ export const Contact = () => {
                   </a>
                   {/* YouTube */}
                   <a
-                    href="#"
+                    href={COMPANY_INFO.YOUTUBE}
                     className="bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors"
                     aria-label="Youtube"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

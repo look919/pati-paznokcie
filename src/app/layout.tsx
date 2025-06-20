@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
+import { APP_INFO } from "@/consts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,29 +17,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// TODO: Replace with your actual domain name
 export const metadata: Metadata = {
-  metadataBase: new URL("https://your-domain-name.com"),
-  title:
-    "Stylizacja Paznokci Patrycja Kuczkowska - Profesjonalna Stylizacja Paznokci",
-  description:
-    "Profesjonalna stylizacja paznokci w Gdyni. Manicure hybrydowy, żelowy, klasyczny. Umów się na wizytę już dziś!",
-  keywords:
-    "stylizacja paznokci, manicure hybrydowy, paznokcie żelowe, salon kosmetyczny, Patrycja Kuczkowska, Gdynia",
+  metadataBase: new URL(APP_INFO.BASE_URL),
+  title: APP_INFO.SITE_NAME,
+  description: APP_INFO.SITE_DESCRIPTION,
+  keywords: APP_INFO.SITE_KEYWORDS,
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Stylizacja Paznokci Patrycja Kuczkowska",
-    description:
-      "Profesjonalna stylizacja paznokci. Manicure hybrydowy, żelowy, klasyczny. Umów się na wizytę już dziś!",
-    locale: "pl_PL",
+    title: APP_INFO.SITE_NAME,
+    description: APP_INFO.SITE_DESCRIPTION,
+    locale: APP_INFO.SITE_LOCALE,
     type: "website",
-    url: "https://your-domain-name.com",
-    siteName: "Stylizacja Paznokci Patrycja Kuczkowska",
+    url: APP_INFO.BASE_URL,
+    siteName: APP_INFO.SITE_NAME,
     images: [
       {
-        url: "https://your-domain-name.com/images/logo.png",
+        url: `${APP_INFO.BASE_URL}/images/logo.png`,
         width: 800,
         height: 600,
         alt: "Logo Stylizacja Paznokci Patrycja Kuczkowska",
@@ -67,10 +63,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="pl">
         <head>
-          {/* Progressive Web App */}
           <link rel="manifest" href="/manifest.json" />
-
-          {/* Favicon */}
           <link rel="icon" href="/favicon.ico" sizes="any" />
           <link
             rel="icon"
@@ -85,8 +78,6 @@ export default function RootLayout({
             sizes="32x32"
           />
           <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
-
-          {/* Add StructuredData component */}
           <StructuredData />
         </head>
         <body
