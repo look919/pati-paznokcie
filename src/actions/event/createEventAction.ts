@@ -1,18 +1,15 @@
 "use server";
 
+import dayjs from "@/lib/time";
 import { db } from "@/lib/db";
-import dayjs from "dayjs";
 import { TIME_FORMAT } from "@/lib/time";
 import { SubmissionFullSchema } from "@/app/zgloszenie/SubmissionForm";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { sendEmail } from "../sendEmailAction";
 import {
   EmailTemplate,
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
-
-dayjs.extend(customParseFormat);
 
 const generateEventCreationEmailTemplate = (submission: {
   id: string;

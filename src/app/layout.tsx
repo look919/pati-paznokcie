@@ -4,8 +4,9 @@ import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
 import StructuredData from "@/components/StructuredData";
-import "./globals.css";
 import { APP_INFO } from "@/consts";
+import "@/lib/time";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction"; // For dateClick
 import { Profile } from "@prisma/client";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { CreateEventDialog } from "./CreateEventConfirmationDialog";
 import { useRouter } from "next/navigation";
 

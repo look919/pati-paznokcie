@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { DATE_AND_TIME_FORMAT } from "@/lib/time";
 import Link from "next/link";
 

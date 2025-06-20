@@ -6,7 +6,7 @@ import {
   getAvailableTimesBasedOnTreatmentDuration,
 } from "@/lib/time";
 import { db } from "@/lib/db";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { Status } from "@prisma/client";
 
 export type AvailableDates = {

@@ -24,7 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import {
   additionalCalendarTimes,
   DATE_FORMAT,

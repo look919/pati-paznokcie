@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { DATE_AND_TIME_FORMAT } from "@/lib/time";
 import { SubmissionsList } from "./SubmissionsList";
 

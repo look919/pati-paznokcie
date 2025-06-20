@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { DATE_FORMAT } from "@/lib/time";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";

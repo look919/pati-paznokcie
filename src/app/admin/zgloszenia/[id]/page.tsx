@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import dayjs from "dayjs";
+import dayjs from "@/lib/time";
 import { DATE_FORMAT, TIME_FORMAT } from "@/lib/time";
 import { SubmissionDetailsActions } from "./SubmissionDetailsActions";
 
