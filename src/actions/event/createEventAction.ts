@@ -82,7 +82,6 @@ export async function createEventAction(data: SubmissionFullSchema) {
   const startDate = dayjs(date)
     .set("hour", dayjs(startTime, TIME_FORMAT).hour())
     .set("minute", dayjs(startTime, TIME_FORMAT).minute())
-    .tz("Europe/Warsaw")
     .toDate();
 
   const endDate = dayjs(startDate).add(duration, "minute").toDate();

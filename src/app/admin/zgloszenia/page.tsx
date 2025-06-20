@@ -33,8 +33,12 @@ const getAllSubmissions = async (status?: string) => {
     phone: submission.profile.phone,
     treatments: submission.treatments.map((t) => t.treatment.name).join(", "),
     status: submission.status,
-    startDate: dayjs(submission.startDate).format(DATE_AND_TIME_FORMAT),
-    endDate: dayjs(submission.endDate).format(DATE_AND_TIME_FORMAT),
+    startDate: dayjs(submission.startDate)
+      .tz("Europe/Warsaw")
+      .format(DATE_AND_TIME_FORMAT),
+    endDate: dayjs(submission.endDate)
+      .tz("Europe/Warsaw")
+      .format(DATE_AND_TIME_FORMAT),
   }));
 };
 
