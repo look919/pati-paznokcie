@@ -247,7 +247,7 @@ export function SubmissionsList({
           <Label htmlFor="columns-switch" className="text-xs sm:text-sm">
             {status === "PENDING"
               ? "Pokaż wszystkie zgłoszenia"
-              : "Pokaż tylko oczekujące zgłoszenia"}
+              : "Pokaż oczekujące zgłoszenia"}
           </Label>
         </div>
         <Link
