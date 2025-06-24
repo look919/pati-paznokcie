@@ -6,12 +6,13 @@ import { z } from "zod";
 // Validation schema for treatment
 const treatmentSchema = z.object({
   name: z.string().min(2, "Nazwa musi mieć co najmniej 2 znaki"),
-  description: z.string().min(10, "Opis musi mieć co najmniej 10 znaków"),
+  description: z.string().optional(),
   price: z.coerce.number().min(0, "Cena nie może być ujemna"),
   duration: z.coerce
     .number()
     .int()
     .min(5, "Czas trwania musi być co najmniej 5 minut"),
+  isVisible: z.boolean().default(true),
 });
 
 export type TreatmentFormValues = z.infer<typeof treatmentSchema>;
@@ -41,9 +42,12 @@ export async function updateTreatmentAction(
       where: { id },
       data: {
         name: validatedData.name,
-        description: validatedData.description,
+        description: validatedData.description
+          ? validatedData.description
+          : undefined,
         price: validatedData.price,
         duration: validatedData.duration,
+        isVisible: validatedData.isVisible,
       },
     });
 

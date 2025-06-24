@@ -26,6 +26,7 @@ const getAllTreatments = async (page = 0, limit = 25) => {
       description: treatment.description,
       price: treatment.price,
       duration: treatment.duration,
+      isVisible: treatment.isVisible,
       submissionsCount: treatment.submissions.length,
     })),
     totalCount,

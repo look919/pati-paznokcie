@@ -23,8 +23,8 @@ model Treatment {
   price     Float
   submissions SubmissionTreatment[]
   images String[]
-  video String?
   duration Int
+  isVisible Boolean @default(true)
 
   @@index([name])
 }

@@ -13,7 +13,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createTreatmentAction } from "@/actions/treatments/createTreatmentAction";
@@ -21,13 +23,14 @@ import { updateTreatmentAction } from "@/actions/treatments/updateTreatmentActio
 
 const treatmentSchema = z.object({
   name: z.string().min(2, "Nazwa musi mieć co najmniej 2 znaki"),
-  description: z.string().min(10, "Opis musi mieć co najmniej 10 znaków"),
+  description: z.string().optional(),
   price: z.coerce.number().min(0, "Cena nie może być ujemna"),
   duration: z.coerce
     .number()
     .int()
     .min(5, "Czas trwania musi być co najmniej 5 minut"),
   images: z.array(z.string()).optional(),
+  isVisible: z.boolean().default(true),
 });
 
 type TreatmentFormValues = z.infer<typeof treatmentSchema>;
@@ -41,6 +44,7 @@ type TreatmentFormProps = {
     duration: number;
     images: string[];
     video: string | null;
+    isVisible: boolean;
   };
 };
 
@@ -59,6 +63,7 @@ export function TreatmentForm({ treatment }: TreatmentFormProps) {
           price: treatment.price,
           duration: treatment.duration,
           images: treatment.images || [],
+          isVisible: treatment.isVisible,
         }
       : {
           name: "",
@@ -66,6 +71,7 @@ export function TreatmentForm({ treatment }: TreatmentFormProps) {
           price: 0,
           duration: 30,
           images: [],
+          isVisible: true,
         },
   });
 
@@ -171,17 +177,27 @@ export function TreatmentForm({ treatment }: TreatmentFormProps) {
             />
           </div>
 
-          {/* Image and video fields could be expanded with file upload functionality */}
-
+          <FormField
+            control={form.control}
+            name="isVisible"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Widoczna</FormLabel>
+                  <FormDescription>
+                    Zaznacz, jeśli usługa ma być widoczna dla klientów
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
           <div className="flex justify-end gap-4 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              disabled={isSubmitting}
-            >
-              Anuluj
-            </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting
                 ? "Zapisywanie..."

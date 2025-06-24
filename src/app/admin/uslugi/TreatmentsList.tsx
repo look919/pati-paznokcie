@@ -14,6 +14,7 @@ type TreatmentsGridRecord = {
   description: string;
   price: number;
   duration: number;
+  isVisible: boolean;
   submissionsCount: number;
 };
 
@@ -31,6 +32,10 @@ const columns: ColumnDef<TreatmentsGridRecord>[] = [
     },
   }),
   createColumn("duration", "Czas trwania (min)", { size: 150 }),
+  createColumn("isVisible", "Widoczność", {
+    size: 120,
+    cell: ({ row }) => (row.original.isVisible ? "Publiczne" : "Prywatne"),
+  }),
   createColumn("submissionsCount", "Liczba zgłoszeń", { size: 130 }),
   {
     id: "actions",
@@ -60,7 +65,11 @@ type TreatmentsGridProps = {
   pageCount?: number;
 };
 
-export function TreatmentsList({ data, totalCount, pageCount }: TreatmentsGridProps) {
+export function TreatmentsList({
+  data,
+  totalCount,
+  pageCount,
+}: TreatmentsGridProps) {
   return (
     <div className="w-full">
       <div className="flex justify-end mb-4">
@@ -73,10 +82,10 @@ export function TreatmentsList({ data, totalCount, pageCount }: TreatmentsGridPr
         </Link>
       </div>
 
-      <Grid 
-        columns={columns} 
-        data={data} 
-        defaultPageSize={25} 
+      <Grid
+        columns={columns}
+        data={data}
+        defaultPageSize={25}
         totalCount={totalCount}
         pageCount={pageCount}
         manualPagination={!!pageCount}

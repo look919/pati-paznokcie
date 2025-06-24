@@ -31,6 +31,9 @@ export default async function Submission() {
       price: true,
       duration: true,
     },
+    where: {
+      isVisible: true,
+    },
   });
 
   return (
