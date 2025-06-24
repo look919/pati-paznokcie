@@ -232,7 +232,7 @@ export function SubmissionsList({
 
   return (
     <div className="w-full">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+      <div className="flex flex-row justify-between items-center sm:items-center gap-3 mb-4">
         <div className="flex items-center space-x-2 cursor-pointer">
           <Switch
             id="columns-switch"
@@ -252,8 +252,8 @@ export function SubmissionsList({
         </div>
         <Link
           href="/admin/zgloszenia/stworz"
-          className="inline-flex justify-center py-1 sm:py-2 px-3 sm:px-4 border border-transparent shadow-sm rounded-full text-white 
-                   bg-gradient-to-r from-sky-400 to-blue-500 text-xs sm:text-sm"
+          className="inline-flex justify-center py-2 border border-transparent shadow-sm rounded-full text-white 
+                     bg-gradient-to-r from-sky-400 to-blue-500 text-sm sm:text-md px-2 sm:px-4"
         >
           + Dodaj zgłoszenie
         </Link>

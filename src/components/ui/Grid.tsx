@@ -109,7 +109,7 @@ export function Grid<TData, TValue>({
 
   if (table.getRowModel().rows.length === 0) {
     return (
-      <div className="text-center mt-6 border rounded-md p-2 sm:p-3 text-sm font-bold">
+      <div className="mx-auto text-center mt-6 border rounded-md p-2 sm:p-3 text-sm font-bold w-[300px] sm:w-[400px] md:w-[600px] ">
         Obecnie brak danych do wyświetlenia.
       </div>
     );

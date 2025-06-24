@@ -101,8 +101,8 @@ export const ProfilesList = ({
       <div className="flex justify-end mb-4">
         <Link
           href="/admin/klienci/stworz"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-full text-white 
-                     bg-gradient-to-r from-sky-400 to-blue-500"
+          className="inline-flex justify-center py-2 border border-transparent shadow-sm rounded-full text-white 
+                     bg-gradient-to-r from-sky-400 to-blue-500 text-sm sm:text-md px-2 sm:px-4"
         >
           + Dodaj klienta
         </Link>
