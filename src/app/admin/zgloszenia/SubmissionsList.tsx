@@ -163,6 +163,8 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
 type SubmissionsGridProps = {
   status?: string;
   data: SubmissionsGridRecord[];
+  totalCount?: number;
+  pageCount?: number;
 };
 
 type DialogStatus =
@@ -172,7 +174,12 @@ type DialogStatus =
   | "cancelEvent"
   | null;
 
-export function SubmissionsList({ data, status }: SubmissionsGridProps) {
+export function SubmissionsList({
+  data,
+  status,
+  totalCount,
+  pageCount,
+}: SubmissionsGridProps) {
   const [dialogState, setDialogState] = useState({
     type: null as DialogStatus,
     submissionId: "",
@@ -252,7 +259,14 @@ export function SubmissionsList({ data, status }: SubmissionsGridProps) {
         </Link>
       </div>
       <div className="overflow-x-auto pb-4">
-        <Grid data={data} columns={columns} />
+        <Grid
+          data={data}
+          columns={columns}
+          defaultPageSize={25}
+          totalCount={totalCount}
+          pageCount={pageCount}
+          manualPagination={!!pageCount}
+        />
       </div>
       {dialogState.type === "acceptSubmission" && (
         <AcceptSubmissionDialog

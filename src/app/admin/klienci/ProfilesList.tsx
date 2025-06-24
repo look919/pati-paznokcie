@@ -67,9 +67,15 @@ const columns: ColumnDef<ProfilesGridRecord>[] = [
 
 type ProfilesGridProps = {
   data: ProfilesGridRecord[];
+  totalCount?: number;
+  pageCount?: number;
 };
 
-export const ProfilesList = ({ data }: ProfilesGridProps) => {
+export const ProfilesList = ({
+  data,
+  totalCount,
+  pageCount,
+}: ProfilesGridProps) => {
   const [selectedProfile, setSelectedProfile] = useState<{
     id: string;
     name: string;
@@ -101,7 +107,14 @@ export const ProfilesList = ({ data }: ProfilesGridProps) => {
           + Dodaj klienta
         </Link>
       </div>
-      <Grid data={data} columns={columns} />
+      <Grid
+        data={data}
+        columns={columns}
+        defaultPageSize={25}
+        totalCount={totalCount}
+        pageCount={pageCount}
+        manualPagination={!!pageCount}
+      />
 
       {selectedProfile && (
         <DeleteProfileDialog

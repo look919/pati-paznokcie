@@ -7,6 +7,8 @@ import {
   useReactTable,
   getSortedRowModel,
   SortingState,
+  getPaginationRowModel,
+  PaginationState,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -17,22 +19,74 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { Button } from "./button";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+} from "lucide-react";
 
 interface GridProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   columnVisibilityFromProps?: Record<string, boolean>;
+  defaultPageSize?: number;
+  totalCount?: number;
+  pageCount?: number;
+  manualPagination?: boolean;
 }
 
 export function Grid<TData, TValue>({
   columns,
   data,
   columnVisibilityFromProps,
+  defaultPageSize = 25,
+  totalCount,
+  pageCount: externalPageCount,
+  manualPagination = false,
 }: GridProps<TData, TValue>) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState(
     columnVisibilityFromProps || { Rifles: false }
   );
+
+  // Get the pagination values from URL or use defaults
+  const page = searchParams.get("page")
+    ? parseInt(searchParams.get("page") as string)
+    : 0;
+  const pageSize = searchParams.get("limit")
+    ? parseInt(searchParams.get("limit") as string)
+    : defaultPageSize;
+
+  const pagination = React.useMemo<PaginationState>(
+    () => ({
+      pageIndex: page,
+      pageSize: pageSize,
+    }),
+    [page, pageSize]
+  );
+
+  const [paginationState, setPaginationState] =
+    React.useState<PaginationState>(pagination);
+
+  // Update URL when pagination changes
+  React.useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", paginationState.pageIndex.toString());
+    params.set("limit", paginationState.pageSize.toString());
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [paginationState, pathname, router, searchParams]);
+
+  // Update local state when URL changes
+  React.useEffect(() => {
+    setPaginationState(pagination);
+  }, [pagination]);
 
   const table = useReactTable({
     data,
@@ -40,11 +94,17 @@ export function Grid<TData, TValue>({
     state: {
       sorting,
       columnVisibility,
+      pagination: paginationState,
     },
+    pageCount:
+      manualPagination && externalPageCount ? externalPageCount : undefined,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPaginationState,
+    manualPagination,
   });
 
   if (table.getRowModel().rows.length === 0) {
@@ -117,6 +177,66 @@ export function Grid<TData, TValue>({
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      <div className="flex items-center justify-between px-2 py-2 border-t">
+        <div className="flex items-center gap-2 text-xs">
+          <span>
+            Strona {table.getState().pagination.pageIndex + 1} z{" "}
+            {table.getPageCount()}
+            {totalCount !== undefined && (
+              <>
+                {" "}
+                · Razem: {totalCount}{" "}
+                {totalCount === 1
+                  ? "element"
+                  : totalCount % 10 >= 2 &&
+                    totalCount % 10 <= 4 &&
+                    (totalCount % 100 < 10 || totalCount % 100 > 20)
+                  ? "elementy"
+                  : "elementów"}
+              </>
+            )}
+          </span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">Pierwsza strona</span>
+            <ChevronsLeftIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">Poprzednia strona</span>
+            <ChevronLeftIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">Następna strona</span>
+            <ChevronRightIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">Ostatnia strona</span>
+            <ChevronsRightIcon className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export const AdminPageHeader = async () => {
           </li>
           <li>
             <Link
-              href="/admin/zgloszenia?status=PENDING"
+              href="/admin/zgloszenia?status=PENDING&page=0&limit=25"
               className="text-gray-300 hover:text-white relative"
             >
               Zgłoszenia

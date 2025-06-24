@@ -56,9 +56,11 @@ const columns: ColumnDef<TreatmentsGridRecord>[] = [
 
 type TreatmentsGridProps = {
   data: TreatmentsGridRecord[];
+  totalCount?: number;
+  pageCount?: number;
 };
 
-export function TreatmentsList({ data }: TreatmentsGridProps) {
+export function TreatmentsList({ data, totalCount, pageCount }: TreatmentsGridProps) {
   return (
     <div className="w-full">
       <div className="flex justify-end mb-4">
@@ -71,7 +73,14 @@ export function TreatmentsList({ data }: TreatmentsGridProps) {
         </Link>
       </div>
 
-      <Grid columns={columns} data={data} />
+      <Grid 
+        columns={columns} 
+        data={data} 
+        defaultPageSize={25} 
+        totalCount={totalCount}
+        pageCount={pageCount}
+        manualPagination={!!pageCount}
+      />
     </div>
   );
 }
