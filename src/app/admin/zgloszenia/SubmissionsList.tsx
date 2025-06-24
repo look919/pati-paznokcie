@@ -11,10 +11,10 @@ import { Status } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-import { AcceptSubmissionDialog } from "@/components/submission/AcceptSubmissionDialog";
-import { RejectSubmissionDialog } from "@/components/submission/RejectSubmissionDialog";
-import { RescheduleSubmissionDialog } from "@/components/submission/RescheduleSubmissionDialog";
-import { CancelEventDialog } from "@/components/submission/CancelEventDialog";
+import { AcceptSubmissionDialog } from "@/app/admin/zgloszenia/components/AcceptSubmissionDialog";
+import { RejectSubmissionDialog } from "@/app/admin/zgloszenia/components/RejectSubmissionDialog";
+import { RescheduleSubmissionDialog } from "@/app/admin/zgloszenia/components/RescheduleSubmissionDialog";
+import { CancelEventDialog } from "@/app/admin/zgloszenia/components/CancelEventDialog";
 import { Badge } from "@/components/ui/badge";
 
 type SubmissionsGridRecord = {
@@ -229,10 +229,10 @@ export function SubmissionsList({ data, status }: SubmissionsGridProps) {
         <div className="flex items-center space-x-2 cursor-pointer">
           <Switch
             id="columns-switch"
-            checked={status === "PENDING"}
+            checked={status === "ALL"}
             onCheckedChange={(checked) => {
               redirect(
-                `/admin/zgloszenia?status=${checked ? "PENDING" : "ALL"}`,
+                `/admin/zgloszenia?status=${checked ? "ALL" : "PENDING"}`,
                 RedirectType.replace
               );
             }}

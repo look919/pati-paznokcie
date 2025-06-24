@@ -3,6 +3,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { SubmissionForm } from "./SubmissionForm";
 import { Metadata } from "next";
 import { APP_INFO } from "@/consts";
+import { AdminPopup } from "@/components/AdminPopup";
 
 export const metadata: Metadata = {
   title: "Umów wizytę - Stylizacja Paznokci Patrycja Kuczkowska",
@@ -43,6 +44,7 @@ export default async function Submission() {
           </h2>
           <SubmissionForm treatments={treatments} />
         </div>
+        <AdminPopup />
       </section>
     </PageWrapper>
   );

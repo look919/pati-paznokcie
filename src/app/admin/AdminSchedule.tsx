@@ -176,13 +176,11 @@ export const AdminSchedule = (props: AdminScheduleProps) => {
           hour12: false,
         }}
         allDaySlot={false}
-        slotLaneClassNames="sm:w-8 md:w-12"
         height="auto"
         contentHeight="auto"
         selectable={true}
         dateClick={handleDateClick}
         eventClick={(info) => {
-          // Prevent default click behavior
           info.jsEvent.preventDefault();
 
           router.push(`/admin/zgloszenia/${info.event.id}`);
