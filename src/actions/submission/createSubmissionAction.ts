@@ -10,6 +10,7 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
+import { COMPANY_INFO } from "@/consts";
 
 type Options = {
   isReschedule?: boolean;
@@ -92,13 +93,14 @@ export async function createSubmissionAction(
   const { name, surname, email, phone, date, startTime, duration, treatments } =
     data;
 
-  const startDate = dayjs(date)
+  const startDate = dayjs
+    .tz(date, "Europe/Warsaw")
     .set("hour", dayjs(startTime, TIME_FORMAT).hour())
     .set("minute", dayjs(startTime, TIME_FORMAT).minute())
-    .tz("Europe/Warsaw")
+    .utc()
     .toDate();
 
-  const endDate = dayjs(startDate).add(duration, "minute").toDate();
+  const endDate = dayjs.utc(startDate).add(duration, "minute").toDate();
   const timeBlocks = Array.from({ length: duration / 15 }, (_, i) =>
     dayjs(startTime, TIME_FORMAT)
       .add(i * 15, "minute")
@@ -159,7 +161,7 @@ export async function createSubmissionAction(
       !!options.isReschedule
     );
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
+      from: COMPANY_INFO.EMAIL,
       to: email,
       subject: "Potwierdzenie rezerwacji - Salon Kosmetyczny Pati",
       text: `Twoja rezerwacja na ${formatDate(
@@ -170,8 +172,7 @@ export async function createSubmissionAction(
 
     // Send notification email to salon
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
-      // No "to" parameter - it will use the default NEXT_PUBLIC_EMAIL from env
+      from: COMPANY_INFO.EMAIL,
       subject: options?.isReschedule
         ? `[ADMIN] Nowa propozycja zmiany terminu: ${name} ${surname}`
         : `[ADMIN] Nowa rezerwacja: ${name} ${surname}`,

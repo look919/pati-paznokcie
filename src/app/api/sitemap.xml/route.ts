@@ -1,19 +1,13 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { APP_INFO } from "@/consts";
 
 /**
  * Generate dynamic sitemap.xml with all important routes
  */
 export async function GET() {
   try {
-    // Get treatments from the database (if needed for dynamic sitemap)
-    const treatments = await db.treatment.findMany({
-      select: { id: true },
-    });
-
     // Base URL - replace with your actual URL when in production
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://your-domain-name.com";
+    const baseUrl = APP_INFO.BASE_URL;
 
     // Current date for lastmod
     const date = new Date().toISOString().split("T")[0];
@@ -33,18 +27,6 @@ export async function GET() {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  ${treatments
-    .map(
-      (treatment) => `
-  <url>
-    <loc>${baseUrl}/zgloszenie?treatment=${treatment.id}</loc>
-    <lastmod>${date}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  `
-    )
-    .join("")}
 </urlset>`;
 
     // Return XML response

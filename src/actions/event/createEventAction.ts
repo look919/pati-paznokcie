@@ -2,7 +2,7 @@
 
 import dayjs from "@/lib/time";
 import { db } from "@/lib/db";
-import { TIME_FORMAT } from "@/lib/time";
+import { TIME_FORMAT, DATE_FORMAT } from "@/lib/time";
 import { SubmissionFullSchema } from "@/app/zgloszenie/SubmissionForm";
 import { sendEmail } from "../sendEmailAction";
 import {
@@ -10,6 +10,7 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
+import { COMPANY_INFO } from "@/consts";
 
 const generateEventCreationEmailTemplate = (submission: {
   id: string;
@@ -25,6 +26,7 @@ const generateEventCreationEmailTemplate = (submission: {
     };
   }[];
 }) => {
+  // Make sure we format the date with Warsaw timezone awareness
   const formattedDate = formatDate(submission.startDate);
   const formattedTime = formatTime(submission.timeBlocks[0]);
 
@@ -78,14 +80,17 @@ export async function createEventAction(data: SubmissionFullSchema) {
   const { name, surname, email, phone, date, startTime, duration, treatments } =
     data;
 
-  // Create a date by explicitly handling timezone
-  const startDate = dayjs(date)
+  // Process the input date as UTC, ensuring timezone consistency
+  // First convert dayjs object to UTC, then set the time, then convert back to a JS Date
+  const startDate = dayjs
+    .tz(date, "Europe/Warsaw")
     .set("hour", dayjs(startTime, TIME_FORMAT).hour())
     .set("minute", dayjs(startTime, TIME_FORMAT).minute())
-    .tz("Europe/Warsaw")
+    .utc() // Convert to UTC before storing
     .toDate();
 
-  const endDate = dayjs(startDate).add(duration, "minute").toDate();
+  // Similarly for end date, work with UTC dates for consistency
+  const endDate = dayjs.utc(startDate).add(duration, "minute").toDate();
   const timeBlocks = Array.from({ length: duration / 15 }, (_, i) =>
     dayjs(startTime, TIME_FORMAT)
       .add(i * 15, "minute")
@@ -138,13 +143,18 @@ export async function createEventAction(data: SubmissionFullSchema) {
   // Send confirmation email to the client
   try {
     const emailTemplate = generateEventCreationEmailTemplate(submission);
+
+    // Convert the UTC date back to Warsaw timezone for display
+    const displayDate = dayjs
+      .utc(startDate)
+      .tz("Europe/Warsaw")
+      .format(DATE_FORMAT);
+
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
+      from: COMPANY_INFO.EMAIL,
       to: email,
       subject: "Potwierdzenie wizyty - Salon Kosmetyczny Pati",
-      text: `Twoja wizyta na ${formatDate(
-        startDate
-      )} o ${startTime} została zarezerwowana.`,
+      text: `Twoja wizyta na ${displayDate} o ${startTime} została zarezerwowana.`,
       html: emailTemplate,
     });
   } catch (error) {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { sendEmail } from "@/actions/sendEmailAction";
+import { COMPANY_INFO } from "@/consts";
 
 export default async function AcceptReschedule(props: {
   searchParams: Promise<{ id?: string }>;
@@ -21,8 +22,8 @@ export default async function AcceptReschedule(props: {
     if (err instanceof Error) {
       if (err.message !== "Submission is not awaiting user confirmation") {
         await sendEmail({
-          from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
-          to: process.env.NEXT_PUBLIC_EMAIL || "",
+          from: COMPANY_INFO.EMAIL,
+          to: COMPANY_INFO.EMAIL,
           subject: `[ADMIN] Błąd podczas potwierdzania terminu: ${submissionId}`,
           text: `Wystąpił błąd podczas potwierdzania terminu wizyty o ID: ${submissionId}.`,
           html: `<p>Wystąpił błąd podczas potwierdzania terminu wizyty o ID: <strong>${submissionId}</strong>.</p>`,

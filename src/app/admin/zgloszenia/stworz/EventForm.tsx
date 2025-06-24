@@ -83,13 +83,13 @@ const useGetDefaultDate = () => {
   // Get date from query string if it exists
   const startDateParam = searchParams.get("startDate");
 
-  // Use dayjs for parsing and formatting
+  // Use dayjs for parsing and formatting with timezone awareness
   let defaultDate = undefined;
   let defaultStartTime = "";
 
   if (startDateParam) {
     try {
-      const dateObj = dayjs(startDateParam);
+      const dateObj = dayjs(startDateParam).tz("Europe/Warsaw");
 
       if (dateObj.isValid()) {
         defaultDate = dateObj.toDate();
@@ -140,6 +140,8 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
 
   const handleCreateEvent = async (data: EventFormSchema) => {
     try {
+      // Ensure we're properly handling the date in the client
+      // We'll just pass the date as is, and let the server handle timezone conversion
       const eventId = await createEventAction(data);
 
       toast.success("Wydarzenie zostało dodane do kalendarza!");
@@ -340,7 +342,17 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
                   <Calendar
                     mode="single"
                     selected={field.value}
-                    onSelect={field.onChange}
+                    onSelect={(date) => {
+                      // Ensure timezone consistency when selecting a date
+                      if (date) {
+                        const tzAwareDate = dayjs(date)
+                          .tz("Europe/Warsaw")
+                          .toDate();
+                        field.onChange(tzAwareDate);
+                      } else {
+                        field.onChange(date);
+                      }
+                    }}
                     captionLayout="dropdown"
                   />
                 </PopoverContent>

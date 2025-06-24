@@ -1,4 +1,6 @@
 import React from "react";
+import dayjs, { DATE_FORMAT, TIME_FORMAT } from "@/lib/time";
+import { COMPANY_INFO } from "@/consts";
 
 type EmailTemplateProps = {
   preheader?: string;
@@ -11,7 +13,7 @@ export const EmailTemplate = ({
   preheader = "",
   title,
   content,
-  footerText = `Salon kosmetyczny Pati. email: ${process.env.NEXT_PUBLIC_EMAIL} tel: ${process.env.NEXT_PUBLIC_TELEPHONE_NUMBER}`,
+  footerText = `Salon kosmetyczny Pati. email: ${COMPANY_INFO.EMAIL} tel: ${COMPANY_INFO.PHONE}`,
 }: EmailTemplateProps) => {
   return `
     <!DOCTYPE html>
@@ -103,13 +105,10 @@ export const EmailTemplate = ({
 };
 
 export const formatDate = (date: Date): string => {
-  return date.toLocaleDateString("pl-PL", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  // Convert UTC date to Warsaw timezone before formatting
+  return dayjs.utc(date).tz("Europe/Warsaw").format(DATE_FORMAT);
 };
 
 export const formatTime = (time: string): string => {
-  return time;
+  return dayjs.utc(time, TIME_FORMAT).tz("Europe/Warsaw").format(TIME_FORMAT);
 };

@@ -1,5 +1,6 @@
 "use server";
 
+import { COMPANY_INFO } from "@/consts";
 import nodemailer from "nodemailer";
 
 type SendEmailParams = {
@@ -25,6 +26,14 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (params: SendEmailParams) => {
   const { from, subject, text, html } = params;
 
+  if (process.env.NODE_ENV !== "production") {
+    console.info("Email sending in development mode is disabled");
+    return {
+      success: true,
+      message: "Email sending is disabled in development mode",
+    };
+  }
+
   try {
     if (!process.env.SMTP_USERNAME || !process.env.SMTP_PASSWORD) {
       throw new Error(
@@ -34,7 +43,7 @@ export const sendEmail = async (params: SendEmailParams) => {
 
     const info = await transporter.sendMail({
       from,
-      to: params.to || process.env.NEXT_PUBLIC_EMAIL,
+      to: params.to || COMPANY_INFO.EMAIL,
       subject,
       text,
       html,

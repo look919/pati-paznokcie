@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { sendEmail } from "../sendEmailAction";
 import { formatDate } from "@/components/EmailTemplate";
+import { COMPANY_INFO } from "@/consts";
 
 export async function acceptRescheduleResponseAction(submissionId: string) {
   const submission = await db.submission.findUnique({
@@ -33,7 +34,7 @@ export async function acceptRescheduleResponseAction(submissionId: string) {
   // Send confirmation email to salon
   try {
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
+      from: COMPANY_INFO.EMAIL,
       // This will use the default salon email from env
       subject: `[ADMIN] Klient potwierdził nowy termin: ${submission.name} ${submission.surname}`,
       text: `Klient ${submission.name} ${
@@ -87,7 +88,7 @@ export async function rejectRescheduleResponseAction(submissionId: string) {
   // Send rejection notification to salon
   try {
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
+      from: COMPANY_INFO.EMAIL,
       // This will use the default salon email from env
       subject: `[ADMIN] Klient odrzucił proponowany termin: ${submission.name} ${submission.surname}`,
       text: `Klient ${submission.name} ${

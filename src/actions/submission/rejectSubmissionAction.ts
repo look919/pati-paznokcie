@@ -7,6 +7,7 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
+import { COMPANY_INFO } from "@/consts";
 
 type SubmissionWithTreatments = {
   id: string;
@@ -95,7 +96,7 @@ export async function rejectSubmissionAction(
   try {
     const emailTemplate = generateRejectionEmailTemplate(submission, comment);
     await sendEmail({
-      from: process.env.NEXT_PUBLIC_EMAIL || "noreply@salon-pati.pl",
+      from: COMPANY_INFO.EMAIL,
       to: submission.email,
       subject: "Informacja o rezerwacji - Salon Kosmetyczny Pati",
       text: `Twoja rezerwacja na ${formatDate(submission.startDate)} o ${
