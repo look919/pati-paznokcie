@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { sendEmail } from "../sendEmailAction";
 import { EmailTemplate } from "@/components/EmailTemplate";
 import { formatDate, formatTime } from "@/lib/time";
+import { APP_INFO } from "@/consts";
 
 type SubmissionWithTreatments = {
   id: string;
@@ -55,7 +56,9 @@ const generateCancellationEmailTemplate = (
     <p>Przepraszamy za wszelkie niedogodności związane z odwołaniem wizyty.</p>
     <p>Zachęcamy do wybrania nowego terminu wizyty.</p>
     
-    <a href="https://salon-pati.pl/submission" class="button">Umów nową wizytę</a>
+    <a href="${
+      APP_INFO.BASE_URL
+    }/zgloszenie" class="button">Umów nową wizytę</a>
     
     <p>Pozdrawiamy,<br>Zespół Salonu Kosmetycznego Pati</p>
   `;

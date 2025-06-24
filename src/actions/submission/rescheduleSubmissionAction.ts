@@ -5,6 +5,7 @@ import { createSubmissionAction } from "./createSubmissionAction";
 import { sendEmail } from "../sendEmailAction";
 import { EmailTemplate } from "@/components/EmailTemplate";
 import { formatDate } from "@/lib/time";
+import { APP_INFO } from "@/consts";
 
 type RescheduleSubmissionActionParams = {
   submissionId: string;
@@ -127,8 +128,12 @@ export async function rescheduleSubmissionAction(
         <p>Prosimy o potwierdzenie, czy zaproponowany termin Ci odpowiada, klikając w poniższy przycisk:</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="https://salon-pati.pl/zgloszenie/zaakceptuj?id=${newSubmissionId}" class="button" style="margin-right: 15px;">Akceptuję termin</a>
-          <a href="https://salon-pati.pl/zgloszenie/odrzuc?id=${newSubmissionId}" class="button" style="background-color: #e53e3e;">Odrzucam termin</a>
+          <a href="${
+            APP_INFO.BASE_URL
+          }/zgloszenie/zaakceptuj?id=${newSubmissionId}" class="button" style="margin-right: 15px;">Akceptuję termin</a>
+          <a href="${
+            APP_INFO.BASE_URL
+          }/zgloszenie/odrzuc?id=${newSubmissionId}" class="button" style="background-color: #e53e3e;">Odrzucam termin</a>
         </div>
         
         <p>Możesz też odpowiedzieć na tego maila lub skontaktować się z nami telefonicznie, jeśli masz inne pytania.</p>

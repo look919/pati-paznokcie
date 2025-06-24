@@ -1,5 +1,5 @@
 import React from "react";
-import { COMPANY_INFO } from "@/consts";
+import { APP_INFO, COMPANY_INFO } from "@/consts";
 
 type EmailTemplateProps = {
   preheader?: string;
@@ -88,7 +88,7 @@ export const EmailTemplate = ({
         <div class="preheader">${preheader}</div>
         <div class="container">
           <div class="header">
-            <img src="https://pati-paznokcie.vercel.app/images/logo-transparent.png" alt="Salon Kosmetyczny Pati" />
+            <img src="${APP_INFO.BASE_URL}/images/logo-transparent.png" alt="Salon Kosmetyczny Pati" />
           </div>
           <div class="content">
             <h1>${title}</h1>

@@ -9,7 +9,7 @@ type SendEmailParams = {
   text: string;
   html: string;
 };
-// Make sure your .env variables are properly set
+
 if (!process.env.SMTP_USERNAME || !process.env.SMTP_PASSWORD) {
   console.error("Email credentials not found in environment variables");
 }
@@ -50,9 +50,7 @@ export const sendEmail = async (params: SendEmailParams) => {
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Error sending email:", error);
-    // More descriptive error message that includes the underlying issue
     if (error instanceof Error) {
-      // Handle NodeMailer error which has code property
       const mailerError = error as Error & { code?: string };
       if (mailerError.code === "EAUTH") {
         throw new Error(
