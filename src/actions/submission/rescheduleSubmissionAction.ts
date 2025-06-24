@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { createSubmissionAction } from "./createSubmissionAction";
 import { sendEmail } from "../sendEmailAction";
 import { EmailTemplate, formatDate } from "@/components/EmailTemplate";
-import { COMPANY_INFO } from "@/consts";
 
 type RescheduleSubmissionActionParams = {
   submissionId: string;
@@ -143,7 +142,6 @@ export async function rescheduleSubmissionAction(
     });
 
     await sendEmail({
-      from: COMPANY_INFO.EMAIL,
       to: submission.email,
       subject: "Propozycja nowego terminu wizyty - Salon Kosmetyczny Pati",
       text: `Nie mogliśmy zaakceptować Twojej rezerwacji na ${formattedOldDate}. Proponujemy nowy termin na ${formattedNewDate} o ${formattedNewTime}. Sprawdź maila, aby zaakceptować lub odrzucić propozycję.`,

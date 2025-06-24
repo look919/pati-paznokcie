@@ -10,7 +10,6 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
-import { COMPANY_INFO } from "@/consts";
 
 type Options = {
   isReschedule?: boolean;
@@ -161,7 +160,6 @@ export async function createSubmissionAction(
       !!options.isReschedule
     );
     await sendEmail({
-      from: COMPANY_INFO.EMAIL,
       to: email,
       subject: "Potwierdzenie rezerwacji - Salon Kosmetyczny Pati",
       text: `Twoja rezerwacja na ${formatDate(
@@ -172,7 +170,6 @@ export async function createSubmissionAction(
 
     // Send notification email to salon
     await sendEmail({
-      from: COMPANY_INFO.EMAIL,
       subject: options?.isReschedule
         ? `[ADMIN] Nowa propozycja zmiany terminu: ${name} ${surname}`
         : `[ADMIN] Nowa rezerwacja: ${name} ${surname}`,

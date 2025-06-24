@@ -7,7 +7,6 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
-import { COMPANY_INFO } from "@/consts";
 
 type SubmissionWithTreatments = {
   id: string;
@@ -101,7 +100,6 @@ export async function cancelEventAction(eventId: string, comment: string) {
   try {
     const emailTemplate = generateCancellationEmailTemplate(event, comment);
     await sendEmail({
-      from: COMPANY_INFO.EMAIL,
       to: event.email,
       subject: "Odwołanie wizyty - Salon Kosmetyczny Pati",
       text: `Twoja wizyta na ${formatDate(event.startDate)} o ${

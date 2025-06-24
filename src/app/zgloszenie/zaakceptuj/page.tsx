@@ -22,7 +22,6 @@ export default async function AcceptReschedule(props: {
     if (err instanceof Error) {
       if (err.message !== "Submission is not awaiting user confirmation") {
         await sendEmail({
-          from: COMPANY_INFO.EMAIL,
           to: COMPANY_INFO.EMAIL,
           subject: `[ADMIN] Błąd podczas potwierdzania terminu: ${submissionId}`,
           text: `Wystąpił błąd podczas potwierdzania terminu wizyty o ID: ${submissionId}.`,

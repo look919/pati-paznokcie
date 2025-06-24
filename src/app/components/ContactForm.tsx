@@ -55,8 +55,7 @@ export const ContactForm = () => {
       `;
 
       await sendEmail({
-        from: `"${data.name}" <${data.email}>`,
-        subject: data.subject,
+        subject: `"${data.name}" <${data.email}> - ${data.subject}`,
         text: data.message,
         html: emailHtml,
       });

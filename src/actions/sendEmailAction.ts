@@ -4,7 +4,6 @@ import { COMPANY_INFO } from "@/consts";
 import nodemailer from "nodemailer";
 
 type SendEmailParams = {
-  from: string;
   to?: string;
   subject: string;
   text: string;
@@ -24,7 +23,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (params: SendEmailParams) => {
-  const { from, subject, text, html } = params;
+  const { subject, text, html } = params;
 
   if (process.env.NODE_ENV !== "production") {
     console.info("Email sending in development mode is disabled");
@@ -42,7 +41,7 @@ export const sendEmail = async (params: SendEmailParams) => {
     }
 
     const info = await transporter.sendMail({
-      from,
+      from: COMPANY_INFO.EMAIL,
       to: params.to || COMPANY_INFO.EMAIL,
       subject,
       text,

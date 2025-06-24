@@ -10,7 +10,6 @@ import {
   formatDate,
   formatTime,
 } from "@/components/EmailTemplate";
-import { COMPANY_INFO } from "@/consts";
 
 const generateEventCreationEmailTemplate = (submission: {
   id: string;
@@ -151,7 +150,6 @@ export async function createEventAction(data: SubmissionFullSchema) {
       .format(DATE_FORMAT);
 
     await sendEmail({
-      from: COMPANY_INFO.EMAIL,
       to: email,
       subject: "Potwierdzenie wizyty - Salon Kosmetyczny Pati",
       text: `Twoja wizyta na ${displayDate} o ${startTime} została zarezerwowana.`,
