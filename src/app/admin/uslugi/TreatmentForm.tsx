@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createTreatmentAction } from "@/actions/treatments/createTreatmentAction";
 import { updateTreatmentAction } from "@/actions/treatments/updateTreatmentAction";
+import { Treatment } from "@prisma/client";
 
 const treatmentSchema = z.object({
   name: z.string().min(2, "Nazwa musi mieć co najmniej 2 znaki"),
@@ -36,16 +37,7 @@ const treatmentSchema = z.object({
 type TreatmentFormValues = z.infer<typeof treatmentSchema>;
 
 type TreatmentFormProps = {
-  treatment?: {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    duration: number;
-    images: string[];
-    video: string | null;
-    isVisible: boolean;
-  };
+  treatment?: Treatment;
 };
 
 export function TreatmentForm({ treatment }: TreatmentFormProps) {
