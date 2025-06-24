@@ -20,42 +20,6 @@ const formatPrice = (price: number) => {
   }).format(price);
 };
 
-// Helper function to get status badge color
-const getStatusBadgeColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-    case "ACCEPTED":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "REJECTED":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    case "AWAITING_USER_CONFIRMATION":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
-    case "RESCHEDULED":
-      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
-
-// Helper function to get human-readable status
-const getStatusText = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "Oczekujące";
-    case "ACCEPTED":
-      return "Zaakceptowane";
-    case "REJECTED":
-      return "Odrzucone";
-    case "AWAITING_USER_CONFIRMATION":
-      return "Oczekuje na decyzję klienta";
-    case "RESCHEDULED":
-      return "Przełożone";
-    default:
-      return status;
-  }
-};
-
 export default async function SubmissionPage({ params }: SubmissionPageProps) {
   const resolvedParams = await params;
   // Fetch the submission by ID
@@ -94,9 +58,7 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
           <h3 className="text-xl font-semibold">
             Zgłoszenie #{submission.id.substring(0, 8)}
           </h3>
-          <Badge className={getStatusBadgeColor(submission.status)}>
-            {getStatusText(submission.status)}
-          </Badge>
+          <Badge status={submission.status} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

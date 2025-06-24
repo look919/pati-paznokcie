@@ -49,73 +49,75 @@ export function Grid<TData, TValue>({
 
   if (table.getRowModel().rows.length === 0) {
     return (
-      <div className="text-center mt-12 border rounded-md p-3 md:min-w-2xl font-bold">
+      <div className="text-center mt-6 border rounded-md p-2 sm:p-3 text-sm font-bold">
         Obecnie brak danych do wyświetlenia.
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border border-slate-600">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-gray-400">
-              {headerGroup.headers.map((header) =>
-                header.column.getIsVisible() ? (
-                  <TableHead
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className={cn(
-                      header.column.getCanSort()
-                        ? "cursor-pointer select-none hover:bg-gray-500"
-                        : "",
-                      "text-center border-x m-1 text-sm"
-                    )}
-                    onClick={header.column.getToggleSortingHandler()}
+    <div className="rounded-md border border-slate-600 w-full max-w-[1200px] 2xl:max-w-fit">
+      <div className="overflow-x-auto">
+        <Table className="min-w-full">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-gray-400">
+                {headerGroup.headers.map((header) =>
+                  header.column.getIsVisible() ? (
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className={cn(
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none hover:bg-gray-500"
+                          : "",
+                        "text-center border-x m-1 text-xs md:text-sm whitespace-nowrap"
+                      )}
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div className="flex justify-center items-center">
+                          <div>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </div>
+                          <div>
+                            {{
+                              asc: " 🔼",
+                              desc: " 🔽",
+                            }[header.column.getIsSorted() as string] ?? null}
+                          </div>
+                        </div>
+                      )}
+                    </TableHead>
+                  ) : null
+                )}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="hover:bg-gray-300"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className="border-x text-center text-xs 2xl:text-md py-1 px-1 md:px-2"
+                    style={{ width: cell.column.getSize() }}
                   >
-                    {header.isPlaceholder ? null : (
-                      <div className="flex justify-center items-center">
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </div>
-                        <div>
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      </div>
-                    )}
-                  </TableHead>
-                ) : null
-              )}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-              className="hover:bg-gray-300"
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  className="border-x text-center"
-                  style={{ width: cell.column.getSize() }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

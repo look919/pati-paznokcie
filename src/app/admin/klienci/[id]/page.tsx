@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatDateAndTime } from "@/lib/time";
+import { Badge } from "@/components/ui/badge";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -93,9 +94,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                         <div className="font-medium">
                           {formatDateAndTime(submission.startDate)}
                         </div>
-                        <div className="text-sm py-0.5 px-2 bg-gray-100 rounded-full">
-                          {submission.status}
-                        </div>
+                        <Badge status={submission.status} />
                       </div>
                       <div className="text-sm text-gray-500 mt-1">
                         {submission.treatments

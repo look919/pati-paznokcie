@@ -92,7 +92,7 @@ export default function RootLayout({
               duration: 2000,
             }}
           />
-          <Analytics />
+          {process.env.NODE_ENV === "production" && <Analytics />}
         </body>
       </html>
     </ClerkProvider>

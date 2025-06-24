@@ -189,7 +189,7 @@ function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
           <b className="mr-1 md:mr-2 text-[8px] sm:text-xs md:text-sm">
             {displayTime}
           </b>
-          <i className="hidden lg:block text-md">{eventInfo.event.title}</i>
+          <i className="hidden 2xl:block text-md">{eventInfo.event.title}</i>
         </div>
       );
 

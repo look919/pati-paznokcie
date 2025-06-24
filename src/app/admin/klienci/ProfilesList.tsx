@@ -24,7 +24,6 @@ const columns: ColumnDef<ProfilesGridRecord>[] = [
   createColumn("surname", "Nazwisko"),
   createColumn("email", "Email"),
   createColumn("phone", "Telefon"),
-  createColumn("createdAt", "Data utworzenia"),
   createColumn("submissionsCount", "Liczba wizyt/zgłoszeń", {
     maxSize: 20,
   }),

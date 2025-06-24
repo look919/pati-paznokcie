@@ -30,93 +30,37 @@ type SubmissionsGridRecord = {
   treatments: string;
 };
 
-// Helper function to get status badge color
-const getStatusBadgeColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-    case "ACCEPTED":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "REJECTED":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    case "AWAITING_USER_CONFIRMATION":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
-    case "RESCHEDULED":
-      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
-
-// Helper function to get human-readable status
-const getStatusText = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "Oczekujące";
-    case "ACCEPTED":
-      return "Zaakceptowane";
-    case "REJECTED":
-      return "Odrzucone";
-    case "AWAITING_USER_CONFIRMATION":
-      return "Oczekuje na decyzję klienta";
-    case "RESCHEDULED":
-      return "Przełożone";
-    default:
-      return status;
-  }
-};
-
 const columns: ColumnDef<SubmissionsGridRecord>[] = [
   createIndexColumn(),
-  {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => {
-      return (
-        <Link
-          href={`/admin/zgloszenia/${row.original.id}`}
-          className="text-blue-600 hover:underline"
-        >
-          #{row.original.id.substring(0, 8)}
-        </Link>
-      );
-    },
-  },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
       const status = row.original.status;
 
-      return (
-        <Badge className={getStatusBadgeColor(status)}>
-          {getStatusText(status)}
-        </Badge>
-      );
+      return <Badge className="text-xs whitespace-nowrap" status={status} />;
     },
+    size: 100,
   },
-  createColumn("startDate", "Data rozpoczęcia"),
-  createColumn("endDate", "Data zakończenia"),
-  createColumn("name", "Imię"),
-  createColumn("surname", "Nazwisko"),
-  createColumn("email", "Email"),
-  createColumn("phone", "Telefon"),
-  createColumn("createdAt", "Data utworzenia"),
+  createColumn("startDate", "Data rozpoczęcia", { size: 120 }),
+  createColumn("endDate", "Data zakończenia", { size: 120 }),
+  createColumn("name", "Imię", { size: 100 }),
+  createColumn("surname", "Nazwisko", { size: 100 }),
   createColumn("treatments", "Usługi", {
-    maxSize: 20,
+    maxSize: 150,
   }),
   {
     id: "actions",
     header: "Akcje",
-    maxSize: 100,
-
+    size: 80,
+    maxSize: 80,
     cell: ({ row }) => {
       const profile = row.original;
 
       // View details link for all submissions
       const viewDetailsLink = (
         <Link href={`/admin/zgloszenia/${profile.id}`}>
-          <EyeIcon className="text-blue-600 hover:text-blue-800" />
+          <EyeIcon className="w-4 h-4 md:w-5 md:h-5 text-blue-600 hover:text-blue-800" />
         </Link>
       );
 
@@ -137,19 +81,17 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
           );
         };
         return (
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-1">
             {viewDetailsLink}
             <button onClick={handleOpenCancelEventDialog}>
-              <XIcon className="text-red-600 hover:text-red-800" />
+              <XIcon className="w-4 h-4 md:w-5 md:h-5 text-red-600 hover:text-red-800" />
             </button>
           </div>
         );
       }
 
       if (row.original.status !== "PENDING") {
-        return (
-          <div className="flex justify-center gap-2">{viewDetailsLink}</div>
-        );
+        return <div className="flex justify-center">{viewDetailsLink}</div>;
       }
 
       const handleOpenAcceptSubmissionDialog = (
@@ -201,16 +143,16 @@ const columns: ColumnDef<SubmissionsGridRecord>[] = [
       };
 
       return (
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center gap-1">
           {viewDetailsLink}
           <button onClick={handleOpenAcceptSubmissionDialog}>
-            <CheckIcon className="text-emerald-600 hover:text-emerald-800" />
+            <CheckIcon className="w-4 h-4 md:w-5 md:h-5 text-emerald-600 hover:text-emerald-800" />
           </button>
           <button onClick={handleOpenRejectSubmissionDialog}>
-            <XIcon className="text-red-600 hover:text-red-800" />
+            <XIcon className="w-4 h-4 md:w-5 md:h-5 text-red-600 hover:text-red-800" />
           </button>
           <button onClick={handleRescheduleSubmission}>
-            <UserRoundPenIcon className="text-amber-600 hover:text-amber-800" />
+            <UserRoundPenIcon className="w-4 h-4 md:w-5 md:h-5 text-amber-600 hover:text-amber-800" />
           </button>
         </div>
       );
@@ -282,34 +224,36 @@ export function SubmissionsList({ data, status }: SubmissionsGridProps) {
   }, []);
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex justify-end mb-4">
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+        <div className="flex items-center space-x-2 cursor-pointer">
+          <Switch
+            id="columns-switch"
+            checked={status === "PENDING"}
+            onCheckedChange={(checked) => {
+              redirect(
+                `/admin/zgloszenia?status=${checked ? "PENDING" : "ALL"}`,
+                RedirectType.replace
+              );
+            }}
+          />
+          <Label htmlFor="columns-switch" className="text-xs sm:text-sm">
+            {status === "PENDING"
+              ? "Pokaż wszystkie zgłoszenia"
+              : "Pokaż tylko oczekujące zgłoszenia"}
+          </Label>
+        </div>
         <Link
           href="/admin/zgloszenia/stworz"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-full text-white 
-                     bg-gradient-to-r from-sky-400 to-blue-500"
+          className="inline-flex justify-center py-1 sm:py-2 px-3 sm:px-4 border border-transparent shadow-sm rounded-full text-white 
+                   bg-gradient-to-r from-sky-400 to-blue-500 text-xs sm:text-sm"
         >
           + Dodaj zgłoszenie
         </Link>
       </div>
-      <div className="flex items-center space-x-2 mt-4 mb-2 cursor-pointer">
-        <Switch
-          id="columns-switch"
-          checked={status === "PENDING"}
-          onCheckedChange={(checked) => {
-            redirect(
-              `/admin/zgloszenia?status=${checked ? "PENDING" : "ALL"}`,
-              RedirectType.replace
-            );
-          }}
-        />
-        <Label htmlFor="columns-switch" className="text-sm">
-          {status === "PENDING"
-            ? "Pokaż wszystkie zgłoszenia"
-            : "Pokaż tylko oczekujące zgłoszenia"}
-        </Label>
+      <div className="overflow-x-auto pb-4">
+        <Grid data={data} columns={columns} />
       </div>
-      <Grid data={data} columns={columns} />
       {dialogState.type === "acceptSubmission" && (
         <AcceptSubmissionDialog
           submissionId={dialogState.submissionId}
