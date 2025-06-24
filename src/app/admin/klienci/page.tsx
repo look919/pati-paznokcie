@@ -35,14 +35,19 @@ const getAllProfiles = async (page = 0, limit = 25) => {
 };
 
 interface ProfilesPageProps {
-  searchParams: { page?: string; limit?: string };
+  searchParams: Promise<{ page?: string; limit?: string }>;
 }
 
 export default async function ProfilesPage({
   searchParams,
 }: ProfilesPageProps) {
-  const page = searchParams.page ? parseInt(searchParams.page) : 0;
-  const limit = searchParams.limit ? parseInt(searchParams.limit) : 25;
+  const resolvedSearchParams = await searchParams;
+  const page = resolvedSearchParams.page
+    ? parseInt(resolvedSearchParams.page)
+    : 0;
+  const limit = resolvedSearchParams.limit
+    ? parseInt(resolvedSearchParams.limit)
+    : 25;
 
   const { profiles, totalCount, pageCount } = await getAllProfiles(page, limit);
 

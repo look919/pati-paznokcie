@@ -34,14 +34,19 @@ const getAllTreatments = async (page = 0, limit = 25) => {
 };
 
 interface TreatmentsPageProps {
-  searchParams: { page?: string; limit?: string };
+  searchParams: Promise<{ page?: string; limit?: string }>;
 }
 
 export default async function TreatmentsPage({
   searchParams,
 }: TreatmentsPageProps) {
-  const page = searchParams.page ? parseInt(searchParams.page) : 0;
-  const limit = searchParams.limit ? parseInt(searchParams.limit) : 25;
+  const resolvedSearchParams = await searchParams;
+  const page = resolvedSearchParams.page
+    ? parseInt(resolvedSearchParams.page)
+    : 0;
+  const limit = resolvedSearchParams.limit
+    ? parseInt(resolvedSearchParams.limit)
+    : 25;
 
   const { treatments, totalCount, pageCount } = await getAllTreatments(
     page,
