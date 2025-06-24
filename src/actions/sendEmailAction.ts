@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (params: SendEmailParams) => {
   const { subject, text, html } = params;
 
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.TESTING_APP === "true") {
     console.info("Email sending in development mode is disabled");
     return {
       success: true,

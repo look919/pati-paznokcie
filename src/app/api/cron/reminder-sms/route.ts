@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.TESTING_APP === "true") {
     console.info(
       "This endpoint can only be called by Vercel Cron in production",
       new Date().toISOString()
