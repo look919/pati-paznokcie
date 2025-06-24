@@ -97,7 +97,7 @@ export const ProfilesList = ({
   }, []);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="w-full">
       <div className="flex justify-end mb-4">
         <Link
           href="/admin/klienci/stworz"
