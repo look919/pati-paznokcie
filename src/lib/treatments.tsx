@@ -11,6 +11,7 @@ export const treatments: TreatmentTest[] = [
     description:
       "Manicure hybrydowy to trwała metoda stylizacji paznokci, która łączy estetykę i funkcjonalność. Dzięki zastosowaniu specjalnych lakierów hybrydowych, paznokcie zyskują piękny wygląd i długotrwały efekt.",
     images: ["/images/gallery/gal-1.jpg"],
+    isVisible: true,
   },
   {
     id: "2",
@@ -20,6 +21,7 @@ export const treatments: TreatmentTest[] = [
     description:
       "Uzupełnienie żelu to zabieg, który pozwala na odświeżenie i przedłużenie trwałości stylizacji paznokci żelowych. Dzięki niemu paznokcie zyskują nowy blask i estetyczny wygląd.",
     images: ["/images/gallery/gal-2.jpg"],
+    isVisible: true,
   },
   {
     id: "3",
@@ -29,6 +31,7 @@ export const treatments: TreatmentTest[] = [
     price: 150,
     duration: 120,
     images: ["/images/gallery/gal-3.jpg"],
+    isVisible: true,
   },
   {
     id: "4",
@@ -38,6 +41,7 @@ export const treatments: TreatmentTest[] = [
     description:
       "Pedicure to zabieg pielęgnacyjny stóp, który obejmuje zarówno pielęgnację paznokci, jak i skóry stóp. Dzięki niemu stopy zyskują zdrowy wygląd i są wolne od zrogowaceń oraz innych niedoskonałości.",
     images: ["/images/gallery/gal-4.jpg"],
+    isVisible: true,
   },
   {
     id: "5",
@@ -47,5 +51,6 @@ export const treatments: TreatmentTest[] = [
     description:
       "Farbowanie i regulacja brwi to zabieg, który pozwala na uzyskanie idealnego kształtu i koloru brwi. Dzięki niemu twarz zyskuje wyrazistość, a spojrzenie staje się bardziej intensywne.",
     images: ["/images/gallery/gal-5.jpg"],
+    isVisible: true,
   },
 ];
