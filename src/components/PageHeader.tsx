@@ -39,7 +39,7 @@ export const PageHeader = () => {
   }
 
   return (
-    <header className="pt-4 pb-1 px-4 relative bg-gray-800 text-gray-300 h-25 flex items-center justify-between">
+    <header className="pt-4 pb-1 px-4 relative bg-gray-800 text-gray-300 h-fit sm:h-25 flex flex-col sm:flex-row items-center justify-between">
       <Link href="/">
         <Image
           src="/images/logo-transparent.png"
@@ -49,7 +49,7 @@ export const PageHeader = () => {
           className="h-[80px] w-[160px] object-contain mx-auto"
         />
       </Link>
-      <nav>
+      <nav className="my-4 sm:mt-0">
         <ul className="flex justify-evenly space-x-4">
           <li>
             <Link href="/admin" className="text-gray-300 hover:text-white">
@@ -70,6 +70,14 @@ export const PageHeader = () => {
               className="text-gray-300 hover:text-white"
             >
               Klienci
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/uslugi"
+              className="text-gray-300 hover:text-white"
+            >
+              Usługi
             </Link>
           </li>
         </ul>

@@ -7,13 +7,28 @@ export const dynamic = "force-dynamic"; // No caching
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
+  console.info(
+    "Cron job triggered for reminder SMS at:",
+    new Date().toISOString()
+  );
+
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    console.info(
+      "Unauthorized access attempt to reminder SMS cron job",
+      new Date().toISOString()
+    );
+
     return new Response("Unauthorized", {
       status: 401,
     });
   }
 
   if (process.env.NODE_ENV !== "production") {
+    console.info(
+      "This endpoint can only be called by Vercel Cron in production",
+      new Date().toISOString()
+    );
+
     return NextResponse.json(
       {
         error: "This endpoint can only be called by Vercel Cron in production",
@@ -25,6 +40,11 @@ export async function GET(req: NextRequest) {
   try {
     // Call the function to send reminder SMS messages
     const result = await sendEventReminderSmsAction();
+    console.info(
+      "Reminder SMS job completed successfully:",
+      new Date().toISOString()
+    );
+
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error processing reminder SMS job:", error);
