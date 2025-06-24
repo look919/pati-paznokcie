@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { AdminSchedule } from "./AdminSchedule";
 import type { Event } from "./AdminSchedule";
 import { Metadata } from "next";
-import dayjs from "@/lib/time";
+import dayjs, { TIMEZONE } from "@/lib/time";
 
 export const metadata: Metadata = {
   title: "Panel administracyjny - Stylizacja Paznokci Patrycja Kuczkowska",
@@ -34,8 +34,8 @@ const getAllEvents = async (): Promise<Event[]> => {
       submission.treatments.length === 1
         ? `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments[0].treatment.name}`
         : `${submission.profile.name} ${submission.profile.surname} - ${submission.treatments.length} usługi`,
-    start: dayjs(submission.startDate).tz("Europe/Warsaw").toDate(),
-    end: dayjs(submission.endDate).tz("Europe/Warsaw").toDate(),
+    start: dayjs(submission.startDate).tz(TIMEZONE).toDate(),
+    end: dayjs(submission.endDate).tz(TIMEZONE).toDate(),
     extendedProps: {
       description: submission.treatments
         .map((t) => t.treatment.name)

@@ -1,15 +1,12 @@
 "use server";
 
 import { db } from "@/lib/db";
-import dayjs from "@/lib/time";
+import dayjs, { TIMEZONE } from "@/lib/time";
 import { TIME_FORMAT } from "@/lib/time";
 import { SubmissionFullSchema } from "@/app/zgloszenie/SubmissionForm";
 import { sendEmail } from "../sendEmailAction";
-import {
-  EmailTemplate,
-  formatDate,
-  formatTime,
-} from "@/components/EmailTemplate";
+import { EmailTemplate } from "@/components/EmailTemplate";
+import { formatDate, formatTime } from "@/lib/time";
 
 type Options = {
   isReschedule?: boolean;
@@ -93,7 +90,7 @@ export async function createSubmissionAction(
     data;
 
   const startDate = dayjs
-    .tz(date, "Europe/Warsaw")
+    .tz(date, TIMEZONE)
     .set("hour", dayjs(startTime, TIME_FORMAT).hour())
     .set("minute", dayjs(startTime, TIME_FORMAT).minute())
     .utc()

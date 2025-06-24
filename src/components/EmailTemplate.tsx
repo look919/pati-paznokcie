@@ -1,5 +1,4 @@
 import React from "react";
-import dayjs, { DATE_FORMAT, TIME_FORMAT } from "@/lib/time";
 import { COMPANY_INFO } from "@/consts";
 
 type EmailTemplateProps = {
@@ -102,13 +101,4 @@ export const EmailTemplate = ({
       </body>
     </html>
   `;
-};
-
-export const formatDate = (date: Date): string => {
-  // Convert UTC date to Warsaw timezone before formatting
-  return dayjs.utc(date).tz("Europe/Warsaw").format(DATE_FORMAT);
-};
-
-export const formatTime = (time: string): string => {
-  return dayjs.utc(time, TIME_FORMAT).tz("Europe/Warsaw").format(TIME_FORMAT);
 };

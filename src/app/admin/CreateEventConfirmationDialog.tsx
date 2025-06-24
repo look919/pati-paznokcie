@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Dialog,
   DialogContent,
@@ -6,10 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
-import dayjs from "@/lib/time";
-import { DATE_AND_TIME_FORMAT } from "@/lib/time";
-import Link from "next/link";
+import { formatDateAndTime } from "@/lib/time";
 
 type CreateEventDialogProps = {
   isOpen: boolean;
@@ -22,13 +20,17 @@ export function CreateEventDialog({
   onClose,
   startDate,
 }: CreateEventDialogProps) {
+  if (!startDate) {
+    return null;
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="w-[320px]">
         <DialogHeader className="mb-2">
-          <DialogTitle>{`Czy chcesz utworzyć nowe wydarzenie ${dayjs(
+          <DialogTitle>{`Czy chcesz utworzyć nowe wydarzenie ${formatDateAndTime(
             startDate
-          ).format(DATE_AND_TIME_FORMAT)}?`}</DialogTitle>
+          )}?`}</DialogTitle>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>

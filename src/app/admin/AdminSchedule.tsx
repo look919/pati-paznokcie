@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction"; // For dateClick
 import { Profile } from "@prisma/client";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import dayjs from "@/lib/time";
+import { formatTime } from "@/lib/time";
 import { CreateEventDialog } from "./CreateEventConfirmationDialog";
 import { useRouter } from "next/navigation";
 
@@ -154,9 +154,9 @@ function renderEventContent(eventInfo: EventContentArg, view: CalendarView) {
   const shouldDisplayDescription =
     (view === "timeGridDay" || view === "timeGridWeek") && treatmentsAmount > 1;
 
-  const displayTime = `${dayjs(eventInfo.event.start).format(
-    "HH:mm"
-  )} - ${dayjs(eventInfo.event.end).format("HH:mm")}`;
+  const displayTime = `${formatTime(eventInfo.event.start)} - ${formatTime(
+    eventInfo.event.end
+  )}`;
 
   switch (view) {
     case "timeGridDay":

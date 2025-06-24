@@ -2,11 +2,8 @@
 
 import { db } from "@/lib/db";
 import { sendEmail } from "../sendEmailAction";
-import {
-  EmailTemplate,
-  formatDate,
-  formatTime,
-} from "@/components/EmailTemplate";
+import { EmailTemplate } from "@/components/EmailTemplate";
+import { formatDate, formatTime } from "@/lib/time";
 
 type SubmissionWithTreatments = {
   id: string;

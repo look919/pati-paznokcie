@@ -4,6 +4,7 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
   getAvailableTimesBasedOnTreatmentDuration,
+  formatDate,
 } from "@/lib/time";
 import { db } from "@/lib/db";
 import dayjs from "@/lib/time";
@@ -49,7 +50,7 @@ export async function findTreatmentDateAction(
 
   // Loop through all accepted submissions and remove occupied time blocks
   allAcceptedSubmissions.forEach((submission) => {
-    const formattedDate = dayjs(submission.startDate).format(DATE_FORMAT);
+    const formattedDate = formatDate(submission.startDate);
     const occupiedTimeBlocks = submission.timeBlocks;
 
     // If the date is in the map, filter out the occupied time blocks
@@ -69,7 +70,7 @@ export async function findTreatmentDateAction(
   for (const date of availableDates) {
     // Get all accepted bookings for this date
     const bookingsForDate = allAcceptedSubmissions.filter(
-      (submission) => dayjs(submission.startDate).format(DATE_FORMAT) === date
+      (submission) => formatDate(submission.startDate) === date
     );
 
     // Collect all occupied time slots for this date

@@ -1,15 +1,11 @@
 "use server";
 
-import dayjs from "@/lib/time";
+import dayjs, { TIMEZONE, formatDate, formatTime } from "@/lib/time";
 import { db } from "@/lib/db";
 import { TIME_FORMAT, DATE_FORMAT } from "@/lib/time";
 import { SubmissionFullSchema } from "@/app/zgloszenie/SubmissionForm";
 import { sendEmail } from "../sendEmailAction";
-import {
-  EmailTemplate,
-  formatDate,
-  formatTime,
-} from "@/components/EmailTemplate";
+import { EmailTemplate } from "@/components/EmailTemplate";
 
 const generateEventCreationEmailTemplate = (submission: {
   id: string;
@@ -82,7 +78,7 @@ export async function createEventAction(data: SubmissionFullSchema) {
   // Process the input date as UTC, ensuring timezone consistency
   // First convert dayjs object to UTC, then set the time, then convert back to a JS Date
   const startDate = dayjs
-    .tz(date, "Europe/Warsaw")
+    .tz(date, TIMEZONE)
     .set("hour", dayjs(startTime, TIME_FORMAT).hour())
     .set("minute", dayjs(startTime, TIME_FORMAT).minute())
     .utc() // Convert to UTC before storing
@@ -144,10 +140,7 @@ export async function createEventAction(data: SubmissionFullSchema) {
     const emailTemplate = generateEventCreationEmailTemplate(submission);
 
     // Convert the UTC date back to Warsaw timezone for display
-    const displayDate = dayjs
-      .utc(startDate)
-      .tz("Europe/Warsaw")
-      .format(DATE_FORMAT);
+    const displayDate = dayjs.utc(startDate).tz(TIMEZONE).format(DATE_FORMAT);
 
     await sendEmail({
       to: email,

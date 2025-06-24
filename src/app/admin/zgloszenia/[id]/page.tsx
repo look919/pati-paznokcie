@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import dayjs from "@/lib/time";
-import { DATE_FORMAT, TIME_FORMAT } from "@/lib/time";
+import { formatDate, formatDateAndTime, formatTime } from "@/lib/time";
 import { SubmissionDetailsActions } from "./SubmissionDetailsActions";
 
 interface SubmissionPageProps {
@@ -129,15 +128,15 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
             <div className="space-y-2">
               <div>
                 <span className="font-medium">Data:</span>{" "}
-                {dayjs(submission.startDate).format(DATE_FORMAT)}
+                {formatDate(submission.startDate)}
               </div>
               <div>
                 <span className="font-medium">Godzina rozpoczęcia:</span>{" "}
-                {dayjs(submission.startDate).format(TIME_FORMAT)}
+                {formatTime(submission.startDate)}
               </div>
               <div>
                 <span className="font-medium">Godzina zakończenia:</span>{" "}
-                {dayjs(submission.endDate).format(TIME_FORMAT)}
+                {formatTime(submission.endDate)}
               </div>
               <div>
                 <span className="font-medium">Czas trwania:</span>{" "}
@@ -145,11 +144,11 @@ export default async function SubmissionPage({ params }: SubmissionPageProps) {
               </div>
               <div>
                 <span className="font-medium">Data utworzenia:</span>{" "}
-                {dayjs(submission.createdAt).format("DD.MM.YYYY HH:mm")}
+                {formatDateAndTime(submission.createdAt)}
               </div>
               <div>
                 <span className="font-medium">Ostatnia aktualizacja:</span>{" "}
-                {dayjs(submission.updatedAt).format("DD.MM.YYYY HH:mm")}
+                {formatDateAndTime(submission.updatedAt)}
               </div>
             </div>
           </div>

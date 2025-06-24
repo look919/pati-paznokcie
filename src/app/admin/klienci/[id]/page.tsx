@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { formatDateAndTime } from "@/lib/time";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -90,10 +91,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     >
                       <div className="flex justify-between">
                         <div className="font-medium">
-                          {new Date(submission.startDate).toLocaleDateString(
-                            "pl-PL"
-                          )}{" "}
-                          {submission.timeBlocks[0]}
+                          {formatDateAndTime(submission.startDate)}
                         </div>
                         <div className="text-sm py-0.5 px-2 bg-gray-100 rounded-full">
                           {submission.status}

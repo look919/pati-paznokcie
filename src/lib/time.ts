@@ -13,19 +13,30 @@ dayjs.extend(localizedFormat);
 dayjs.extend(customParseFormat);
 dayjs.extend(relativeTime);
 
-dayjs.tz.setDefault("Europe/Warsaw");
-
-// Helper function to get current time in CE timezone
-export const nowInCET = () => dayjs().tz("Europe/Warsaw");
-
-// Helper function to convert any date to CE timezone
-export const toCET = (date?: string | Date | dayjs.Dayjs) => {
-  return dayjs(date).tz("Europe/Warsaw");
-};
-
+export const TIMEZONE = "Europe/Warsaw";
 export const DATE_FORMAT = "DD/MM/YYYY";
 export const TIME_FORMAT = "HH:mm";
 export const DATE_AND_TIME_FORMAT = "DD/MM/YYYY HH:mm";
+
+dayjs.tz.setDefault(TIMEZONE);
+
+export const formatDate = (date: Date): string => {
+  // Convert UTC date to Warsaw timezone before formatting
+  return dayjs.utc(date).tz(TIMEZONE).format(DATE_FORMAT);
+};
+
+export const formatTime = (time: Date | string): string => {
+  if (typeof time === "string") {
+    return dayjs.utc(time, TIME_FORMAT).format(TIME_FORMAT);
+  }
+
+  return dayjs.utc(time).tz(TIMEZONE).format(TIME_FORMAT);
+};
+
+export const formatDateAndTime = (date: Date): string => {
+  // Convert UTC date to Warsaw timezone before formatting
+  return dayjs.utc(date).tz(TIMEZONE).format(DATE_AND_TIME_FORMAT);
+};
 
 export const START_OF_THE_DAY = "09:00";
 export const END_OF_THE_DAY = "17:00";

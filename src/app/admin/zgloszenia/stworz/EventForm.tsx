@@ -24,7 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import dayjs from "@/lib/time";
+import dayjs, { TIMEZONE } from "@/lib/time";
 import {
   additionalCalendarTimes,
   DATE_FORMAT,
@@ -89,7 +89,7 @@ const useGetDefaultDate = () => {
 
   if (startDateParam) {
     try {
-      const dateObj = dayjs(startDateParam).tz("Europe/Warsaw");
+      const dateObj = dayjs(startDateParam).tz(TIMEZONE);
 
       if (dateObj.isValid()) {
         defaultDate = dateObj.toDate();
@@ -345,9 +345,7 @@ export const EventForm = ({ treatments, profiles }: EventFormProps) => {
                     onSelect={(date) => {
                       // Ensure timezone consistency when selecting a date
                       if (date) {
-                        const tzAwareDate = dayjs(date)
-                          .tz("Europe/Warsaw")
-                          .toDate();
+                        const tzAwareDate = dayjs(date).tz(TIMEZONE).toDate();
                         field.onChange(tzAwareDate);
                       } else {
                         field.onChange(date);

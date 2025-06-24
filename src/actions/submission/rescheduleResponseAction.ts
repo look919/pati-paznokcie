@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { sendEmail } from "../sendEmailAction";
-import { formatDate } from "@/components/EmailTemplate";
+import { formatDate } from "@/lib/time";
 
 export async function acceptRescheduleResponseAction(submissionId: string) {
   const submission = await db.submission.findUnique({
