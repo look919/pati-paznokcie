@@ -2,17 +2,12 @@
 
 import { db } from "@/lib/db";
 import { sendSms } from "./sendSmsAction";
+import dayjs, { formatDate, formatTime } from "@/lib/time";
 
 export async function sendEventReminderSmsAction() {
   try {
-    // Get the start of tomorrow and end of tomorrow
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const endOfTomorrow = new Date(tomorrow);
-    endOfTomorrow.setHours(23, 59, 59, 999);
+    const tomorrow = dayjs().add(1, "day").startOf("day").toDate();
+    const endOfTomorrow = dayjs(tomorrow).endOf("day").toDate();
 
     // Find all accepted submissions scheduled for tomorrow
     const tomorrowEvents = await db.submission.findMany({
@@ -29,15 +24,8 @@ export async function sendEventReminderSmsAction() {
     const results = await Promise.allSettled(
       tomorrowEvents.map(async (submission) => {
         // Format the time nicely
-        const eventTime = submission.startDate.toLocaleTimeString("pl-PL", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        const eventDate = submission.startDate.toLocaleDateString("pl-PL", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        });
+        const eventTime = formatTime(submission.startDate);
+        const eventDate = formatDate(submission.startDate);
 
         // Compose the simple message with just date and time
         const message = `Przypominamy o Twojej wizycie w salonie jutro, ${eventDate} o godz. ${eventTime}.`;
